@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
@@ -9,7 +10,7 @@ import java.time.ZonedDateTime;
 @Table(name = "products")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends BaseEntity{

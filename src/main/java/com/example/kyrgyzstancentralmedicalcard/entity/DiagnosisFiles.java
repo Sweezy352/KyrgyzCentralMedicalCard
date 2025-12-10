@@ -2,12 +2,13 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "pdf_file_diagnoses")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiagnosisFiles extends BaseEntity{

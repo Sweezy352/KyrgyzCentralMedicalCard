@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity{

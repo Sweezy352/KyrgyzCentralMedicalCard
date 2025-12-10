@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "news")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class News extends BaseEntity{

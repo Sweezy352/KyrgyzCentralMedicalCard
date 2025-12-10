@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 @Table(name = "medicine_insurances")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicineInsurance extends BaseEntity{

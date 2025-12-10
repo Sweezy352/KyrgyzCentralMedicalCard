@@ -5,13 +5,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public abstract class BaseEntity {
 
     @Id
