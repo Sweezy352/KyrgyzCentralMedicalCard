@@ -13,6 +13,6 @@ public class CompanyResponse {
     private Long id;
     private String companyName;
     private String description;
-    private UserResponse user;
+    private Long userId;
     private LocalDate dateCreated;
 }

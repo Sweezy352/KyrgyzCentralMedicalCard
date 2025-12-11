@@ -21,7 +21,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> {
-                    auth.anyRequest().authenticated();
+                    auth
+                            .requestMatchers("/api/auth/register").permitAll()
+                            .requestMatchers("/api/auth/login").permitAll()
+                            .anyRequest().authenticated();
                 }).sessionManagement(manager ->
                         manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

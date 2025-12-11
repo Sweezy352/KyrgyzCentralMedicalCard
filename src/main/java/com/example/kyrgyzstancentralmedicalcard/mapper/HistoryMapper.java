@@ -3,47 +3,43 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.HistoryRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.HistoryResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.History;
-import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
-public class HistoryMapper extends BaseMapper<History, HistoryRequest, HistoryResponse> {
-
+public class HistoryMapper {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    public HistoryMapper(UserRepository userRepository, UserMapper userMapper) {
+    public HistoryMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
-    @Override
     public History toEntity(HistoryRequest request) {
-        History entity = mapFields(request, new History());
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User (userId) not found with ID: " + request.getUserId()));
-            entity.setUser(user);
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        if (request.getUserDocId() != null) {
-            User userDoc = userRepository.findById(request.getUserDocId())
-                    .orElseThrow(() -> new RuntimeException("User (userDocId) not found with ID: " + request.getUserDocId()));
-            entity.setUserDoc(userDoc);
-        }
-        return entity;
+        return History.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .user(userRepository.findById(request.getUserId()).get())
+                .userDoc(userRepository.findById(request.getUserDocId()).get())
+                .build();
     }
 
-    @Override
-    public HistoryResponse toResponse(History entity) {
-        HistoryResponse response = mapFields(entity, new HistoryResponse());
-        if (entity.getUser() != null) {
-            response.setUser(userMapper.toResponse(entity.getUser()));
+    public HistoryResponse toDto(History entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        if (entity.getUserDoc() != null) {
-            response.setUserDoc(userMapper.toResponse(entity.getUserDoc()));
-        }
-        return response;
+        return HistoryResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .userId(entity.getUser().getId())
+                .userDocId(entity.getUserDoc().getId())
+                .dateCreated(entity.getDateCreated())
+                .dateUpdated(entity.getDateUpdated())
+                .build();
     }
 }
-
