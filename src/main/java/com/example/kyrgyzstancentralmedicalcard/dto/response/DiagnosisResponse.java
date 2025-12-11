@@ -13,8 +13,8 @@ public class DiagnosisResponse {
     private Long id;
     private String name;
     private String description;
-    private UserResponse user;
-    private UserResponse userDoc;
+    private Long userId;
+    private Long userDocId;
     private LocalDate dateCreated;
     private LocalDate dateUpdated;
     private String status;

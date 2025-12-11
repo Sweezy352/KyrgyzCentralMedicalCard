@@ -3,40 +3,41 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.NewsRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.NewsResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.News;
-import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NewsMapper extends BaseMapper<News, NewsRequest, NewsResponse> {
+public class NewsMapper {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    public NewsMapper(UserRepository userRepository, UserMapper userMapper) {
+    @Autowired
+    public NewsMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
-    @Override
     public News toEntity(NewsRequest request) {
-        News entity = mapFields(request, new News());
-
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User (userId) not found with ID: " + request.getUserId()));
-            entity.setUser(user);
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        return entity;
+        return News.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .user(userRepository.findById(request.getUserId()).get())
+                .build();
     }
 
-    @Override
-    public NewsResponse toResponse(News entity) {
-        NewsResponse response = mapFields(entity, new NewsResponse());
-        if (entity.getUser() != null) {
-            response.setUser(userMapper.toResponse(entity.getUser()));
+    public NewsResponse toDto(News entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        return response;
+        return NewsResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .dateCreated(entity.getDateCreated())
+                .userId(entity.getUser().getId())
+                .build();
     }
 }
-

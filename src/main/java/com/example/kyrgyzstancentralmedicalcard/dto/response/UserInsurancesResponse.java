@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserInsurancesResponse {
     private Long id;
-    private MedicineInsuranceResponse medicineInsurance;
+    private Long medicineInsuranceId;
     private Long userId;
     private LocalDate dateActive;
     private LocalDate dateExpire;

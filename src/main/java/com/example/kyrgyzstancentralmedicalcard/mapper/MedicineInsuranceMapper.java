@@ -6,15 +6,26 @@ import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MedicineInsuranceMapper extends BaseMapper<MedicineInsurance, MedicineInsuranceRequest, MedicineInsuranceResponse> {
+public class MedicineInsuranceMapper {
 
-    @Override
     public MedicineInsurance toEntity(MedicineInsuranceRequest request) {
-        return mapFields(request, new MedicineInsurance());
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
+        }
+        return MedicineInsurance.builder()
+                .insuranceName(request.getInsuranceName())
+                .price(request.getPrice())
+                .build();
     }
 
-    @Override
     public MedicineInsuranceResponse toResponse(MedicineInsurance entity) {
-        return mapFields(entity, new MedicineInsuranceResponse());
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
+        }
+        return MedicineInsuranceResponse.builder()
+                .id(entity.getId())
+                .insuranceName(entity.getInsuranceName())
+                .price(entity.getPrice())
+                .build();
     }
 }
