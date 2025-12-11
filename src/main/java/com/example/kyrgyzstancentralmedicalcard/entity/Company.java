@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -27,4 +28,8 @@ public class Company extends BaseEntity{
 
     @Column(name = "date_created")
     private LocalDate dateCreated;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    private List<User> employees;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    private List<History> histories;
 }

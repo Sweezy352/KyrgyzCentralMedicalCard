@@ -19,3 +19,8 @@ Content-Type: application/json
   "inn": "12345678901234",
   "password": "SecureP@ssw0rd123"
 }
+
+
+###
+
+GET http://localhost:8080/api/auth/get-current

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER) // EAGER fetch type for roles
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "m2m_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,4 +50,7 @@ public class User extends BaseEntity implements UserDetails {
         return inn;
     }
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 }

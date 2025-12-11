@@ -4,14 +4,11 @@ import com.example.kyrgyzstancentralmedicalcard.dto.request.LoginRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.mapper.UserMapper;
-import com.example.kyrgyzstancentralmedicalcard.service.AuthService;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,5 +31,10 @@ public class AuthController {
     public ResponseEntity<?> create(@RequestBody UserRequest user){
         authService.create(userMapper.toEntity(user));
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-current")
+    public ResponseEntity<User> getCurrent(){
+        return ResponseEntity.ok(authService.getCurrentUser());
     }
 }

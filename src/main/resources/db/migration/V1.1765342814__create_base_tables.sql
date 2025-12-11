@@ -5,6 +5,17 @@ CREATE TABLE IF NOT EXISTS users(
     password varchar not null
 );
 
+CREATE TABLE IF NOT EXISTS company(
+                                      id bigserial primary key,
+                                      company_name varchar not null unique,
+                                      description varchar not null,
+                                      user_id bigint references users(id),
+                                      date_created DATE default now()
+
+);
+
+ALTER TABLE users ADD COLUMN company_id bigint references company(id);
+
 CREATE TABLE IF NOT EXISTS roles(
     id bigserial primary key,
     role_name varchar not null unique
@@ -47,6 +58,8 @@ CREATE TABLE IF NOT EXISTS histories(
     date_created DATE default now(),
     date_updated DATE
 );
+
+ALTER TABLE histories ADD COLUMN company_id bigint references company(id);
 
 CREATE TABLE IF NOT EXISTS diagnoses(
     id bigserial primary key,
