@@ -27,18 +27,11 @@ public class UserMapper {
             throw new IllegalArgumentException("Проблема");
         }
 
-        Set<Role> roles = Collections.emptySet();
-        if (request.getRoleName() != null && !request.getRoleName().isEmpty()) {
-            Role role = roleRepository.findByRoleName(request.getRoleName())
-                    .orElseThrow(() -> new RuntimeException("Role not found: " + request.getRoleName()));
-            roles = new HashSet<>(Collections.singleton(role));
-        }
-
         User user = User.builder()
                 .inn(request.getInn())
                 .fio(request.getFio())
                 .password(request.getPassword())
-                .roles(roles)
+                //Роли будут выдаваться автоматически, для обычного пользователя USER, но для студента который окончий мед универ автоматически роль DOCTOR и тд
                 .build();
         return user;
     }

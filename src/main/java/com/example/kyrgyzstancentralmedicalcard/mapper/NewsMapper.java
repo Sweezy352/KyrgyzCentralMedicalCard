@@ -10,12 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class NewsMapper {
 
-    private final UserRepository userRepository;
-
-    @Autowired
-    public NewsMapper(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public News toEntity(NewsRequest request) {
         if (request == null) {
@@ -23,8 +17,8 @@ public class NewsMapper {
         }
         return News.builder()
                 .name(request.getName())
+                //В сервисе NewsServiceImpl сделать поиск по айди и засетить пользователя
                 .description(request.getDescription())
-                .user(userRepository.findById(request.getUserId()).get())
                 .build();
     }
 

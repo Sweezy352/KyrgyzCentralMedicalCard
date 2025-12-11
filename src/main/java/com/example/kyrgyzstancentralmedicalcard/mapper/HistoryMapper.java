@@ -24,7 +24,7 @@ public class HistoryMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .user(userRepository.findById(request.getUserId()).get())
-                .userDoc(userRepository.findById(request.getUserDocId()).get())
+                //Сам доктор будет проверять, поэтому будем брать состояние пользователя из SecurityContext
                 .build();
     }
 
