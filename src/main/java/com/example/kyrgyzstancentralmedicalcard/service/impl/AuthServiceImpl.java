@@ -33,4 +33,11 @@ public class AuthServiceImpl implements AuthService {
         }
         return user;
     }
+
+    @Override
+    public void create(User user) {
+        userRepository.save(user);
+    }
+
+
 }
