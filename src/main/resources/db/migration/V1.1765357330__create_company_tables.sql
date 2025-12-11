@@ -1,11 +1,3 @@
-CREATE TABLE IF NOT EXISTS company(
-    id bigserial primary key,
-    company_name varchar not null unique,
-    description varchar not null,
-    user_id bigint references users(id),
-    date_created DATE default now()
-);
-
 CREATE TABLE IF NOT EXISTS products(
     id bigserial primary key,
     product_name varchar not null,
@@ -15,3 +7,11 @@ CREATE TABLE IF NOT EXISTS products(
     company_id bigint references company(id)
 );
 
+CREATE TABLE receipts(
+    id bigserial primary key,
+    name varchar not null,
+    description varchar not null,
+    user_id bigint references users(id),
+    doctor_id bigint references users(id),
+    date_created DATE default now()
+);
