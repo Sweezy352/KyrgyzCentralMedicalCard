@@ -1,54 +1,57 @@
 package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
-import com.example.kyrgyzstancentralmedicalcard.entity.Role;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
-import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
+import com.example.kyrgyzstancentralmedicalcard.security.JwtCore;
+import com.example.kyrgyzstancentralmedicalcard.security.UserDetailsImpl;
 import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtCore jwtCore;
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByInn(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public AuthServiceImpl(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager, JwtCore jwtCore) {
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtCore = jwtCore;
     }
 
     @Override
-    public User login(String inn, String password) {
-        User user = userRepository.findByInn(inn)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        if(!user.getPassword().equals(password)){
-            throw new RuntimeException("Wrong password");
-        }
-        return user;
-    }
+    public String login(String inn, String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        inn,
+                        password
+                )
+        );
 
-    @Override
-    public void create(User user) {
-        Role role = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("Роль не найдена"));
-        user.setRoles(Set.of(role));
-        userRepository.save(user);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return jwtCore.jwtGenerator((UserDetails) authentication.getPrincipal());
     }
 
     @Override
     public User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        return userRepository.findByInn(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
-
-
 }
