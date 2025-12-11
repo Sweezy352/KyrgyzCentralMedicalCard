@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,4 +32,7 @@ public class User extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 }

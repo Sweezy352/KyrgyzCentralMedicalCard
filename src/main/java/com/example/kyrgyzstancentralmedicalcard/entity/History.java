@@ -34,4 +34,8 @@ public class History extends BaseEntity{
 
     @Column(name = "date_updated")
     private LocalDate dateUpdated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 }
