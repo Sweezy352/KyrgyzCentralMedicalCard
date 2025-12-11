@@ -3,49 +3,48 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.DiagnosisRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.DiagnosisResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.Diagnosis;
-import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
-public class DiagnosisMapper extends BaseMapper<Diagnosis, DiagnosisRequest, DiagnosisResponse> {
+public class DiagnosisMapper {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public DiagnosisMapper(UserRepository userRepository, UserMapper userMapper) {
+    public DiagnosisMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
-    @Override
     public Diagnosis toEntity(DiagnosisRequest request) {
-        Diagnosis entity = mapFields(request, new Diagnosis());
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserId()));
-            entity.setUser(user);
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
         }
 
-        if (request.getUserDocId() != null) {
-            User userDoc = userRepository.findById(request.getUserDocId())
-                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserDocId()));
-            entity.setUserDoc(userDoc);
-        }
-        return entity;
+        return Diagnosis.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .user(userRepository.findById(request.getUserId()).get())
+                .userDoc(userRepository.findById(request.getUserDocId()).get())
+                .status(request.getStatus())
+                .build();
     }
 
-    @Override
-    public DiagnosisResponse toResponse(Diagnosis entity) {
-        DiagnosisResponse response = mapFields(entity, new DiagnosisResponse());
-        if (entity.getUser() != null) {
-            response.setUser(userMapper.toResponse(entity.getUser()));
+    public DiagnosisResponse toDto(Diagnosis entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        if (entity.getUserDoc() != null) {
-            response.setUserDoc(userMapper.toResponse(entity.getUserDoc()));
-        }
-        return response;
+
+        return DiagnosisResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .userId(entity.getUser().getId())
+                .userDocId(entity.getUserDoc().getId())
+                .dateCreated(entity.getDateCreated())
+                .dateUpdated(entity.getDateUpdated())
+                .status(entity.getStatus())
+                .build();
     }
 }

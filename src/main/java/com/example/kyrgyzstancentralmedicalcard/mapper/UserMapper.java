@@ -5,6 +5,7 @@ import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.Role;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -12,29 +13,44 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class UserMapper extends BaseMapper<User, UserRequest, UserResponse> {
+public class UserMapper {
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
+    @Autowired
     public UserMapper(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
-    @Override
     public User toEntity(UserRequest request) {
-        User entity = mapFields(request, new User());
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
+        }
 
+        Set<Role> roles = Collections.emptySet();
         if (request.getRoleName() != null && !request.getRoleName().isEmpty()) {
             Role role = roleRepository.findByRoleName(request.getRoleName())
                     .orElseThrow(() -> new RuntimeException("Role not found: " + request.getRoleName()));
-            Set<Role> roles = new HashSet<>(Collections.singleton(role));
-            entity.setRoles(roles);
+            roles = new HashSet<>(Collections.singleton(role));
         }
-        return entity;
+
+        User user = User.builder()
+                .inn(request.getInn())
+                .fio(request.getFio())
+                .password(request.getPassword())
+                .roles(roles)
+                .build();
+        System.out.println("----------> Entity" + user.toString() + "----------> Entity");
+        return user;
     }
 
-    @Override
     public UserResponse toResponse(User entity) {
-        return mapFields(entity, new UserResponse());
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
+        }
+        return UserResponse.builder()
+                .id(entity.getId())
+                .fio(entity.getFio())
+                .build();
     }
 }

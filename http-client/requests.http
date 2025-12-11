@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "12345678901234",
+  "fio": "Test User",
+  "password": "SecureP@ssw0rd123",
+  "roleName": "ADMIN"
+}
+
+
+### Запрос 2: Вход пользователя (POST /api/auth/login)
+
+# Этот запрос использует формат x-www-form-urlencoded
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "inn": "12345678901234",
+  "password": "SecureP@ssw0rd123"
+}

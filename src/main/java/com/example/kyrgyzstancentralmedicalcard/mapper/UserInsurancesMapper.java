@@ -2,52 +2,46 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserInsurancesRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserInsurancesResponse;
-import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
-import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.entity.UserInsurances;
 import com.example.kyrgyzstancentralmedicalcard.repository.MedicineInsuranceRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserInsurancesMapper extends BaseMapper<UserInsurances, UserInsurancesRequest, UserInsurancesResponse> {
+public class UserInsurancesMapper {
 
     private final UserRepository userRepository;
     private final MedicineInsuranceRepository insuranceRepository;
-    private final MedicineInsuranceMapper insuranceMapper;
 
-    public UserInsurancesMapper(UserRepository userRepository, MedicineInsuranceRepository insuranceRepository, MedicineInsuranceMapper insuranceMapper) {
+    @Autowired
+    public UserInsurancesMapper(UserRepository userRepository, MedicineInsuranceRepository insuranceRepository) {
         this.userRepository = userRepository;
         this.insuranceRepository = insuranceRepository;
-        this.insuranceMapper = insuranceMapper;
     }
 
-    @Override
     public UserInsurances toEntity(UserInsurancesRequest request) {
-        UserInsurances entity = new UserInsurances();
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserId()));
-            entity.setUser(user);
+        if (request == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        if (request.getMedicineInsuranceId() != null) {
-            MedicineInsurance insurance = insuranceRepository.findById(request.getMedicineInsuranceId())
-                    .orElseThrow(() -> new RuntimeException("MedicineInsurance not found with ID: " + request.getMedicineInsuranceId()));
-            entity.setMedicineInsurance(insurance);
-        }
-        return entity;
+        return UserInsurances.builder()
+                .medicineInsurance(insuranceRepository.findById(request.getMedicineInsuranceId()).get())
+                .user(userRepository.findById(request.getUserId()).get())
+                .build();
     }
 
-    @Override
     public UserInsurancesResponse toResponse(UserInsurances entity) {
-        UserInsurancesResponse response = mapFields(entity, new UserInsurancesResponse());
-        if (entity.getUser() != null) {
-            response.setUserId(entity.getUser().getId());
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
         }
-        if (entity.getMedicineInsurance() != null) {
-            response.setMedicineInsurance(insuranceMapper.toResponse(entity.getMedicineInsurance()));
-        }
-        return response;
+
+        return UserInsurancesResponse.builder()
+                .id(entity.getId())
+                .medicineInsuranceId(entity.getMedicineInsurance().getId())
+                .userId(entity.getUser().getId())
+                .dateActive(entity.getDateActive())
+                .dateExpire(entity.getDateExpire())
+                .build();
     }
 }
 

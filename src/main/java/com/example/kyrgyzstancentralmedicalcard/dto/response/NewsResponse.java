@@ -14,5 +14,5 @@ public class NewsResponse {
     private String name;
     private String description;
     private LocalDate dateCreated;
-    private UserResponse user;
+    private Long userId;
 }
