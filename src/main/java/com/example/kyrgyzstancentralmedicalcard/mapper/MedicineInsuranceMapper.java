@@ -6,7 +6,7 @@ import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MedicineInsuranceMapper extends BaseMapperImpl<MedicineInsurance, MedicineInsuranceRequest, MedicineInsuranceResponse> {
+public class MedicineInsuranceMapper extends BaseMapper<MedicineInsurance, MedicineInsuranceRequest, MedicineInsuranceResponse> {
 
     @Override
     public MedicineInsurance toEntity(MedicineInsuranceRequest request) {

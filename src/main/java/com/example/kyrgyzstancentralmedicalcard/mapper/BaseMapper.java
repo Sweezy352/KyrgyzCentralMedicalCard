@@ -3,7 +3,7 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-public abstract class BaseMapperImpl<E, R, S> {
+public abstract class BaseMapper<E, R, S> {
 
     public abstract E toEntity(R request);
     public abstract S toResponse(E entity);

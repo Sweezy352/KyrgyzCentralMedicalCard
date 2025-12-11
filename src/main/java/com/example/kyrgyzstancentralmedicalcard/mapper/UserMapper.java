@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class UserMapper extends BaseMapperImpl<User, UserRequest, UserResponse> {
+public class UserMapper extends BaseMapper<User, UserRequest, UserResponse> {
 
     private RoleRepository roleRepository;
 
@@ -25,7 +25,7 @@ public class UserMapper extends BaseMapperImpl<User, UserRequest, UserResponse> 
         User entity = mapFields(request, new User());
 
         if (request.getRoleName() != null && !request.getRoleName().isEmpty()) {
-            Role role = roleRepository.findByName(request.getRoleName())
+            Role role = roleRepository.findByRoleName(request.getRoleName())
                     .orElseThrow(() -> new RuntimeException("Role not found: " + request.getRoleName()));
             Set<Role> roles = new HashSet<>(Collections.singleton(role));
             entity.setRoles(roles);

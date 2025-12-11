@@ -9,10 +9,8 @@ import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
 @Component
-public class CompanyMapper extends BaseMapperImpl<Company, CompanyRequest, CompanyResponse> {
+public class CompanyMapper extends BaseMapper<Company, CompanyRequest, CompanyResponse> {
 
     private UserRepository userRepository;
     private UserMapper userMapper;

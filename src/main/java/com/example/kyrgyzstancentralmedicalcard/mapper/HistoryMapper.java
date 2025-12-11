@@ -8,7 +8,7 @@ import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HistoryMapper extends BaseMapperImpl<History, HistoryRequest, HistoryResponse> {
+public class HistoryMapper extends BaseMapper<History, HistoryRequest, HistoryResponse> {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;

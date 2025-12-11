@@ -10,7 +10,7 @@ import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserInsurancesMapper extends BaseMapperImpl<UserInsurances, UserInsurancesRequest, UserInsurancesResponse> {
+public class UserInsurancesMapper extends BaseMapper<UserInsurances, UserInsurancesRequest, UserInsurancesResponse> {
 
     private final UserRepository userRepository;
     private final MedicineInsuranceRepository insuranceRepository;

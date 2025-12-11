@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DiagnosisMapper extends BaseMapperImpl<Diagnosis, DiagnosisRequest, DiagnosisResponse> {
+public class DiagnosisMapper extends BaseMapper<Diagnosis, DiagnosisRequest, DiagnosisResponse> {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
