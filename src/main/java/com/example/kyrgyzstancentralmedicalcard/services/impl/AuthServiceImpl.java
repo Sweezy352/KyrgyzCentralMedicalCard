@@ -1,9 +1,10 @@
-package com.example.kyrgyzstancentralmedicalcard.service.impl;
+package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
-import com.example.kyrgyzstancentralmedicalcard.service.AuthService;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void create(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

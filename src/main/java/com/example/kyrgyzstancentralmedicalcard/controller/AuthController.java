@@ -2,9 +2,8 @@ package com.example.kyrgyzstancentralmedicalcard.controller;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.LoginRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
-import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.mapper.UserMapper;
-import com.example.kyrgyzstancentralmedicalcard.service.AuthService;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -40,7 +40,6 @@ public class UserMapper {
                 .password(request.getPassword())
                 .roles(roles)
                 .build();
-        System.out.println("----------> Entity" + user.toString() + "----------> Entity");
         return user;
     }
 

@@ -30,7 +30,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER) // EAGER fetch type for roles
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "m2m_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
