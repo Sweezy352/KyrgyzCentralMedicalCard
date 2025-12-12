@@ -28,4 +28,12 @@ public class UserInsurances extends  BaseEntity {
 
     @Column(name = "date_expire")
     private LocalDate dateExpire;
+
+    @Column(name = "active")
+    private Boolean active;
+
+    @PrePersist
+    public void prePersist(){
+        this.active = true;
+    }
 }

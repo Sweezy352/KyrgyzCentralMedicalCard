@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
+import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,14 @@ public class UserMapper {
                 .id(entity.getId())
                 .fio(entity.getFio())
                 .build();
+    }
+
+    public UserView toView(User entity){
+        if(entity == null){
+            throw new IllegalArgumentException("Проблема");
+        }
+        String roleName = entity.getRoles().get(0).getRoleName();
+
+        return UserView.builder().id(entity.getId()).fio(entity.getFio()).roleName(roleName).build();
     }
 }

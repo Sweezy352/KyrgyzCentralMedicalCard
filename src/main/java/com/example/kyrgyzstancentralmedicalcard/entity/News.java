@@ -27,4 +27,9 @@ public class News extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    public void prePersist(){
+        this.dateCreated = LocalDate.now();
+    }
 }

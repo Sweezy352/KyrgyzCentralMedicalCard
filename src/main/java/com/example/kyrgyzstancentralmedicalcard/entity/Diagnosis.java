@@ -35,5 +35,11 @@ public class Diagnosis extends BaseEntity{
     @Column(name = "date_updated")
     private LocalDate dateUpdated;
 
+    @Column(name = "status")
     private String status;
+
+    @PrePersist
+    public void prePersist(){
+        this.dateCreated = LocalDate.now();
+    }
 }

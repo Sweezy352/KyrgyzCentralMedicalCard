@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HistoryService {
     List<History> getAllHistoriesByUserId(Long userId);
-    History createHistory(History history);
+    History createHistory(History history, Long userId);
     History getById(Long id);
     List<History> getByDate(LocalDate date);
     List<History> getByName(String name);

@@ -25,7 +25,6 @@ public class DiagnosisMapper {
         return Diagnosis.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .user(userRepository.findById(request.getUserId()).get())
                 //Сам доктор будет проверять, поэтому будем брать состояние пользователя из SecurityContext
                 //Status будет выставляться автоматически ACTUAL
                 .build();

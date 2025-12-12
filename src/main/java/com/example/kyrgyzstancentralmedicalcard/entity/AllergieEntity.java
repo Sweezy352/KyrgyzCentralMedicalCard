@@ -10,30 +10,27 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "allergies")
+@SuperBuilder
 @Getter
 @Setter
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "receipts")
-public class Receipt extends BaseEntity{
+public class AllergieEntity extends BaseEntity{
     @Column
     private String name;
     @Column
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    private User doctor;
     @Column(name = "date_created")
     private LocalDate dateCreated;
-    @Column(name = "number")
-    private String number;
-
-    @PrePersist
-    public void prePersist(){
-        this.dateCreated = LocalDate.now();
-    }
+    @Column(name = "date_updated")
+    private LocalDate dateUpdated;
+    @Column
+    private Boolean status;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private User doctor;
 }

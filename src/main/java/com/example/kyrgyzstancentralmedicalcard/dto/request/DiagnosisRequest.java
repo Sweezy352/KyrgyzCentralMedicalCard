@@ -16,5 +16,5 @@ public class DiagnosisRequest {
     @NotNull(message = "Описание диагноза не может быть пустым")
     @NotBlank(message = "Описание диагноза не может быть пустым")
     private String description;
-    private Long userId;
+    //private Long userId; -- Через PathVariable
 }

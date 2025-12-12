@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toResponse(userService.getById(id)));
     }
 
-    @GetMapping("/get-by-fio}")
+    @GetMapping("/get-by-fio")
     public ResponseEntity<UserResponse> getByFIO(@RequestParam("fio") String fio){
         return ResponseEntity.ok(userMapper.toResponse(userService.getByFIO(fio)));
     }
