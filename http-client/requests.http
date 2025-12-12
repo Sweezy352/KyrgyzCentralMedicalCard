@@ -1,3 +1,5 @@
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNCIsInN1YiI6IjEyMzQ1Njc4OTAxMjM0IiwiaWF0IjoxNzY1NDc3MzUxLCJleHAiOjE3NjU0Nzc0MTF9.e1yU--jEf0qkzqyFa1ur1ws8zommQ_jjIz3kJTiAT2U
+
 POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
@@ -24,3 +26,4 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/api/auth/get-current
+Authorization: Bearer {{token}}

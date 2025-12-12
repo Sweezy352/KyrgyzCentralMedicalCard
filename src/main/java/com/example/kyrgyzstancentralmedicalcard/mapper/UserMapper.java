@@ -2,15 +2,10 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
-import com.example.kyrgyzstancentralmedicalcard.entity.Role;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class UserMapper {
@@ -31,7 +26,6 @@ public class UserMapper {
                 .inn(request.getInn())
                 .fio(request.getFio())
                 .password(request.getPassword())
-                //Роли будут выдаваться автоматически, для обычного пользователя USER, но для студента который окончий мед универ автоматически роль DOCTOR и тд
                 .build();
         return user;
     }
