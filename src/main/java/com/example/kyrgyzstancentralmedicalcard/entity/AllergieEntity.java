@@ -33,4 +33,10 @@ public class AllergieEntity extends BaseEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User doctor;
+
+    @PrePersist
+    public void prePersist(){
+        this.dateCreated = LocalDate.now();
+        this.status = true;
+    }
 }

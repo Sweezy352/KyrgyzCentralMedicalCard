@@ -51,4 +51,10 @@ public class User extends BaseEntity{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<Receipt> receiptsDoctor;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<AllergieEntity> allergieEntities;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    private List<AllergieEntity> allergieEntitiesDoctors;
 }
