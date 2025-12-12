@@ -53,4 +53,10 @@ public class User extends BaseEntity implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<History> histories;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userDoc")
+    private List<History> historiesDoc;
 }

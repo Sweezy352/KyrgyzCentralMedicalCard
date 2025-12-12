@@ -2,8 +2,10 @@ package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
 import com.example.kyrgyzstancentralmedicalcard.entity.Company;
 import com.example.kyrgyzstancentralmedicalcard.entity.History;
+import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.CompanyRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.HistoryRepository;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
     private final CompanyRepository companyRepository;
+    private final AuthService authService;
 
     @Override
     public List<History> getAllHistoriesByUserId(Long userId) {
@@ -24,6 +27,9 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public History createHistory(History history) {
+        User userDoc = authService.getCurrentUser();
+        history.setUserDoc(userDoc);
+        history.setCompany(userDoc.getCompany());
         return historyRepository.save(history);
     }
 
@@ -44,14 +50,16 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public List<History> getByCompany(String companyName) {
+        User user = authService.getCurrentUser();
         Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("Такой компании не существует"));
-
-        return null;
+        List<History> filteredHistories = company.getHistories().stream().filter(history ->  history.getUser().getId().equals(user.getId())).toList();
+        return filteredHistories;
 
     }
 
     @Override
-    public List<History> getByFIO(String fio) {
-        return null;
+    public List<History> getByDocFIO(String docFIO) {
+        User user = authService.getCurrentUser();
+        return user.getHistories().stream().filter(history -> history.getUserDoc().getFio().equals(docFIO)).toList();
     }
 }

@@ -4,6 +4,7 @@ import com.example.kyrgyzstancentralmedicalcard.entity.Company;
 import com.example.kyrgyzstancentralmedicalcard.entity.News;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.NewsRepository;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
+    private final AuthService authService;
 
     @Override
     public List<News> getAllNews() {
@@ -22,6 +24,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News createNews(News news) {
+        User user = authService.getCurrentUser();
+        news.setUser(user);
         return newsRepository.save(news);
     }
 
