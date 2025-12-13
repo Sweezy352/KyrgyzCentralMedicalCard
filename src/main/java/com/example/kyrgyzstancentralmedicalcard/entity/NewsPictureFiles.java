@@ -19,10 +19,7 @@ public class NewsPictureFiles extends BaseEntity{
     @Column(name = "mime_type", nullable = false)
     private String mimeType;
 
-    @Column(nullable = false)
-    private String path;
-
     @ManyToOne
-    @JoinColumn(name = "news_id")
+    @JoinColumn(name = "news_id", referencedColumnName = "id")
     private News news;
 }

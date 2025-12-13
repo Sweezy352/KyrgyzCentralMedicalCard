@@ -2,12 +2,16 @@ package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
 import com.example.kyrgyzstancentralmedicalcard.entity.Company;
 import com.example.kyrgyzstancentralmedicalcard.entity.News;
+import com.example.kyrgyzstancentralmedicalcard.entity.NewsPictureFiles;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
+import com.example.kyrgyzstancentralmedicalcard.repository.NewsPictureFilesRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.NewsRepository;
 import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.NewsService;
+import com.example.kyrgyzstancentralmedicalcard.services.PictureFileMinIoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,6 +20,8 @@ import java.util.List;
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
     private final AuthService authService;
+    private final PictureFileMinIoService pictureFileMinIoService;
+    private final NewsPictureFilesRepository newsPictureFilesRepository;
 
     @Override
     public List<News> getAllNews() {
@@ -23,10 +29,18 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News createNews(News news) {
+    public News createNews(News news, MultipartFile multipartFile) {
         User user = authService.getCurrentUser();
         news.setUser(user);
-        return newsRepository.save(news);
+        pictureFileMinIoService.upload(multipartFile);
+        News newsSaved =  newsRepository.save(news);
+        NewsPictureFiles newsPictureFiles = new NewsPictureFiles();
+        newsPictureFiles.setOriginalFileName(multipartFile.getOriginalFilename());
+        newsPictureFiles.setMimeType(multipartFile.getContentType());
+        newsSaved.setNewsPictureFiles(List.of(newsPictureFilesRepository.save(newsPictureFiles)));
+        return newsSaved;
+
+        //AutoEffect
     }
 
     @Override

@@ -60,6 +60,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
+                        .requestMatchers("/api/users/get-by-id/{id}").permitAll()
+                        .requestMatchers("/api/qrcode/qr-code/users/{id}").permitAll()
+                        .requestMatchers("/api/users/get-by-fio").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(jwtCore, userService), UsernamePasswordAuthenticationFilter.class);

@@ -1,14 +1,16 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNCIsInN1YiI6IjEyMzQ1Njc4OTAxMjM0IiwiaWF0IjoxNzY1NTExNDcyLCJleHAiOjE3NjU1MTE1MzJ9.4eXklEG0FBDjPLadvK79Or0g1AYJRFHOBh5W9uP7peU
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNiIsInN1YiI6IjEyMzQ1Njc4OTAxMjM2IiwiaWF0IjoxNzY1NjEyOTI1LCJleHAiOjE3NjU2MTY1MjV9.m30BJ7z_QHcY-3lisU0m53IKfqmG0MMqz_O0d80Grx4
+
+
 
 
 POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "inn": "12345678901234",
-  "fio": "Test User",
-  "password": "SecureP@ssw0rd123",
-  "roleName": "ADMIN"
+  "inn": "12345678901236",
+  "fio": "Almanbet",
+  "password": "Almanbet@ssw0rd123",
+  "roleName": "USER"
 }
 
 
@@ -19,8 +21,8 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "inn": "12345678901234",
-  "password": "SecureP@ssw0rd123"
+  "inn": "12345678901236",
+  "password": "Almanbet@ssw0rd123"
 }
 
 
