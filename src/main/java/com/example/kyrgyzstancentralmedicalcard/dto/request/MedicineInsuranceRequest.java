@@ -18,4 +18,5 @@ public class MedicineInsuranceRequest {
     @NotNull(message = "Цена страховки не должна быть пустым")
     @NotBlank(message = "Цена страховки не должна быть пустым")
     private BigDecimal price;
+    private String description;
 }

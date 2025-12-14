@@ -22,13 +22,18 @@ public class UserMapper {
         if (request == null) {
             throw new IllegalArgumentException("Проблема");
         }
-
-        User user = User.builder()
+        return User.builder()
+                .id(request.getId())
                 .inn(request.getInn())
                 .fio(request.getFio())
                 .password(request.getPassword())
+                .gender(request.getGender())
+                .birthday(request.getBirthday())
+                .en(request.getEn())
+                .blood(request.getBlood())
+                .rh(request.getRh())
+                .enName(request.getEnName())
                 .build();
-        return user;
     }
 
     public UserResponse toResponse(User entity) {
@@ -38,6 +43,13 @@ public class UserMapper {
         return UserResponse.builder()
                 .id(entity.getId())
                 .fio(entity.getFio())
+                .inn(entity.getInn())
+                .gender(entity.getGender())
+                .birthday(entity.getBirthday())
+                .en(entity.getEn())
+                .blood(entity.getBlood())
+                .rh(entity.getRh())
+                .enName(entity.getEnName())
                 .build();
     }
 

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -20,4 +22,11 @@ public class UserRequest {
     private String fio;
     @NotNull(message = "Пароль не должен быть постым")
     private String password;
+    private String gender;
+    private LocalDate birthday;
+    private String en;
+    private String enName;
+    private String blood;
+    private String rh;
+    private Long id;
 }

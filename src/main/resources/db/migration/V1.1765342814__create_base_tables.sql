@@ -2,7 +2,13 @@ CREATE TABLE IF NOT EXISTS users(
     id bigserial primary key,
     inn varchar unique not null,
     fio varchar not null,
-    password varchar not null
+    password varchar not null,
+    gender varchar,
+    birthday DATE,
+    en varchar,
+    en_name varchar,
+    blood varchar,
+    rh varchar
 );
 
 CREATE TABLE IF NOT EXISTS company(
@@ -82,6 +88,7 @@ CREATE TABLE IF NOT EXISTS pdf_file_diagnoses(
 CREATE TABLE IF NOT EXISTS medicine_insurances(
     id bigserial primary key,
     insurance_name varchar not null,
+    description jsonb,
     price DECIMAL(19, 2) not null
 );
 

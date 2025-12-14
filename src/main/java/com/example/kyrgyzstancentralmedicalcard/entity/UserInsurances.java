@@ -3,6 +3,8 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -23,17 +25,16 @@ public class UserInsurances extends  BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "date_active")
+    @Column(name = "date_active", nullable = false)
+    @CreationTimestamp
     private LocalDate dateActive;
 
-    @Column(name = "date_expire")
+    @Column(name = "date_expire", nullable = false)
     private LocalDate dateExpire;
 
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "active", nullable = false)
+    @ColumnDefault("true")
+    private boolean active;
 
-    @PrePersist
-    public void prePersist(){
-        this.active = true;
-    }
+
 }

@@ -5,6 +5,7 @@ import com.example.kyrgyzstancentralmedicalcard.dto.response.MedicineInsuranceRe
 import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
 import com.example.kyrgyzstancentralmedicalcard.mapper.MedicineInsuranceMapper;
 import com.example.kyrgyzstancentralmedicalcard.services.MedicineInsuranceService;
+import com.example.kyrgyzstancentralmedicalcard.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 public class MedicineInsuranceController {
     private final MedicineInsuranceService medicineInsuranceService;
     private final MedicineInsuranceMapper medicineInsuranceMapper;
+    private final UserService userService;
 
     @PostMapping("/create-medicine-insurance")
     public ResponseEntity<MedicineInsuranceResponse> createMedicineInsurance(@RequestBody MedicineInsuranceRequest medicineInsuranceRequest){

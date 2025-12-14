@@ -1,5 +1,6 @@
 package com.example.kyrgyzstancentralmedicalcard.controller;
 
+import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
 import com.example.kyrgyzstancentralmedicalcard.mapper.UserMapper;
 import com.example.kyrgyzstancentralmedicalcard.services.UserService;
@@ -34,5 +35,10 @@ public class UserController {
     @GetMapping("/get-by-inn")
     public ResponseEntity<UserResponse> getByInn(@RequestParam("inn") String inn){
         return ResponseEntity.ok(userMapper.toResponse(userService.getByINN(inn)));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<UserResponse> update(@RequestBody UserRequest userRequest){
+        return ResponseEntity.ok(userMapper.toResponse(userService.update(userMapper.toEntity(userRequest))));
     }
 }

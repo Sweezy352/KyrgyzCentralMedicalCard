@@ -15,4 +15,5 @@ public class UserInsurancesResponse {
     private Long userId;
     private LocalDate dateActive;
     private LocalDate dateExpire;
+    private boolean active;
 }

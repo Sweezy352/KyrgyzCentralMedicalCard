@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,13 @@ public class User extends BaseEntity{
 
     @Column(nullable = false)
     private String password;
+
+    private String gender;
+    private LocalDate birthday;
+    private String en;
+    private String blood;
+    private String rh;
+    private String enName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

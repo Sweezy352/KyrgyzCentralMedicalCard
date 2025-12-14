@@ -10,6 +10,7 @@ import com.example.kyrgyzstancentralmedicalcard.services.UserInsuranceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,6 +27,9 @@ public class UserInsuranceServiceImpl implements UserInsuranceService {
         UserInsurances userInsurances = new UserInsurances();
         userInsurances.setUser(currentUser);
         userInsurances.setMedicineInsurance(medicineInsurance);
+        LocalDate activeDate = LocalDate.now();
+        userInsurances.setDateActive(activeDate);
+        userInsurances.setDateExpire(activeDate.plusMonths(1));
         return userInsurancesRepository.save(userInsurances);
     }
 

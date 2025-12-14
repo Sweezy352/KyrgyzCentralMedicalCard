@@ -52,6 +52,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(User user) {
+        User user1 = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("Not"));
+        user1.setInn(user.getInn());
+        user1.setFio(user.getFio());
+        user1.setGender(user.getGender());
+        user1.setBirthday(user.getBirthday());
+        user1.setEn(user.getEn());
+        user1.setEnName(user.getEnName());
+        user1.setBlood(user.getBlood());
+        user1.setRh(user1.getRh());
+        return userRepository.save(user1);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByInn(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

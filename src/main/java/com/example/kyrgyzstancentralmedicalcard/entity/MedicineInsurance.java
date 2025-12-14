@@ -3,6 +3,8 @@ package com.example.kyrgyzstancentralmedicalcard.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 
@@ -20,4 +22,8 @@ public class MedicineInsurance extends BaseEntity{
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    @Column(name = "description", columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private String description;
 }

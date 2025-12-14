@@ -15,6 +15,7 @@ public class MedicineInsuranceMapper {
         return MedicineInsurance.builder()
                 .insuranceName(request.getInsuranceName())
                 .price(request.getPrice())
+                .description(request.getDescription())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class MedicineInsuranceMapper {
                 .id(entity.getId())
                 .insuranceName(entity.getInsuranceName())
                 .price(entity.getPrice())
+                .description(entity.getDescription())
                 .build();
     }
 }

@@ -8,6 +8,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,16 +20,28 @@ public class UserDetailsImpl implements UserDetails {
     private String inn;
     private String fio;
     private String password;
+    private String gender;
+    private LocalDate birthday;
+    private String en;
+    private String blood;
+    private String rh;
+    private String enName;
     private List<Role> roles;
 
     public static UserDetailsImpl build(User user) {
         return new UserDetailsImpl(
-                user.getId(),
-                user.getInn(),
-                user.getFio(),
-                user.getPassword(),
-                user.getRoles()
-        );
+                        user.getId(),
+                        user.getInn(),
+                        user.getFio(),
+                        user.getPassword(),
+                        user.getGender(),
+                        user.getBirthday(),
+                        user.getEn(),
+                        user.getBlood(),
+                        user.getRh(),
+                        user.getEnName(),
+                        user.getRoles()
+                );
     }
 
     @Override

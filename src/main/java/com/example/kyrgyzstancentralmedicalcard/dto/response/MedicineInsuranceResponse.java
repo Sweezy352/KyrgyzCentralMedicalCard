@@ -12,5 +12,6 @@ import java.math.BigDecimal;
 public class MedicineInsuranceResponse {
     private Long id;
     private String insuranceName;
+    private String description;
     private BigDecimal price;
 }

@@ -41,6 +41,7 @@ public class UserInsurancesMapper {
                 .userId(entity.getUser().getId())
                 .dateActive(entity.getDateActive())
                 .dateExpire(entity.getDateExpire())
+                .active(entity.isActive())
                 .build();
     }
 }
