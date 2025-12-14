@@ -1,0 +1,492 @@
+/* GLOBAL RESET AND FONT */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800;1,400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+/* BODY STYLES (Full Screen Background/Layout) */
+body {
+    width: 100vw;
+    height: 100vh;
+    background: url(/images/loginpagebg.png);
+    backdrop-filter: blur(180px);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto; 
+    position: fixed;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* --- ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ LABEL --- */
+label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 3px; 
+    color: #726363;
+}
+/* --- НОВЫЙ КЛАСС .label (КРАСНЫЙ, ВЫРАВНЕН СЛЕВА) --- */
+.label {
+    text-align: left;
+    font-size: 1rem; 
+    color: #E00E0E; 
+    font-weight: 600;
+}
+/* --- КОНЕЦ .label --- */
+
+/* MAIN MENU CONTAINERS */
+.LoginMenu, .RegMenu, .ForgotPassword, .Verify , .NewPassword {
+    max-width: 920px;
+    width: 90%;
+    min-height: 480px; 
+    background: linear-gradient(to top, #FFA7A7, #E9E9E9);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px; 
+    z-index: 10;
+    padding: 25px 20px; 
+    margin: 15px auto; 
+}
+
+/* Adjusting fixed heights to min-height for responsiveness */
+.RegMenu { 
+    min-height: 550px; 
+    gap: 12px;
+    padding: 25px 20px;
+} 
+.ForgotPassword { min-height: 320px; }
+.Verify { min-height: 400px; }
+.NewPassword { min-height: 400px; }
+
+/* HEADING STYLES */
+.LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1, .NewPassword > h1 {
+    font-size: 5vw; 
+    font-weight: 600;
+    font-family: 'Poppins',sans-serif;
+    background-image:linear-gradient(to bottom, #FF4A4A, #992C2C);
+    color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+    margin-bottom: 5px; 
+}
+
+.NewPassword > h1 {
+    font-size: 4vw;
+}
+
+/* --- СТИЛИ ДЛЯ КОНТЕЙНЕРОВ SELECT ГРУПП (ВКЛЮЧАЯ ДАТУ) --- */
+.select-group, .select-group-gender, .select-group-date {
+    width: 90%;
+    display: flex;
+    gap: 5px; 
+    position: relative; 
+    padding-top: 12px; 
+}
+
+/* --- НОВЫЙ КЛАСС ДЛЯ РАСПОЛОЖЕНИЯ ЭЛЕМЕНТОВ НА ОДНОЙ ЛИНИИ --- */
+.odnoline {
+    width: 90%; 
+    display: flex;
+    justify-content: space-between; 
+    gap: 10px; 
+    padding-top: 15px; /* Немного увеличенный padding-top для .odnoline */
+    position: relative;
+}
+
+/* Применение flexbox к контейнерам внутри .odnoline, чтобы они делили ширину */
+.odnoline .select-group-gender, 
+.odnoline .select-group-date,
+.odnoline .select-group {
+    width: calc(50% - 5px); /* 50% минус половина gap */
+    /* Сброс внутренних отступов, чтобы избежать двойного padding-top */
+    padding-top: 0;
+    gap: 0; 
+}
+
+/* Стили для общего лейбла (Абсолютное позиционирование) */
+.select-group > label, .select-group-gender > label, .select-group-date > label {
+    position: absolute; 
+    top: 0px; 
+    left: 20px; 
+    z-index: 20;
+    padding: 2px 0;
+}
+
+/* Корректировка позиционирования label внутри .odnoline */
+.odnoline .select-group-gender > label,
+.odnoline .select-group-date > label,
+.odnoline .select-group > label {
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    padding-left: 0;
+    z-index: 20;
+}
+
+
+/* Стили для Select элементов внутри группы */
+.select-group #bloodgroup, .select-group #bloodrh {
+    width: 100%;
+}
+
+/* Стиль для выбора пола и даты - занимает всю ширину группы */
+/* Эти стили теперь переопределяются стилями .odnoline выше, но оставлены для полей, не входящих в .odnoline */
+.select-group-gender #gender, .select-group-date #birthdate {
+    width: 100%;
+}
+
+/* --- КЛАССЫ ДЛЯ ОПЦИЙ ПОЛА --- */
+.male {}
+.female {}
+/* --- КОНЕЦ СТИЛЕЙ ДЛЯ SELECT ГРУПП --- */
+
+
+/* INPUT FIELD AND SELECT STYLES (Объединяем ВСЕ поля) */
+#username, #password, #passwordrepeat,
+#rusername, #rpassword, #rpasswordrepeat,
+#femail, #code, #recpassword, #recpasswordrepeat, #rrealname,
+#bloodgroup, #bloodrh,
+#gender,
+/* ID ДАТЫ */
+#birthdate {
+    width: 90%;
+    height: auto;
+    min-height: 30px; 
+    border-radius: 18px; 
+    background-color: rgba(30, 30, 30, 0.6);
+    color: white; 
+    font-size: 1.1rem; 
+    padding: 10px 18px; 
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none; 
+    cursor: pointer;
+}
+
+/* СТИЛИЗАЦИЯ ПОЛЯ ДАТЫ (#birthdate) */
+#birthdate {
+    /* SVG: Календарь со стрелкой вниз (v) */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 15 12 19 16 15"></polyline></svg>');
+    
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 24px 24px;
+    padding-right: 45px;
+    
+    &::-ms-expand { display: none; }
+}
+
+/* Скрываем стандартный значок календаря в Chrome/Safari, оставляя кликабельную область */
+#birthdate::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Стилизация текста в поле даты (до выбора значения - как плейсхолдер) */
+#birthdate::-webkit-datetime-edit-text,
+#birthdate::-webkit-datetime-edit-month-field,
+#birthdate::-webkit-datetime-edit-day-field,
+#birthdate::-webkit-datetime-edit-year-field {
+    color: rgba(178, 178, 178, 1);
+}
+
+/* Стиль для текста в поле, когда поле не пустое и валидно (дата выбрана) */
+#birthdate:valid,
+#birthdate:not(:placeholder-shown) {
+    color: white;
+}
+
+
+/* Стили для текста-заполнителя (для обычных полей) */
+#username::placeholder, #password::placeholder, #passwordrepeat::placeholder,
+#rusername::placeholder, #rpassword::placeholder, #rpasswordrepeat::placeholder,
+#femail::placeholder, #code::placeholder, #recpassword::placeholder, #recpasswordrepeat::placeholder, #rrealname::placeholder {
+    color: rgba(178, 178, 178, 1);
+}
+
+/* Отдельный стиль для опций */
+#bloodgroup option, #bloodrh option, #gender option {
+    background-color: #303030;
+    color: white;
+}
+
+
+/* ADDRESS AND PROMPT SECTIONS */
+.pereadress, .spros, .Another {
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1rem; 
+    color: #726363;
+    flex-wrap: wrap;
+    padding: 3px 0; 
+    line-height: 1.5;
+}
+
+.spros { justify-content: flex-end; }
+.pereadress { gap: 8px; }
+
+#RegBtn:hover , #ForgotBtn:hover, #LoginBtn:hover, #SendSMSAnotherTime:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* BUTTON STYLES */
+#login, #register, #SendSMS, #ChangePassword, #editpassword {
+    width: 90%;
+    height: auto;
+    min-height: 60px; 
+    background: linear-gradient(to right, #C20000, #FF9E9E);
+    border-radius: 18px; 
+    font-size: 1.6rem; 
+    color: white;
+    border: none;
+    margin-top: 8px; 
+    padding: 8px; 
+}
+
+#login:hover, #register:hover, #SendSMS:hover, #ChangePassword:hover, #editpassword:hover {
+    cursor: pointer;
+}
+
+/* BUBBLES - Fluid positioning */
+.bubbles {
+    position: absolute;
+    image-rendering: -webkit-optimize-contrast;
+    pointer-events: none;
+}
+
+/* BUBBLE POSITIONS */
+.bubble1 { width: 25vw; height: 25vw; left: 15vw; top: 5vh; }
+.bubble2 { width: 20vw; height: 20vw; top: 25vh; right: 5vw; left: auto; z-index: 2; }
+.bubble3 { width: 20vw; height: 20vw; bottom: 5vh; left: 10vw; top: auto; z-index: 2; }
+.bubble4 { width: 8vw; height: 8vw; bottom: 30vh; right: 10vw; left: auto; top: auto; z-index: 2; }
+.bubble5 { width: 6vw; height: 6vw; bottom: 5vh; left: 40vw; top: auto; z-index: 2; }
+
+/* KEYFRAMES */
+@keyframes up1{ 0% { top: 100vh; opacity: 0; } 100% { top: 5vh; opacity: 1; }}
+@keyframes up2{ 0% { top: 100vh; opacity: 0; } 100% { top: 25vh; opacity: 1; }}
+@keyframes up3{ 0% { top: 100vh; opacity: 0; } 100% { bottom: 5vh; top: auto; opacity: 1; }}
+@keyframes up4{ 0% { top: 100vh; opacity: 0; } 100% { top: auto; bottom: 30vh; opacity: 1; }}
+@keyframes up5{ 0% { top: 100vh; opacity: 0; } 100% { top: auto; bottom: 5vh; opacity: 1; }}
+
+.bubble1 { animation: up1 1s ease; }
+.bubble2 { animation: up2 1s ease; }
+.bubble3 { animation: up3 1s ease; }
+.bubble4 { animation: up4 1s ease; }
+.bubble5 { animation: up5 1s ease; }
+
+
+/* INITIAL HIDE STATE */
+.RegMenu, .ForgotPassword, .Verify, .NewPassword{
+    display: none;
+}
+
+
+/* --- MEDIA QUERY ДЛЯ НОУТБУКОВ И БОЛЬШИХ ЭКРАНОВ (ШИРИНА > 920px) --- */
+@media (min-width: 921px) {
+    /* Ограничиваем максимальный размер текста заголовков */
+    .LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1 {
+        font-size: 73px;
+        white-space: normal;
+    }
+    .NewPassword > h1 {
+        font-size: 57px;
+    }
+    
+    /* АДАПТАЦИЯ ОБЩЕГО LABEL */
+    label {
+        margin-bottom: 8px;
+    }
+    .label {
+        font-size: 1.5rem; 
+    }
+
+
+    /* Устанавливаем фиксированные/более крупные размеры для элементов на широких экранах */
+    #username, #password, #passwordrepeat,
+    #rusername, #rpassword, #rpasswordrepeat,
+    #femail, #code, #recpassword, #recpasswordrepeat,#rrealname,
+    #bloodgroup, #bloodrh, #gender, #birthdate {
+        width: 800px; 
+        font-size: 30px; 
+        padding: 20px;
+    }
+    
+    /* АДАПТАЦИЯ SELECT GROUP ДЛЯ ШИРОКИХ ЭКРАНОВ */
+    .select-group, .select-group-gender, .select-group-date {
+        width: 800px;
+        padding-top: 30px; 
+    }
+
+    /* АДАПТАЦИЯ ODNOLINE ДЛЯ ШИРОКИХ ЭКРАНОВ */
+    .odnoline {
+        width: 800px;
+        padding-top: 30px;
+    }
+
+    /* Специфический label использует .label, но имеет абсолютное позиционирование */
+    .select-group > label, .select-group-gender > label, .select-group-date > label {
+        position: absolute; 
+        top: 0px; 
+        left: 20px; 
+    }
+    
+    .odnoline .select-group-gender > label,
+    .odnoline .select-group-date > label,
+    .odnoline .select-group > label {
+        position: absolute; 
+        top: 0px; 
+        left: 0px; 
+        padding-left: 0;
+        z-index: 20;
+    }
+
+    .pereadress, .spros, .Another {
+        width: 800px;
+        font-size: 24px;
+        flex-direction: row;
+    }
+    
+    #login, #register, #SendSMS, #ChangePassword, #editpassword {
+        width: 800px;
+        min-height: 100px; 
+        font-size: 50px; 
+    }
+    
+    .bubbles {
+        display: block;
+    }
+}
+
+
+/* --- MEDIA QUERIES ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (Ширина < 600px) --- */
+@media (max-width: 600px) {
+    
+    body {
+        padding: 5px; 
+    }
+
+    .LoginMenu, .RegMenu, .ForgotPassword, .Verify, .NewPassword {
+        width: 95%;
+        padding: 15px 10px; 
+        gap: 10px; 
+        border-radius: 15px; 
+        min-height: auto;
+        margin: 5px auto;
+    }
+
+    .LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1, .NewPassword > h1 {
+        font-size: 8vw; 
+        margin-bottom: 5px;
+    }
+    
+    .NewPassword > h1 {
+        font-size: 6vw;
+    }
+    
+    /* АДАПТАЦИЯ ОБЩЕГО LABEL */
+    label {
+        margin-bottom: 3px;
+        padding-left: 10px;
+    }
+    .label {
+        font-size: 0.9rem; 
+    }
+
+
+    #username, #password, #passwordrepeat,
+    #rusername, #rpassword, #rpasswordrepeat,
+    #femail, #code, #recpassword, #recpasswordrepeat, #rrealname,
+    #bloodgroup, #bloodrh, #gender, #birthdate {
+        font-size: 0.95rem; 
+        padding: 8px 15px; 
+        min-height: 35px; 
+        width: 95%;
+    }
+    
+    /* АДАПТАЦИЯ SELECT GROUP ДЛЯ МОБИЛЬНЫХ */
+    .select-group, .select-group-gender, .select-group-date {
+        width: 95%;
+        gap: 4px;
+        padding-top: 12px;
+    }
+
+    /* АДАПТАЦИЯ ODNOLINE ДЛЯ МОБИЛЬНЫХ */
+    .odnoline {
+        /* Принудительно ставим элементы в колонну на очень маленьких экранах, чтобы не было слишком тесно */
+        flex-direction: column; 
+        gap: 10px;
+        padding-top: 5px;
+        width: 95%;
+    }
+    
+    /* Внутри .odnoline контейнеры занимают 100% при column-расположении */
+    .odnoline .select-group-gender, 
+    .odnoline .select-group-date,
+    .odnoline .select-group {
+        width: 100%;
+        padding-top: 10px; /* Добавляем отступ для каждого элемента, когда они в колонне */
+    }
+
+    /* Корректировка позиционирования label внутри .odnoline при column-расположении */
+    .odnoline .select-group-gender > label,
+    .odnoline .select-group-date > label,
+    .odnoline .select-group > label {
+        left: 10px; /* Возвращаем отступ, как у обычных полей на мобильных */
+    }
+
+    /* Адаптация иконки даты на мобильных */
+    #birthdate {
+        background-position: right 10px center;
+        padding-right: 30px;
+        background-size: 18px 18px; 
+    }
+
+
+    #login, #register, #SendSMS, #ChangePassword, #editpassword {
+        min-height: 50px; 
+        font-size: 1.3rem; 
+        width: 95%;
+        border-radius: 15px;
+    }
+
+    /* Stack items vertically on mobile */
+    .pereadress, .spros, .Another {
+        width: 95%;
+        font-size: 0.9rem; 
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .pereadress #RegBtn, .pereadress #ForgotBtn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .Another {
+        align-items: flex-end;
+    }
+
+    /* Скрываем пузырьки на мобильных */
+    .bubbles {
+        display: none;
+    }
+}

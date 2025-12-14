@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyrgyz Central Medical Card</title>
+    <link rel="stylesheet" href="/styles/loginpage.css">
+    <link rel="shortcut icon" href="">
+</head>
+<body>
+    <form class="LoginMenu" id="LoginMenu">
+        <h1>Вход</h1>
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+        <div class="pereadress">
+            <btn id="RegBtn">Зарегистрироваться</btn>
+            <btn id="ForgotBtn">Забыли пароль?</btn>
+        </div>
+        <button id="login">Войти</button>
+        <div id="resultlog"></div>
+    </form>
+
+    <img src="/images/bubble.png" class="bubbles bubble1">
+    <img src="/images/bubble.png" class="bubbles bubble2">
+    <img src="/images/bubble.png" class="bubbles bubble3">
+    <img src="/images/bubble.png" class="bubbles bubble4">
+    <img src="/images/bubble.png" class="bubbles bubble5">
+    
+
+    <form class="RegMenu" id="RegMenu">
+        <h1>Регистрация</h1>
+        <input type="text" id="rrealname" placeholder="ФИО">
+        <input type="text" id="rusername" placeholder="Логин">
+        <input type="password" id="rpassword" placeholder="Пароль">
+        
+        <label class="label" for="bloodgroup">Группа крови</label>
+        <select id="bloodgroup">
+            <option id="bloodgroup1" value="I">I</option>
+            <option id="bloodgroup2" value="II">II</option>
+            <option id="bloodgroup3" value="III">III</option>
+            <option id="bloodgroup4" value="IV">IV</option>
+        </select>
+
+        
+        <label class="label" for="bloodgroup">Резус-фактор</label>
+        <select id="bloodrh">
+            <option id='bloodrhplus' value="+">+</option>
+            <option id="bloodrhminus" value="-">-</option>
+        </select>
+
+
+        <div class="odnoline">
+
+            <select id="gender">
+                <option id='male' value="Male">Male</option>
+                <option id="female" value="Femal">Female</option>
+            </select>
+
+            <input type="date" id="birthdate">
+        </div>
+
+        <div class="spros">
+            <btn id="LoginBtn">Есть аккаунт?</btn>
+        </div>
+        <button id="register">Регистрация</button>
+        <div id="resultreg"></div>
+        <p id="regresult"></p>
+    </form>
+
+    <form class="ForgotPassword" id="ForgotPassword">
+        <h1>Забыли пароль?</h1>
+        <input type="email" placeholder="Почта" id="femail" required>
+        <button id="SendSMS">Отправить СМС</button>
+    </form>
+
+    <form class="Verify" id="Verify">
+        <h1>Верификация</h1>
+        <input type="text" placeholder="Код" id="code">
+        <div class="Another">
+            <btn id="SendSMSAnotherTime">Отправить код ещё раз</btn>
+        </div>
+        <button id="ChangePassword">Изменить пароль</button>
+    </form>
+
+    <form class="NewPassword" id="NewPassword">
+        <h1>Придумайте новый пароль</h1>
+        <input type="text" id="recpassword" placeholder="Пароль">
+        <input type="password" id="recpasswordrepeat" placeholder="Повторите пароль">
+        <button id="editpassword">Изменить пароль</button>
+    </form>
+
+    <script src="/scripts/fullpage.js"></script>
+</body>
+</html>

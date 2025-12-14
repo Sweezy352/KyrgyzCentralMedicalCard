@@ -1,0 +1,16 @@
+{
+  UserData: [
+    {
+      id: "nurel",
+      password: 123,
+      name: "Жакыпов Нурэль"
+    },
+    { id: "top1macepvpbuilder", password: "123", name: "Дастан Жакыпов" },
+    { id: "almashkaadasdasdasdasdsa", password: "123", name: "ALMA" },
+    { id: "almashkaadasdasdasdasdsa23", password: "123", name: "ALMA" },
+    { id: "adsa", password: "123", name: "ALMA432" },
+    { id: "dada", password: "123", name: "dasdsadas" },
+    { id: "dadada", password: "123", name: "Дастан Жакыпов" },
+    { id: "AlmaBishkek", password: "321", name: "Алманбет Дизайнер" },
+  ],
+}

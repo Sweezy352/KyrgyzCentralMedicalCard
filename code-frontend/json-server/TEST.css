@@ -1,0 +1,259 @@
+/* GLOBAL RESET AND FONT */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800;1,400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,900&display=swap');
+
+/* BODY STYLES (Full Screen Background/Layout) */
+body {
+    width: 100vw;
+    height: 100vh;
+    background: url(/images/loginpagebg.png);
+    backdrop-filter: blur(180px);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto; 
+    position: fixed; 
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* MAIN MENU CONTAINERS */
+.LoginMenu, .RegMenu, .ForgotPassword, .Verify , .NewPassword {
+    max-width: 920px;
+    width: 90%; 
+    min-height: 540px; 
+    background: linear-gradient(to top, #FFA7A7, #E9E9E9);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10; 
+    padding: 40px 20px; 
+    margin: 20px auto; 
+}
+
+/* Adjusting fixed heights to min-height for responsiveness */
+.RegMenu { min-height: 640px; }
+.ForgotPassword { min-height: 340px; }
+.Verify { min-height: 420px; }
+.NewPassword { min-height: 430px; }
+
+/* HEADING STYLES (Using VW for fluid sizing) */
+.LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1, .NewPassword > h1 {
+    /* Базовый флюидный размер (хорошо для планшетов) */
+    font-size: 6vw; 
+    font-weight: 600;
+    font-family: 'Poppins',sans-serif;
+    background-image:linear-gradient(to bottom, #FF4A4A, #992C2C);
+    color: transparent;
+    background-clip: text;
+    white-space: nowrap; 
+    margin-bottom: 20px;
+}
+
+.NewPassword > h1 {
+    font-size: 4.5vw; 
+}
+
+/* INPUT FIELD STYLES */
+#username, #password, #passwordrepeat,
+#rusername, #rpassword, #rpasswordrepeat,
+#femail, #code, #recpassword, #recpasswordrepeat, #rrealname {
+    width: 90%; 
+    height: auto; 
+    min-height: 40px;
+    border-radius: 20px;
+    background-color: rgba(30, 30, 30, 0.6);
+    color: rgba(178, 178, 178, 1);
+    font-size: 1.5rem; /* Относительный размер шрифта */
+    padding: 15px 20px; 
+    border: none;
+    outline: none;
+    box-sizing: border-box; 
+}
+
+/* ADDRESS AND PROMPT SECTIONS */
+.pereadress, .spros, .Another {
+    width: 90%; 
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.1rem; 
+    color: #726363;
+    flex-wrap: wrap; 
+    padding: 5px 0;
+    line-height: 1.5; /* Улучшаем читаемость */
+}
+
+.spros { justify-content: flex-end; }
+.pereadress { gap: 10px; }
+
+#RegBtn:hover , #ForgotBtn:hover, #LoginBtn:hover, #SendSMSAnotherTime:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* BUTTON STYLES */
+#login, #register, #SendSMS, #ChangePassword, #editpassword {
+    width: 90%;
+    height: auto;
+    min-height: 80px; 
+    background: linear-gradient(to right, #C20000, #FF9E9E);
+    border-radius: 20px;
+    font-size: 2rem; /* Относительный размер шрифта */
+    color: white;
+    border: none;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#login:hover, #register:hover, #SendSMS:hover, #ChangePassword:hover, #editpassword:hover {
+    cursor: pointer;
+}
+
+/* BUBBLES - Fluid positioning */
+.bubbles {
+    position: absolute;
+    image-rendering: -webkit-optimize-contrast; 
+    pointer-events: none; 
+}
+
+/* BUBBLE POSITIONS (Scaled based on viewport width/height) */
+.bubble1 { width: 25vw; height: 25vw; left: 15vw; top: 5vh; }
+.bubble2 { width: 20vw; height: 20vw; top: 25vh; right: 5vw; left: auto; z-index: 2; }
+.bubble3 { width: 20vw; height: 20vw; bottom: 5vh; left: 10vw; top: auto; z-index: 2; }
+.bubble4 { width: 8vw; height: 8vw; bottom: 30vh; right: 10vw; left: auto; top: auto; z-index: 2; }
+.bubble5 { width: 6vw; height: 6vw; bottom: 5vh; left: 40vw; top: auto; z-index: 2; }
+
+/* KEYFRAMES - Updated with VH/VW */
+@keyframes up1{ 0% { top: 100vh; opacity: 0; } 100% { top: 5vh; opacity: 1; }}
+@keyframes up2{ 0% { top: 100vh; opacity: 0; } 100% { top: 25vh; opacity: 1; }}
+@keyframes up3{ 0% { top: 100vh; opacity: 0; } 100% { bottom: 5vh; top: auto; opacity: 1; }}
+@keyframes up4{ 0% { top: 100vh; opacity: 0; } 100% { top: auto; bottom: 30vh; opacity: 1; }}
+@keyframes up5{ 0% { top: 100vh; opacity: 0; } 100% { top: auto; bottom: 5vh; opacity: 1; }}
+
+.bubble1 { animation: up1 1s ease; }
+.bubble2 { animation: up2 1s ease; }
+.bubble3 { animation: up3 1s ease; }
+.bubble4 { animation: up4 1s ease; }
+.bubble5 { animation: up5 1s ease; }
+
+
+/* INITIAL HIDE STATE */
+.RegMenu, .ForgotPassword, .Verify, .NewPassword{
+    display: none;
+}
+
+
+/* --- MEDIA QUERY ДЛЯ НОУТБУКОВ И БОЛЬШИХ ЭКРАНОВ (ШИРИНА > 920px) --- */
+@media (min-width: 921px) {
+    /* Ограничиваем максимальный размер текста заголовков */
+    .LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1 {
+        font-size: 73px; /* Используем фиксированный размер, как в оригинале */
+        white-space: normal; /* Разрешаем заголовку переноситься, если он длинный */
+    }
+    .NewPassword > h1 {
+        font-size: 57px; /* Фиксированный размер для этого заголовка */
+    }
+
+    /* Устанавливаем фиксированные/более крупные размеры для элементов на широких экранах */
+    #username, #password, #passwordrepeat,
+    #rusername, #rpassword, #rpasswordrepeat,
+    #femail, #code, #recpassword, #recpasswordrepeat,#rrealname {
+        width: 800px; /* Фиксированная ширина, как в оригинале */
+        font-size: 33px; 
+        padding: 20px;
+    }
+
+    .pereadress, .spros, .Another {
+        width: 800px; /* Фиксированная ширина, как в оригинале */
+        font-size: 24px;
+        flex-direction: row; /* Возвращаем горизонтальное расположение */
+    }
+    
+    #login, #register, #SendSMS, #ChangePassword, #editpassword {
+        width: 800px; /* Фиксированная ширина, как в оригинале */
+        min-height: 120px; /* Возвращаем оригинальную высоту */
+        font-size: 62px;
+    }
+    
+    /* Скрываем пузырьки, если они вызывают проблемы с лейаутом на больших экранах */
+    .bubbles {
+        display: block; /* Показываем пузырьки, как в оригинале */
+        /* На широких экранах можно использовать более точные позиции, чтобы они не мешали. */
+        /* Оставляем флюидные vw/vh, они будут нормально выглядеть */
+    }
+}
+
+
+/* --- MEDIA QUERIES ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (Ширина < 600px) --- */
+@media (max-width: 600px) {
+    
+    body {
+        padding: 10px;
+    }
+
+    .LoginMenu, .RegMenu, .ForgotPassword, .Verify, .NewPassword {
+        width: 95%; 
+        padding: 30px 10px; 
+        gap: 15px; 
+        border-radius: 20px; 
+        min-height: auto; 
+        margin: 10px auto;
+    }
+
+    .LoginMenu > h1, .RegMenu > h1, .ForgotPassword > h1, .Verify > h1, .NewPassword > h1 {
+        font-size: 10vw; /* Более крупный флюидный размер для мобильных */
+        margin-bottom: 10px;
+    }
+    
+    .NewPassword > h1 {
+        font-size: 7vw;
+    }
+
+    #username, #password, #passwordrepeat,
+    #rusername, #rpassword, #rpasswordrepeat,
+    #femail, #code, #recpassword, #recpasswordrepeat {
+        font-size: 1.2rem; 
+        padding: 12px 15px;
+        width: 95%; 
+    }
+
+    #login, #register, #SendSMS, #ChangePassword, #editpassword {
+        min-height: 60px; 
+        font-size: 1.5rem;
+        width: 95%; 
+    }
+
+    /* Stack items vertically on mobile */
+    .pereadress, .spros, .Another {
+        width: 95%;
+        font-size: 1rem;
+        flex-direction: column; 
+        align-items: center; 
+        gap: 5px;
+    }
+
+    .pereadress #RegBtn, .pereadress #ForgotBtn {
+        width: 100%; 
+        text-align: center;
+    }
+    
+    .Another {
+         align-items: flex-end;
+    }
+
+    /* Скрываем пузырьки на мобильных */
+    .bubbles {
+        display: none;
+    }
+}

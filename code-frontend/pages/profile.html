@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KyrgyzCentralMedicalCard</title>
+    <link rel="stylesheet" href="/styles/profile.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Kyrgyz Central Medical Card</h1>
+            <ul class="navlist">
+                <li class="navlistitem item1"><a href="/pages/mainpage.html" id="tomain">Главная</a></li>
+                <li class="navlistitem item2">Профиль</li>
+                <li class="navlistitem item3"><a href="/pages/saver.html" id="tosaverpage">Страховка</a></li>
+            </ul>
+            <a href="/pages/loginpage.html" id="navimageexit"><img src="/images/exit.png"></a>
+        </nav>
+    </header>
+    <main>
+        <div class="ObrSaver" id="ObrSaver">
+            <div class="ObrSaverMain">
+                <div>
+                    <h1>Ваша страховка:</h1>
+                    <button id="KrestVObr">X</button>
+                </div>
+                <h2 id="ObrSaverName"></h2>
+                <ul id="ObrSaverDesc">
+                    <li id="OSD1"></li>
+                    <li id="OSD2"></li>
+                    <li id="OSD3"></li>
+                    <li id="OSD4"></li>
+                    <li id="OSD5"></li>
+                    <li id="OSD6"></li>
+                </ul>
+                <p id="saverenddata"></p>
+            </div>
+        </div>
+        <div class="ENO" id="ENO">
+            <form class="ENOMain" id="ENOMain">
+                <div>
+                    <h1>Чрезвычайный номер</h1>
+                    <button id="ENOKrestik">X</button>
+                </div>
+                <input type="text" id="ENOName" placeholder="Кем является пациенту">
+                <input type="number" id="ENOPhone" placeholder="Номер телефона">
+                <button id="ENOBtn">Изменить</button>
+            </form>
+        </div>
+        <div class="BD" id="BD">
+            <form class="BDMain" id="BDMain">
+                <div>
+                    <h1>Укажите дату рождения</h1>
+                    <button id="BDKrestik">X</button>
+                </div>
+                <input type="date" id="BDDate">
+                <button id="BDBtn">Изменить</button>
+            </form>
+        </div>
+        <div class="BG" id="BG">
+            <form class="BGMain" id="BGMain">
+                <div>
+                    <button id="BGKrestik">X</button>
+                </div>
+                <label class="label" for="getBG">Группа крови</label>
+                <select id="getBG">
+                    <option id="bloodgroup1" value="I">I</option>
+                    <option id="bloodgroup2" value="II">II</option>
+                    <option id="bloodgroup3" value="III">III</option>
+                    <option id="bloodgroup4" value="IV">IV</option>
+                </select>
+
+        
+                <label class="label" for="getRH">Резус-фактор</label>
+                <select id="getRH">
+                    <option id='bloodrhplus' value="+">+</option>
+                    <option id="bloodrhminus" value="-">-</option>
+                </select>
+                <button id="BGBtn">Изменить</button>
+            </form>
+        </div>
+        <div class="VirusMenu" id="VirusMenu">
+            <div class="VirusMenuMain">
+                <h1 id="virusname">Гонгконский грипп</h1>
+                <p id="virusfullinfo">Симптомы: температура 38-40 градусов, 
+                    сильные боли в мышцах и суставах, 
+                    а также рвота, диарея, заложенность 
+                    носа и кашель</p>
+                <p id="virushealer">Препараты: Осельтамивир, Занамивир,
+                    Балоксавир марбоксил, Умифеновир</p>
+                <p id="virusdata">06.07.2025</p>
+                <button id="viruskrestik">X</button>
+            </div>
+        </div>
+        <div class="AlergiaMenu" id="AlergiaMenu">
+            <div class="AlergiaMenuMain">
+                <h1>Инструкции</h1>
+                <p id="alergiafullinfo">При аллергической реакции на орехи срочно прекратите контакт с аллергеном и вызовите скорую помощь, особенно при признаках анафилаксии (затрудненное дыхание, отек горла, падение давления). Если у человека есть автоинъектор с адреналином (EpiPen), немедленно введите его в бедро.​<br> <br>
+                    Уложите пострадавшего на спину с приподнятыми ногами, расстегните тесную одежду для облегчения дыхания и обеспечьте приток свежего воздуха. <br/> <br>
+                    Дайте антигистаминный препарат (например, супрастин, цетиризин) в максимальной дозе, если человек в сознании <br/> <br>
+                    При отеке Квинке или крапивнице приложите холод к пораженным местам; не пытайтесь промывать желудок самостоятельно
+                </p>
+                <button id="AlergiaMenuKrestik">x</button>
+            </div>
+        </div>
+        <h1>Профиль</h1>
+        <div class="profile">
+            <img src="/images/defaultprofileimage.png" class="profileimage">
+            <div class="profileinfo">
+                <div id="profilename"></div>
+                <div id="profileid"></div>
+                <div id="profilestatus">Пациент</div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="mainnav">
+                <ul>
+                    <li><button id="toinfo">Информация</button></li>
+                    <li><button id="tohistory">История</button></li>
+                    <li><button id="toalergic">Аллергии</button></li>
+                    <li><button id="torecept">Рецепты</button></li>
+                </ul>
+            </div>
+            <div id="info">
+                <div>
+                    <div class="infoblock infonamegender">
+                        <p>ФИО</p>
+                        <p id="infopagename"></p>
+                        <p>Пол</p>
+                        <p id="infopagegender"></p>
+                    </div>
+                    <div class="infoblock birthday">
+                        <div>
+                            <p>Дата рождения</p>
+                            <p id="infopagebirthday"></p>
+                        </div>
+                        <button id="changebirthday">Изменить дату</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="infoblock extranumber">
+                        <p>Чрезвычайный номер</p>
+                        <p id="extranumbername"></p>
+                        <p id="extranumberphone"></p>
+                        <button id="changeextranumber">Изменить</button>
+                        <button id="acceptextranumber">Применить</button>
+                    </div>  
+                    <div class="infoblock saver">
+                        <p>Страховка</p>
+                        <p id="savertype"></p>
+                        <button id="checksaver">Посмотреть</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="infoblock blood">
+                        <div>
+                            <p>Группа крови</p>
+                            <p id="bloodgroup"></p>
+                            <p>Резус-фактор</p>
+                            <p id="bloodrh"></p>
+                        </div>
+
+                        <button id="changeblood">Изменить</button>
+                    </div>
+                </div>
+            </div>
+            <div id="history">
+                <button class="allvirus" id="virus1">
+                    <div>
+                        <h1 id="virusname" class="InAllvirusName">Гонгконский грипп</h1>
+                        <p id="virusdata">06.07.2025</p>
+                    </div>
+                    <p id="virusinfo">Симптомы: температура 38 - 40 градусов, сильные
+                        боли в мышцах, рвота, диарея, кашель</p>
+                </button>
+                <button class="allsaver" id="saver1">
+                    <div>
+                        <h1 id="savername">Оформлена страховка</h1>
+                        <p id="saverdata">06.07.2025</p>
+                    </div>
+                    <p id="saverinfo">Оформлена страховка по плану Здоровье+</p>
+                </button>
+                <button class="allspravka" id="spravka1">
+                    <div>
+                        <h1 id="spravkaname">Получена справка</h1>
+                        <p id="spravkadata">06.07.2025</p>
+                    </div>
+                    <p id="spravkainfo">Получена справка о болезни в учебное учреждение</p>
+                </button>
+            </div>
+            <div id="alergic">
+                <button class="alergia" id="aler1">
+                    <h1 class="alergianame">Орехи</h1>
+                    <p class="alergiainfo">У пациента есть аллергия на
+                        орехи. Если пациент сьест орех, то нужно немедленно сообщить взрослому, оценить симптомы и использовать назначенные врачом средства.При экстренной ситуации нажмите на блок ради должных инструкций</p>
+                </button>
+                <button class="alergia" id="aler2">
+                    <h1 class="alergianame">Антибиотики</h1>
+                    <p class="alergiainfo">У пациента есть аллергия на
+                        антибиотики. Если пациент примет антибиотики, то нужно немедленно сообщить взрослому, оценить симптомы и использовать назначенные врачом средства.При экстренной ситуации нажмите на блок ради должных инструкций</p>
+                </button>
+                <button class="alergia" id="aler3">
+                    <h1 class="alergianame">Антибиотики</h1>
+                    <p class="alergiainfo">У пациента есть аллергия на
+                        антибиотики. Если пациент примет антибиотики, то нужно немедленно сообщить взрослому, оценить симптомы и использовать назначенные врачом средства.При экстренной ситуации нажмите на блок ради должных инструкций</p>
+                </button>
+                <button class="alergia" id="aler4">
+                    <h1 class="alergianame">Антибиотики</h1>
+                    <p class="alergiainfo">У пациента есть аллергия на
+                        антибиотики. Если пациент примет антибиотики, то нужно немедленно сообщить взрослому, оценить симптомы и использовать назначенные врачом средства.При экстренной ситуации нажмите на блок ради должных инструкций</p>
+                </button>
+            </div>
+            <div id="recept">
+                <button class="recepts" id="recept1">
+                    <div>
+                        <h1 id="receptid">Рецепт № 349209</h1>
+                        <p id="receptdata">08.12.2025</p>
+                    </div>
+                    <p id="receptinfo">Амоксацилин 3 раза в день, доларен на ночь,
+                        китайский антигриппин 2 раза в день</p>
+                </button>
+                <button class="recepts" id="recept1">
+                    <div>
+                        <h1 id="receptid">Рецепт № 349209</h1>
+                        <p id="receptdata">08.12.2025</p>
+                    </div>
+                    <p id="receptinfo">Амоксацилин 3 раза в день, доларен на ночь,
+                        китайский антигриппин 2 раза в день</p>
+                </button>
+                <button class="recepts" id="recept1">
+                    <div>
+                        <h1 id="receptid">Рецепт № 349209</h1>
+                        <p id="receptdata">08.12.2025</p>
+                    </div>
+                    <p id="receptinfo">Амоксацилин 3 раза в день, доларен на ночь,
+                        китайский антигриппин 2 раза в день</p>
+                </button>
+                <button class="recepts" id="recept1">
+                    <div>
+                        <h1 id="receptid">Рецепт № 349209</h1>
+                        <p id="receptdata">08.12.2025</p>
+                    </div>
+                    <p id="receptinfo">Амоксацилин 3 раза в день, доларен на ночь,
+                        китайский антигриппин 2 раза в день</p>
+                </button>
+            </div>
+        </div>
+    </main>
+    <script src="/scripts/profile.js"></script>
+</body>
+</html>

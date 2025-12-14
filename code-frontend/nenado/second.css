@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    gap: 50px;
+}
+
+#logform {
+    width: 500px;
+    height: 500px;
+    background-color: lightgray;
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+#username, #password {
+    width: 400px;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}
+
+#login, #toreg{
+    width: 400px;
+    height: 20px;
+    border-radius: 7px;
+    border: none;
+}
+
+#login {
+    background-color: orange;
+    color: white;
+}
+
+#login:hover, #toreg:hover {
+    cursor: pointer;
+}
+
+#regform {
+    width: 500px;
+    height: 500px;
+    background-color: lightgray;
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+#rusername, #rpassword, #remail {
+    width: 400px;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}
+
+#register, #tolog{
+    width: 400px;
+    height: 20px;
+    border-radius: 7px;
+    border: none;
+}
+
+#register {
+    background-color: orange;
+    color: white;
+}
+
+#register:hover, #tolog:hover {
+    cursor: pointer;
+}
+
+#regform {
+    display: none;
+}

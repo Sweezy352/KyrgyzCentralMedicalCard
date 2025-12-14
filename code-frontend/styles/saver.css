@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* ========================================================================= */
+/* ГЛОБАЛЬНЫЕ СБРОСЫ И БАЗОВЫЕ СТИЛИ */
+/* ========================================================================= */
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+
+html {
+    /* Исправлено: удалено 'overflow: hidden' для корректной работы скролла */
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh; /* Используем min-height */
+    overflow-y: auto; 
+    overflow-x: hidden; /* Предотвращает горизонтальную прокрутку */
+    position: relative;
+}
+
+header {
+    width: 100%;
+    height: auto;
+}
+
+/* ========================================================================= */
+/* 1. НАВИГАЦИЯ (NAV) */
+/* ========================================================================= */
+
+nav {
+    /* Адаптивная высота */
+    height: clamp(80px, 10vh, 140px); 
+    width: 100%;
+    background-color: #FFA7A7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start; 
+    padding: 10px 4%; /* Относительный padding */
+    gap: clamp(50px, 8vw, 150px); /* Адаптивный gap */
+}
+
+nav > h1 {
+    color: white;
+    font-size: clamp(1.2rem, 2vw, 2.5rem); 
+}
+
+.navlist {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(20px, 3vw, 50px); 
+    color: white;
+    font-size: clamp(1rem, 2vw, 2.4rem); 
+}
+
+.navlist > li:nth-child(3) {
+    text-decoration: underline;
+}
+
+.navlist > li > a {
+    color: white;
+}
+
+.navlist > li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#navimageexit {
+    margin-left: clamp(20px, 5vw, 150px);
+    display: flex;
+    align-items: center;
+}
+
+#navimageexit > img {
+    width: clamp(30px, 3vw, 50px);
+    height: clamp(30px, 3vw, 50px);
+}
+
+/* ========================================================================= */
+/* 2. ГЛАВНЫЙ БЛОК (MAIN/HEADER) */
+/* ========================================================================= */
+main {
+    width: 100%;
+    min-height: 100vh; 
+    height: auto;
+    background: linear-gradient(to bottom, #F7F9FA, #FFA7A7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(30px, 5vh, 100px) 4%; 
+    gap: clamp(20px, 4vh, 50px);
+}
+
+main > h1 {
+    font-size: clamp(2.5rem, 8vw + 2rem, 7.5rem); 
+    color: #7E2020;
+    text-align: center;
+}
+
+main > p {
+    margin-top: clamp(0px, -4vh, -50px);
+    width: 100%;
+    max-width: 700px; 
+    height: auto;
+    font-size: clamp(1rem, 1.5vw + 1rem, 1.7rem); 
+    color: #6A6A6A;
+    text-align: center;
+}
+
+/* ========================================================================= */
+/* 3. КАРТОЧКИ (CARDZONE) */
+/* ========================================================================= */
+.cardzone {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(20px, 4vw, 50px);
+    flex-wrap: wrap; 
+    justify-content: center;
+    width: 100%;
+}
+
+.cards {
+    width: 100%;
+    max-width: 572px; 
+    height: auto; 
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: clamp(30px, 5vw, 40px);
+    gap: clamp(30px, 4vh, 50px);
+    min-height: 400px;
+}
+
+.cards > h4 {
+    font-size: clamp(1.8rem, 3vw, 3rem); 
+    color: #D36E6E;
+    text-align: center;
+}
+
+.cards > ul {
+    margin-left: 0; 
+    padding-left: clamp(20px, 3vw, 50px); 
+    color: white;
+    width: 100%;
+}
+
+.cards > ul > li {
+    list-style-type: disc;
+    font-size: clamp(1.2rem, 2vw, 2.7rem);
+    line-height: 1.5;
+}
+
+.card2 > ul > li {
+    color: #7E7E7E;
+    font-size: clamp(1rem, 1.5vw, 1.8rem);
+    line-height: 1.5;
+}
+
+
+.card1, .card2 {
+    /* Добавляем адаптивный border-radius */
+    border-radius: clamp(20px, 5vw, 70px);
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 400px; 
+    width: 100%;
+    max-width: 600px;
+}
+
+.card1 {
+    background-image: url(/images/SaverCard1.png);
+}
+
+.card2 {
+    background-image: url(/images/SaverCard2.png);
+}
+
+/* КНОПКИ */
+#gethealdmc, #gethealomc {
+    margin-top: clamp(20px, 3vh, 40px);
+    width: 100%;
+    max-width: 520px;
+    height: clamp(60px, 8vh, 120px); 
+    background-color: #F7F9FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: clamp(15px, 2vw, 37.47px); 
+    font-size: clamp(1.5rem, 3vw, 3rem); 
+    color: #D36E6E;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+#gethealomc:hover, #gethealdmc:hover {
+    cursor: pointer;
+    background-color: #E0E2E3; 
+}
+
+/* ========================================================================= */
+/* ДОПОЛНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ */
+/* ========================================================================= */
+
+#status {
+    /* Красный цвет */
+    color: #FF0000; 
+    /* Адаптивный большой размер шрифта (примерно 2.5rem на десктопе, уменьшается на мобильных) */
+    font-size: clamp(1.5rem, 4vw, 2.5rem); 
+    font-weight: 700; /* Жирный шрифт для привлечения внимания */
+    text-align: center;
+    margin-top: 10px; /* Небольшой отступ, если элемент расположен под заголовком */
+}
+
+
+/* ========================================================================= */
+/* МЕДИА-ЗАПРОСЫ (АДАПТАЦИЯ) */
+/* ========================================================================= */
+
+/* Mobile (до 768px) */
+@media (max-width: 768px) {
+    
+    /* NAV */
+    nav {
+        height: auto; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 15px 5%;
+        gap: 15px;
+    }
+    nav > h1 {
+        margin-bottom: 5px;
+    }
+    .navlist {
+        flex-direction: column; 
+        gap: 8px;
+        font-size: 1rem;
+        width: 100%;
+    }
+    #navimageexit {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    /* MAIN */
+    main {
+        padding: 30px 5%;
+        gap: 15px;
+    }
+    
+    /* CARDZONE */
+    .cardzone {
+        flex-direction: column; 
+    }
+    
+    /* CARDS */
+    .cards {
+        padding: 30px 5%;
+        gap: 20px;
+        max-width: 100%;
+    }
+    
+    .cards > ul > li {
+        font-size: 1.5rem;
+    }
+    
+    .card2 > ul > li {
+        font-size: 1.2rem;
+    }
+}

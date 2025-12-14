@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --background-color: #f4f7f9;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --error-color: #d9534f;
+            --success-color: #5cb85c;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- Контейнер приложения --- */
+        #app {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        /* --- Карточки --- */
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Форма входа --- */
+        #auth-view h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .auth-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .auth-actions .btn {
+            width: 100%;
+        }
+        .auth-actions .toggle-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .auth-actions .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Основное приложение --- */
+        #main-view header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #main-view .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .user-list-container h3, .user-details-container h3 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        #user-list {
+            list-style: none;
+            padding: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        #user-list li {
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #user-list li:hover, #user-list li.active {
+            background-color: var(--background-color);
+        }
+        #user-details {
+            font-size: 16px;
+        }
+        #user-details p {
+            margin: 5px 0 15px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #user-details span {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* --- Общие элементы --- */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* --- Уведомления --- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .toast {
+            padding: 15px 20px;
+            border-radius: 6px;
+            color: white;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.5s forwards;
+        }
+        .toast.error { background-color: var(--error-color); }
+        .toast.success { background-color: var(--success-color); }
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <!-- ЭКРАН ВХОДА И РЕГИСТРАЦИИ -->
+        <div id="auth-view" class="card">
+            <h1 id="auth-title">Вход в систему</h1>
+            <form id="auth-form">
+                <div class="form-group">
+                    <input type="text" id="auth-login" placeholder="Логин" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="auth-password" placeholder="Пароль" required>
+                </div>
+                <div class="auth-actions">
+                    <button type="submit" class="btn" id="auth-button">Войти</button>
+                </div>
+                 <p style="text-align: center; margin-top: 20px;">
+                    <a href="#" id="toggle-auth-mode" class="toggle-link">Нет аккаунта? Зарегистрироваться</a>
+                </p>
+            </form>
+        </div>
+
+        <!-- ОСНОВНОЙ ЭКРАН ПРИЛОЖЕНИЯ -->
+        <div id="main-view" class="hidden">
+            <header>
+                <h2>Панель управления</h2>
+                <button id="logout-btn" class="btn btn-secondary">Выйти</button>
+            </header>
+            <div class="main-layout">
+                <div class="card user-list-container">
+                    <h3>Список пользователей</h3>
+                    <button id="get-all-users-btn" class="btn" style="width:100%; margin-bottom: 15px;">Загрузить всех пользователей</button>
+                    <ul id="user-list">
+                        <!-- Пользователи будут здесь -->
+                    </ul>
+                </div>
+                <div class="card user-details-container">
+                    <h3>Информация о пользователе</h3>
+                    <div id="user-details">
+                        <p>Выберите пользователя из списка или загрузите список.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Глобальные переменные и константы ---
+            const baseUrl = 'http://localhost:8080';
+            let isLoginMode = true;
+            let authToken = null;
+
+            // --- Элементы DOM ---
+            const app = document.getElementById('app');
+            const authView = document.getElementById('auth-view');
+            const mainView = document.getElementById('main-view');
+            const authForm = document.getElementById('auth-form');
+            const authTitle = document.getElementById('auth-title');
+            const authButton = document.getElementById('auth-button');
+            const toggleAuthModeLink = document.getElementById('toggle-auth-mode');
+            const userList = document.getElementById('user-list');
+            const userDetails = document.getElementById('user-details');
+
+            // --- Функции-хелперы ---
+            const showView = (viewId) => {
+                authView.classList.add('hidden');
+                mainView.classList.add('hidden');
+                document.getElementById(viewId).classList.remove('hidden');
+            };
+
+            const showToast = (message, isError = false) => {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${isError ? 'error' : 'success'}`;
+                toast.textContent = message;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            };
+
+            // --- Логика отображения данных ---
+            const renderUserList = (users) => {
+                userList.innerHTML = '';
+                if (!users || users.length === 0) {
+                    userList.innerHTML = '<li>Пользователи не найдены.</li>';
+                    return;
+                }
+                users.forEach(user => {
+                    const li = document.createElement('li');
+                    li.textContent = user.login || `User ID: ${user.id}`;
+                    li.dataset.userId = user.id;
+                    userList.appendChild(li);
+                });
+            };
+
+            const renderUserDetails = (user) => {
+                if (!user) {
+                    userDetails.innerHTML = '<p>Не удалось загрузить данные.</p>';
+                    return;
+                }
+                userDetails.innerHTML = `
+                    <p><span>ID:</span> ${user.id}</p>
+                    <p><span>Логин:</span> ${user.login}</p>
+                    <p><span>Кол-во продуктов:</span> ${user.products ? user.products.length : 0}</p>
+                `;
+            };
+
+            // --- API-запросы ---
+            const handleAuth = async (login, password) => {
+                const endpoint = isLoginMode ? '/api/auth/login' : '/api/auth/register';
+                const url = new URL(baseUrl + endpoint);
+                let options = { method: 'POST' };
+
+                if (isLoginMode) {
+                    url.searchParams.append('login', login);
+                    url.searchParams.append('password', password);
+                } else {
+                    options.headers = { 'Content-Type': 'application/json' };
+                    options.body = JSON.stringify({ login, password });
+                }
+
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                    if (isLoginMode) {
+                        authToken = await response.text();
+                        showToast('Вход выполнен успешно!');
+                        showView('main-view');
+                        userDetails.innerHTML = '<p>Загрузите список пользователей.</p>';
+                        userList.innerHTML = '';
+                    } else {
+                        const data = await response.json();
+                        showToast('Регистрация прошла успешно! Теперь вы можете войти.');
+                        toggleAuthMode(); // Переключаем на форму входа
+                    }
+                } catch (error) {
+                    showToast(`Ошибка: ${error.message}`, true);
+                }
+            };
+
+            const fetchAllUsers = async () => {
+                try {
+                    const response = await fetch(`${baseUrl}/api/user/get-all`);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const users = await response.json();
+                    renderUserList(users);
+                    showToast('Список пользователей загружен.');
+                } catch (error) {
+                    showToast(`Ошибка загрузки: ${error.message}`, true);
+                }
+            };
+
+            const fetchUserById = async (id) => {
+                try {
+                    const response = await fetch(`${baseUrl}/api/user/get-by-id/${id}`);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const user = await response.json();
+                    renderUserDetails(user);
+                } catch (error) {
+                    showToast(`Ошибка загрузки пользователя: ${error.message}`, true);
+                    renderUserDetails(null);
+                }
+            };
+
+            // --- Обработчики событий ---
+            const toggleAuthMode = () => {
+                isLoginMode = !isLoginMode;
+                authTitle.textContent = isLoginMode ? 'Вход в систему' : 'Регистрация';
+                authButton.textContent = isLoginMode ? 'Войти' : 'Зарегистрироваться';
+                toggleAuthModeLink.textContent = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+                authForm.reset();
+            };
+
+            toggleAuthModeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleAuthMode();
+            });
+
+            authForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const login = document.getElementById('auth-login').value;
+                const password = document.getElementById('auth-password').value;
+                handleAuth(login, password);
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                authToken = null;
+                showToast('Вы вышли из системы.');
+                showView('auth-view');
+            });
+
+            document.getElementById('get-all-users-btn').addEventListener('click', fetchAllUsers);
+
+            userList.addEventListener('click', (e) => {
+                if (e.target.tagName === 'LI' && e.target.dataset.userId) {
+                    // Снимаем выделение со всех
+                    document.querySelectorAll('#user-list li').forEach(li => li.classList.remove('active'));
+                    // Выделяем текущий
+                    e.target.classList.add('active');
+                    fetchUserById(e.target.dataset.userId);
+                }
+            });
+
+            // --- Инициализация ---
+            showView('auth-view');
+        });
+    </script>
+</body>
+</html>
