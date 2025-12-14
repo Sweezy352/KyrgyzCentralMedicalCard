@@ -1,9 +1,8 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiIxMjMiLCJzdWIiOiIxMjMiLCJpYXQiOjE3NjU3MDQ1ODUsImV4cCI6MTc2NTcwODE4NX0.XOiZ42Ir5uHn3a50n_arkWbSzx8TC2DqwVd9NnFph9I
-
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiIxMjMiLCJzdWIiOiIxMjMiLCJpYXQiOjE3NjU3NDEzMDAsImV4cCI6MTc2NTc0NDkwMH0.wxjKHkw_E5eTbSrJqAQMFyfdzXeKSSQWHomd6cMAO3Y
 ### Запрос 2: Вход пользователя
 
 # Этот запрос использует формат x-www-form-urlencoded
-POST 192.168.102.222:8080/api/users/update
+POST localhost:8080/api/users/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -21,7 +20,7 @@ Content-Type: application/json
 
 ### Запрос 8:
 
-POST 192.168.102.222:8080/api/medicine-insurance/create-medicine-insurance
+POST localhost:8080/api/medicine-insurance/create-medicine-insurance
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -33,12 +32,12 @@ Content-Type: application/json
 
 ### Запрос 9:
 
-POST 192.168.102.222:8080/api/medicine-insurance/create-medicine-insurance
+POST localhost:8080/api/medicine-insurance/create-medicine-insurance
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "insuranceName": "ОМС",
+  "insuranceName": "ДМС",
   "description": "{\"d1\": \"Консультации\", \"d2\": \"Диагностика\", \"d3\": \"Стационар\", \"d4\": \"Профилактика\", \"d5\": \"Покрытие лекарств\", \"d6\": \"Экстриная помощь\"}",
   "price": 15000.00
 }

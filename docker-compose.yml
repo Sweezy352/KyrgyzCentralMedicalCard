@@ -1,60 +1,54 @@
+version: '3.8'
+
 services:
-  app:
-    build: .
-    image: kyrgyz-medical-card-application:latest
+  db:
+    image: postgres:14-alpine
+    container_name: kyrgyz-medical-card-db
+
+    environment:
+      POSTGRES_DB: kyrgyz_medical_card
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
     ports:
-      - 8080:8080
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+
+  backend:
+    build:
+
+      context: .
+      dockerfile: Dockerfile
+    container_name: kyrgyz-medical-card-backend
+
     depends_on:
       - db
-      - minio
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/kyrgyz_medical_card
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-      - MINIO_URL=http://172.17.0.3:9000
-      - MINIO_ACCESS-KEY=minioadmin
-      - MINIO_SECRET-KEY=minioadmin
-      - MINIO_BUCKET_NAME_DIAGNOSIS=DIAGNOSIS
-      - MINIO_BUCKET_NAME_NEWS=NEWS
-    networks:
-      custom_net:
-        ipv4_address: 172.30.0.10
 
-  db:
-    image: postgres
     environment:
-      - POSTGRES_DB=kyrgyz_medical_card
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    networks:
-      custom_net:
-        ipv4_address: 172.30.0.2
-
-  minio:
-    image: minio/minio:latest
+      - DATABASE_URL=jdbc:postgresql://db:5432/kyrgyz_medical_card
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
     ports:
-      - 9000:9000
-      - 9001:9001
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=admin
-    volumes:
-      - minio-data:/data
-    command:
-      - server
-      - --console-address
-      - ":9001"
-      - /data
-    networks:
-      custom_net:
-        ipv4_address: 172.30.0.3
+      - "8080:8080"
+    restart: unless-stopped
+
+
+  frontend:
+    build:
+      context: ./code-frontend/Хакатон
+      dockerfile: Dockerfile
+    container_name: kyrgyz-medical-card-frontend
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - backend
+    restart: unless-stopped
 
 volumes:
-  minio-data:
-
-networks:
-  custom_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.30.0.0/18
+  postgres_data:

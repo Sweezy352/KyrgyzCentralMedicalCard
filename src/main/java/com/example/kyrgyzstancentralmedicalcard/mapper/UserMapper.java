@@ -1,9 +1,12 @@
 package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
+import com.example.kyrgyzstancentralmedicalcard.dto.response.UserInsurancesResponse;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
+import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponseInsurance;
 import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
+import com.example.kyrgyzstancentralmedicalcard.entity.UserInsurances;
 import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,10 +15,12 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     private final RoleRepository roleRepository;
+    private final UserInsurancesMapper userInsurancesMapper;
 
     @Autowired
-    public UserMapper(RoleRepository roleRepository) {
+    public UserMapper(RoleRepository roleRepository, UserInsurancesMapper userInsurancesMapper) {
         this.roleRepository = roleRepository;
+        this.userInsurancesMapper = userInsurancesMapper;
     }
 
     public User toEntity(UserRequest request) {
@@ -53,6 +58,23 @@ public class UserMapper {
                 .build();
     }
 
+    public UserResponseInsurance toResponseInsurances(User entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Проблема");
+        }
+        return UserResponseInsurance.builder()
+                .id(entity.getId())
+                .fio(entity.getFio())
+                .inn(entity.getInn())
+                .gender(entity.getGender())
+                .birthday(entity.getBirthday())
+                .en(entity.getEn())
+                .blood(entity.getBlood())
+                .rh(entity.getRh())
+                .enName(entity.getEnName())
+                .insurances(userInsurancesMapper.toResponse(entity.getUserInsurances()))
+                .build();
+    }
     public UserView toView(User entity){
         if(entity == null){
             throw new IllegalArgumentException("Проблема");

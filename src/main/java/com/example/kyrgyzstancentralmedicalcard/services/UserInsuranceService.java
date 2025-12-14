@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface UserInsuranceService {
     UserInsurances addInsuranceToUser(Long medicineInsuranceId);
-
-    List<UserInsurances> getAllUserInsurances();
-
     UserInsurances getById(Long id);
+    UserInsurances getByUserId();
 }

@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.controller;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
+import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponseInsurance;
 import com.example.kyrgyzstancentralmedicalcard.mapper.UserMapper;
 import com.example.kyrgyzstancentralmedicalcard.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,10 @@ public class UserController {
     @PostMapping("/update")
     public ResponseEntity<UserResponse> update(@RequestBody UserRequest userRequest){
         return ResponseEntity.ok(userMapper.toResponse(userService.update(userMapper.toEntity(userRequest))));
+    }
+
+    @GetMapping("/get-by-insuranc/{id}")
+    public ResponseEntity<UserResponseInsurance> getByInsuranc(@PathVariable("id") Long insurancId){
+        return ResponseEntity.ok(userMapper.toResponseInsurances(userService.getById(insurancId)));
     }
 }

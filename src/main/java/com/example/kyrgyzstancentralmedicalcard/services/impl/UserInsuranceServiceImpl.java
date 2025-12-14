@@ -25,22 +25,47 @@ public class UserInsuranceServiceImpl implements UserInsuranceService {
         User currentUser = authService.getCurrentUser();
         MedicineInsurance medicineInsurance = medicineInsuranceService.getById(medicineInsuranceId);
         UserInsurances userInsurances = new UserInsurances();
-        userInsurances.setUser(currentUser);
-        userInsurances.setMedicineInsurance(medicineInsurance);
         LocalDate activeDate = LocalDate.now();
-        userInsurances.setDateActive(activeDate);
-        userInsurances.setDateExpire(activeDate.plusMonths(1));
-        return userInsurancesRepository.save(userInsurances);
-    }
-
-    @Override
-    public List<UserInsurances> getAllUserInsurances() {
-        User currentUser = authService.getCurrentUser();
-        return currentUser.getUserInsurances();
+        userInsurances.setMedicineInsurance(medicineInsurance);
+        if(!userInsurancesRepository.existsByUserId(currentUser.getId())){
+            userInsurances.setUser(currentUser);
+            userInsurances.setDateActive(activeDate);
+            userInsurances.setDateExpire(activeDate.plusMonths(1));
+            return userInsurancesRepository.save(userInsurances);
+        }
+        if(userInsurances.getMedicineInsurance().getInsuranceName().equals("ОМС")) {
+            UserInsurances userInsurances1 = userInsurancesRepository.findByUserId(currentUser.getId()).orElseThrow(() -> new RuntimeException("Not found"));
+            userInsurances1.setMedicineInsurance(medicineInsuranceService.getById(1L));
+            userInsurances.setUser(userInsurances1.getUser());
+            userInsurances.setDateActive(activeDate);
+            userInsurances.setDateExpire(activeDate.plusMonths(1));
+            return userInsurancesRepository.save(userInsurances1);
+        }
+        if(userInsurances.getMedicineInsurance().getInsuranceName().equals("ДМС")){
+            UserInsurances userInsurances1 = userInsurancesRepository.findByUserId(currentUser.getId()).orElseThrow(() -> new RuntimeException("Not found"));
+            userInsurances1.setMedicineInsurance(medicineInsuranceService.getById(2L));
+            userInsurances.setUser(userInsurances1.getUser());
+            userInsurances.setDateActive(activeDate);
+            userInsurances.setDateExpire(activeDate.plusMonths(1));
+            return userInsurancesRepository.save(userInsurances1);
+        }else if(userInsurances.getDateActive().equals(null) && userInsurances.getDateExpire().equals(null)){
+            userInsurances.setUser(currentUser);
+            userInsurances.setDateActive(activeDate);
+            userInsurances.setDateExpire(activeDate.plusMonths(1));
+        }
+        else {
+            throw new RuntimeException("z");
+        }
+        return null;
     }
 
     @Override
     public UserInsurances getById(Long id) {
         return userInsurancesRepository.findById(id).orElseThrow(() -> new RuntimeException("Такой страховки не существует"));
+    }
+
+    @Override
+    public UserInsurances getByUserId() {
+        return userInsurancesRepository.findByUserId(authService.getCurrentUser().getId()).orElseThrow(() -> new RuntimeException("Проблема сервира"));
     }
 }

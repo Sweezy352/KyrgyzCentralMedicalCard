@@ -21,7 +21,7 @@ public class UserInsurances extends  BaseEntity {
     @JoinColumn(name = "medicine_insurance")
     private MedicineInsurance medicineInsurance;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -33,8 +33,10 @@ public class UserInsurances extends  BaseEntity {
     private LocalDate dateExpire;
 
     @Column(name = "active", nullable = false)
-    @ColumnDefault("true")
     private boolean active;
 
-
+    @PrePersist
+    private  void prePersist() {
+        this.active = true;
+    }
 }

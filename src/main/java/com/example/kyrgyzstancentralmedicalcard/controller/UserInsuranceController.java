@@ -22,14 +22,13 @@ public class UserInsuranceController {
         return ResponseEntity.ok(userInsurancesMapper.toResponse(userInsuranceService.addInsuranceToUser(medicineInsuranceId)));
     }
 
-    @GetMapping("/get-all-user-insurances")
-    public ResponseEntity<List<UserInsurancesResponse>> getAllUserInsurances(){
-        return ResponseEntity.ok(userInsuranceService.getAllUserInsurances().stream().map(userInsurancesMapper::toResponse).toList());
-    }
-
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<UserInsurancesResponse> getById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userInsurancesMapper.toResponse(userInsuranceService.getById(id)));
     }
 
+    @GetMapping("/get-by-user")
+    public ResponseEntity<UserInsurancesResponse> getByUser(){
+        return ResponseEntity.ok(userInsurancesMapper.toResponse(userInsuranceService.getByUserId()));
+    }
 }

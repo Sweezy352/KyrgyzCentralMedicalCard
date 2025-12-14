@@ -51,8 +51,8 @@ public class User extends BaseEntity{
     private List<History> historiesDoc;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<UserInsurances> userInsurances;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private UserInsurances userInsurances;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Receipt> receipts;
