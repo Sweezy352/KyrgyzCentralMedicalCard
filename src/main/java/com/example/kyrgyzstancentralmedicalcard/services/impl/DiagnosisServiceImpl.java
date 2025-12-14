@@ -49,4 +49,10 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         diagnosis1.setDescription(diagnosis.getDescription());
         return diagnosisRepository.save(diagnosis1);
     }
+
+    @Override
+    public List<Diagnosis> getAllDiagnosesByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return diagnosisRepository.findAllByUser(user);
+    }
 }

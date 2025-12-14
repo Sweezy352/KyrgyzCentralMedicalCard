@@ -38,6 +38,7 @@ public class UserMapper {
         return UserResponse.builder()
                 .id(entity.getId())
                 .fio(entity.getFio())
+                .inn(entity.getInn()) // Добавлено поле inn
                 .build();
     }
 

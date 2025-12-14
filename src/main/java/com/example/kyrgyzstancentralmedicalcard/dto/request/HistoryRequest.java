@@ -16,5 +16,4 @@ public class HistoryRequest {
     @NotNull(message = "Описание не может быть пустым")
     @NotBlank(message = "Описание не может быть пустым")
     private String description;
-    private Long userId;
 }

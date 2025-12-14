@@ -38,6 +38,11 @@ public class DiagnosisController {
         return ResponseEntity.ok(diagnosisService.getAllDiagnosis().stream().map(diagnosisMapper::toDto).toList());
     }
 
+    @GetMapping("/get-all-by-user/{id}") // Добавленный эндпоинт
+    public ResponseEntity<List<DiagnosisResponse>> getAllDiagnosesByUserId(@PathVariable Long id){
+        return ResponseEntity.ok(diagnosisService.getAllDiagnosesByUserId(id).stream().map(diagnosisMapper::toDto).toList());
+    }
+
     @PutMapping("/update-diagnosis/{id}")
     public ResponseEntity<DiagnosisResponse> updateDiagnosis(@PathVariable Long id, Diagnosis diagnosis){
         return ResponseEntity.ok(diagnosisMapper.toDto(diagnosisService.updateDiagnosis(diagnosis, id)));

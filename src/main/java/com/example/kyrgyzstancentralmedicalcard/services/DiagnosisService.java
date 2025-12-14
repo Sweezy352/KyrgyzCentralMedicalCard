@@ -15,4 +15,6 @@ public interface DiagnosisService {
     List<Diagnosis> getByName(String name);
 
     Diagnosis updateDiagnosis(Diagnosis diagnosis, Long id);
+
+    List<Diagnosis> getAllDiagnosesByUserId(Long userId); // Добавленный метод
 }

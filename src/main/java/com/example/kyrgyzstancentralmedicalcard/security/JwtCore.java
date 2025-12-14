@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -44,6 +46,12 @@ public class JwtCore {
         claims.put("id", user.getId());
         claims.put("username", user.getUsername());
 
+
+        // Добавляем роли в claims
+        List<String> roles = user.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.toList());
+        claims.put("roles", roles);
 
         return Jwts.builder()
                 .claims()

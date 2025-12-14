@@ -1,5 +1,6 @@
 package com.example.kyrgyzstancentralmedicalcard.dto.response;
 
+import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView; // Импортируем UserView
 import lombok.*;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ public class HistoryResponse {
     private String name;
     private String description;
     private Long userId;
-    private Long userDocId;
+    private UserView userDoc; // Изменено с Long userDocId на UserView userDoc
     private LocalDate dateCreated;
     private LocalDate dateUpdated;
 }

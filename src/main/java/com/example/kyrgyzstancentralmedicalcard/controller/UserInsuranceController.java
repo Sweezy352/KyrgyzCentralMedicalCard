@@ -32,4 +32,8 @@ public class UserInsuranceController {
         return ResponseEntity.ok(userInsurancesMapper.toResponse(userInsuranceService.getById(id)));
     }
 
+    @GetMapping("/get-all-by-user/{id}") // Добавленный эндпоинт
+    public ResponseEntity<List<UserInsurancesResponse>> getAllUserInsurancesByUserId(@PathVariable Long id){
+        return ResponseEntity.ok(userInsuranceService.getAllUserInsurancesByUserId(id).stream().map(userInsurancesMapper::toResponse).toList());
+    }
 }

@@ -1,0 +1,96 @@
+.home-container {
+  padding: 20px;
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+@media (min-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.user-card, .qr-code-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.user-card h2, .qr-code-card h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.user-card p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.user-card p strong {
+  color: #333;
+}
+
+.qr-code-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.qr-code-image {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  margin: 20px auto 0;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+/* Стили для действий врача */
+.doctor-actions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.doctor-actions h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.action-button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}

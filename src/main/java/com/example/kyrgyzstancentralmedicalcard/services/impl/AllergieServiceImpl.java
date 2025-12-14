@@ -57,4 +57,10 @@ public class AllergieServiceImpl implements AllergieService {
         User doctor = userRepository.findByFio(doctorName).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         return allergieRepository.findByDoctorAndUser(doctor, currentUser).orElseThrow(() -> new RuntimeException("Алергия не найдена"));
     }
+
+    @Override
+    public List<AllergieEntity> getAllByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return allergieRepository.findAllByUser(user);
+    }
 }

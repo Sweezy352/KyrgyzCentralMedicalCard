@@ -1,5 +1,6 @@
 package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
+import com.example.kyrgyzstancentralmedicalcard.dto.response.LoginResponse; // Импортируем LoginResponse
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import com.example.kyrgyzstancentralmedicalcard.security.JwtCore;
@@ -13,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,7 +32,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(String inn, String password) {
+    public LoginResponse login(String inn, String password) { // Изменено на LoginResponse
+        // User user = userRepository.findByInn(inn).orElseThrow(() -> new RuntimeException("Пользователь с таким ИНН"));
+        // if(!user.getPassword().equals(password)) throw new RuntimeException("Не верный пароль"); // Эта проверка не нужна, AuthenticationManager сам это сделает
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         inn,
@@ -37,7 +44,18 @@ public class AuthServiceImpl implements AuthService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtCore.jwtGenerator((UserDetails) authentication.getPrincipal());
+        String jwt = jwtCore.jwtGenerator((UserDetails) authentication.getPrincipal());
+
+        // Извлекаем роли из UserDetailsImpl
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.toList());
+
+        return LoginResponse.builder()
+                .token(jwt)
+                .roles(roles)
+                .build();
     }
 
     @Override

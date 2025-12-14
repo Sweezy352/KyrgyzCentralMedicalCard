@@ -1,4 +1,5 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNiIsInN1YiI6IjEyMzQ1Njc4OTAxMjM2IiwiaWF0IjoxNzY1NjEyOTI1LCJleHAiOjE3NjU2MTY1MjV9.m30BJ7z_QHcY-3lisU0m53IKfqmG0MMqz_O0d80Grx4
+@token = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0RPQ1RPUiJdLCJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNiIsInN1YiI6IjEyMzQ1Njc4OTAxMjM2IiwiaWF0IjoxNzY1NjMwNTI0LCJleHAiOjE3NjU2MzQxMjR9.ydSLps8gX3O1yNwePRWe7bves1UuhgHGlf5HwV_ua90
+
 
 
 
@@ -29,4 +30,9 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/api/auth/get-current
+Authorization: Bearer {{token}}
+
+###
+
+GET http://localhost:8080/api/allergies/get-all
 Authorization: Bearer {{token}}

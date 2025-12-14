@@ -4,6 +4,7 @@ import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.entity.UserInsurances;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserInsurancesRepository;
+import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository; // Добавил импорт UserRepository
 import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.MedicineInsuranceService;
 import com.example.kyrgyzstancentralmedicalcard.services.UserInsuranceService;
@@ -18,6 +19,7 @@ public class UserInsuranceServiceImpl implements UserInsuranceService {
     private final UserInsurancesRepository userInsurancesRepository;
     private final MedicineInsuranceService medicineInsuranceService;
     private final AuthService authService;
+    private final UserRepository userRepository; // Добавил инъекцию UserRepository
 
     @Override
     public UserInsurances addInsuranceToUser(Long medicineInsuranceId) {
@@ -38,5 +40,11 @@ public class UserInsuranceServiceImpl implements UserInsuranceService {
     @Override
     public UserInsurances getById(Long id) {
         return userInsurancesRepository.findById(id).orElseThrow(() -> new RuntimeException("Такой страховки не существует"));
+    }
+
+    @Override
+    public List<UserInsurances> getAllUserInsurancesByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return userInsurancesRepository.findAllByUser(user);
     }
 }

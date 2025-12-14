@@ -10,4 +10,6 @@ public interface UserInsuranceService {
     List<UserInsurances> getAllUserInsurances();
 
     UserInsurances getById(Long id);
+
+    List<UserInsurances> getAllUserInsurancesByUserId(Long userId); // Добавленный метод
 }

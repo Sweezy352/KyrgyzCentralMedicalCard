@@ -12,4 +12,5 @@ public interface AllergieService {
     List<AllergieEntity> getAllByName(String name);
     List<AllergieEntity> getAllByDate(LocalDate date);
     List<AllergieEntity> getAllByDoctor(String doctorName);
+    List<AllergieEntity> getAllByUserId(Long userId); // Добавленный метод
 }

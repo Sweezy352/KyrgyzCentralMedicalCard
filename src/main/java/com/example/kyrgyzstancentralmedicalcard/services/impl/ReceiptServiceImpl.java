@@ -59,4 +59,10 @@ public class ReceiptServiceImpl implements ReceiptService {
         User currentUser = authService.getCurrentUser();
         return receiptRepository.findByDateCreatedAndUser(date, currentUser).orElseThrow(() -> new RuntimeException(""));
     }
+
+    @Override
+    public List<Receipt> getAllByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return receiptRepository.findAllByUser(user);
+    }
 }

@@ -1,0 +1,84 @@
+.create-history-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Изменено на flex-start, чтобы форма не прилипала к низу на коротких страницах */
+  min-height: calc(100vh - 60px); /* Учитываем высоту хедера */
+  padding: 20px;
+  background-color: #f0f2f5;
+}
+
+.create-history-form {
+  padding: 40px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.create-history-form h1 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.create-history-form p {
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: inherit; /* Чтобы textarea наследовала шрифт */
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745; /* Зеленый цвет */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.error-message {
+  color: #d93025;
+  margin-bottom: 15px;
+}
+
+.success-message {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+  .create-history-form {
+    padding: 20px;
+  }
+}

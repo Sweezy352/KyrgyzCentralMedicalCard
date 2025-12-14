@@ -10,4 +10,5 @@ import lombok.*;
 public class UserResponse {
     private Long id;
     private String fio;
+    private String inn;
 }

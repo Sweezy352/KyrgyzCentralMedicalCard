@@ -4,17 +4,16 @@ import com.example.kyrgyzstancentralmedicalcard.dto.request.HistoryRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.HistoryResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.History;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
+import lombok.RequiredArgsConstructor; // Добавляем RequiredArgsConstructor
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor // Используем для автоматической инъекции
 public class HistoryMapper {
     private final UserRepository userRepository;
-
-    public HistoryMapper(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserMapper userMapper; // Внедряем UserMapper
 
     public History toEntity(HistoryRequest request) {
         if (request == null) {
@@ -23,8 +22,6 @@ public class HistoryMapper {
         return History.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .user(userRepository.findById(request.getUserId()).get())
-                //Сам доктор будет проверять, поэтому будем брать состояние пользователя из SecurityContext
                 .build();
     }
 
@@ -37,7 +34,7 @@ public class HistoryMapper {
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .userId(entity.getUser().getId())
-                .userDocId(entity.getUserDoc().getId())
+                .userDoc(userMapper.toView(entity.getUserDoc())) // Используем userMapper.toView
                 .dateCreated(entity.getDateCreated())
                 .dateUpdated(entity.getDateUpdated())
                 .build();

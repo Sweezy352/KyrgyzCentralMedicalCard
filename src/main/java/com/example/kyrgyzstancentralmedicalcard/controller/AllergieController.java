@@ -34,6 +34,11 @@ public class AllergieController {
         return ResponseEntity.ok(allergieService.getAll().stream().map(allergieMapper::toDtoResponse).toList());
     }
 
+    @GetMapping("/get-all-by-user/{id}") // Добавленный эндпоинт
+    public ResponseEntity<List<AllergieDtoResponse>> getAllByUserId(@PathVariable Long id){
+        return ResponseEntity.ok(allergieService.getAllByUserId(id).stream().map(allergieMapper::toDtoResponse).toList());
+    }
+
     @GetMapping("/get-all-by-name")
     public ResponseEntity<List<AllergieDtoResponse>> getAllByName(@RequestParam String name){
         return ResponseEntity.ok(allergieService.getAllByName(name).stream().map(allergieMapper::toDtoResponse).toList());

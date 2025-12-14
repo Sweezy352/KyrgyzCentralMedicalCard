@@ -14,4 +14,5 @@ public interface AllergieRepository extends JpaRepository<AllergieEntity, Long> 
     Optional<List<AllergieEntity>> findByNameAndUser(String name, User user);
     Optional<List<AllergieEntity>> findByDateCreatedAndUser(LocalDate date, User user);
     Optional<List<AllergieEntity>> findByDoctorAndUser(User doctor, User user);
+    List<AllergieEntity> findAllByUser(User user); // Добавленный метод
 }

@@ -21,6 +21,6 @@ public class Role extends BaseEntity implements GrantedAuthority {
 
     @Override
     public @Nullable String getAuthority() {
-        return roleName;
+        return "ROLE_" + roleName;
     }
 }

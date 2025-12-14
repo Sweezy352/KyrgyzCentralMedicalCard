@@ -11,4 +11,5 @@ public interface ReceiptService {
     List<Receipt> getAll();
     List<Receipt> getAllByName(String name);
     List<Receipt> getAllByDate(LocalDate date);
+    List<Receipt> getAllByUserId(Long userId); // Добавленный метод
 }

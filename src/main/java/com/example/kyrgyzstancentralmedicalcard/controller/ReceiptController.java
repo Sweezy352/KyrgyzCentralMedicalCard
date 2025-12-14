@@ -33,6 +33,11 @@ public class ReceiptController {
         return ResponseEntity.ok(receiptService.getAll().stream().map(receiptMapper::toDto).toList());
     }
 
+    @GetMapping("/get-all-by-user/{id}") // Добавленный эндпоинт
+    public ResponseEntity<List<ReceiptDtoResponse>> getAllReceiptsByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(receiptService.getAllByUserId(id).stream().map(receiptMapper::toDto).toList());
+    }
+
     @GetMapping("/get-by-name")
     public ResponseEntity<List<ReceiptDtoResponse>> getAllReceiptsByName(@RequestParam String name){
         return ResponseEntity.ok(receiptService.getAllByName(name).stream().map(receiptMapper::toDto).toList());

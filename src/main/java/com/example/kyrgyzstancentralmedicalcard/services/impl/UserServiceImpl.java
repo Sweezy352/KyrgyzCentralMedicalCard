@@ -1,6 +1,7 @@
 package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
+import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import com.example.kyrgyzstancentralmedicalcard.security.UserDetailsImpl;
 import com.example.kyrgyzstancentralmedicalcard.services.UserService;
@@ -18,16 +19,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,@Lazy PasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder encoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public User create(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setRoles(List.of(roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("Роль не найдена"))));
         return userRepository.save(user);
     }
 
