@@ -9,8 +9,8 @@ Content-Type: application/json
 
 {
   "inn": "12345678901236",
-  "fio": "Almanbet",
-  "password": "Almanbet@ssw0rd123",
+  "fio": "Almanbet123",
+  "password": "v",
   "roleName": "USER"
 }
 

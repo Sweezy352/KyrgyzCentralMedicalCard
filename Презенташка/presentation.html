@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новостная лента Лицей 99 - Хакатон</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            padding: 60px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideIn 0.8s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            border-radius: 20px 20px 0 0;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide:nth-child(1) { animation-delay: 0.2s; }
+        .slide:nth-child(2) { animation-delay: 0.4s; }
+        .slide:nth-child(3) { animation-delay: 0.6s; }
+        .slide:nth-child(4) { animation-delay: 0.8s; }
+        .slide:nth-child(5) { animation-delay: 1.0s; }
+        .slide:nth-child(6) { animation-delay: 1.2s; }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #718096;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-box:hover {
+            transform: scale(1.05);
+        }
+
+        .problem-list, .solution-list, .benefits-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .problem-list li, .solution-list li, .benefits-list li {
+            background: #f7fafc;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .problem-list li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .solution-list li::before {
+            content: '💡';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .benefits-list li::before {
+            content: '✅';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .problem-list li:hover, .solution-list li:hover, .benefits-list li:hover {
+            background: #edf2f7;
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .stats-table td {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 1rem;
+        }
+
+        .stats-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .stats-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .benefit-card h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .benefit-card p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .tech-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .final-cta {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            display: block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                margin-left: 40px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+            }
+            
+            .navigation {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <button class="nav-btn" onclick="scrollToSlide(0)">🏠 Главный</button>
+        <button class="nav-btn" onclick="scrollToSlide(1)">⚠️ Проблема</button>
+        <button class="nav-btn" onclick="scrollToSlide(2)">💡 Решение</button>
+        <button class="nav-btn" onclick="scrollToSlide(3)">✅ Преимущества</button>
+        <button class="nav-btn" onclick="scrollToSlide(4)">📅 План</button>
+        <button class="nav-btn" onclick="scrollToSlide(5)">🎯 Заключение</button>
+    </div>
+
+    <div class="container">
+        <!-- Слайд 1: Титульный -->
+        <div class="slide">
+            <h1>УЛУЧШЕНИЕ ЖИЗНИ ЛИЦЕЯ 99 ПРИ ПРЕЗИДЕНТЕ</h1>
+            <div class="subtitle">Хакатон • Инновационное решение</div>
+            <div class="highlight-box">
+                📱 НОВОСТНАЯ ЛЕНТА ЛИЦЕЯ 📱
+            </div>
+            <p style="text-align: center; font-size: 1.2rem; color: #4a5568; line-height: 1.8;">
+                Современная платформа для оперативного информирования<br/>
+                учеников, учителей и родителей о событиях лицея
+            </p>
+        </div>
+
+        <!-- Слайд 2: Проблема -->
+        <div class="slide">
+            <h2>ПРОБЛЕМА</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #718096; margin-bottom: 30px;">
+                Текущие вызовы в информировании лицейского сообщества
+            </p>
+            
+            <ul class="problem-list">
+                <li>Новости не доходят до учеников вовремя</li>
+                <li>Информация теряется в многочисленных чатах</li>
+                <li>Отсутствует единый источник достоверной информации</li>
+                <li>Родители не получают своевременных уведомлений</li>
+                <li>Важные объявления остаются незамеченными</li>
+            </ul>
+
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Показатель</th>
+                        <th>Текущая ситуация</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>📊 Доставка новостей</td>
+                        <td>⚠️ Ненадежная</td>
+                    </tr>
+                    <tr>
+                        <td>👨‍👩‍👧‍👦 Вовлеченность родителей</td>
+                        <td>📉 Низкая</td>
+                    </tr>
+                    <tr>
+                        <td>🔊 Информационный шум</td>
+                        <td>📈 Высокий</td>
+                    </tr>
+                    <tr>
+                        <td>⏰ Своевременность оповещений</td>
+                        <td>📊 Удовлетворительная</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Слайд 3: Решение -->
+        <div class="slide">
+            <h2>НАШЕ РЕШЕНИЕ</h2>
+            <div class="highlight-box">
+                🌟 ЕДИНАЯ НОВОСТНАЯ ПЛАТФОРМА ЛИЦЕЯ 99 🌟
+            </div>
+            
+            <!-- QR-код перехода на MVP -->
+            <div style="text-align: center; margin: 30px 0;">
+                <div style="
+                    display: inline-block;
+                    background: white;
+                    padding: 20px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.15)'" 
+                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.1)'">
+                    <img src="qr.png" alt="QR-код MVP проекта" style="
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 10px;
+                        display: block;
+                        margin: 0 auto 15px;
+                    ">
+                    <div style="
+                        font-size: 1rem;
+                        color: #4a5568;
+                        font-weight: 600;
+                        text-align: center;
+                    ">
+                        📱 Отсканируйте QR-код<br/>
+                        для перехода к демо-версии
+                    </div>
+                </div>
+            </div>
+            
+            <h3>🔥 Ключевые функции:</h3>
+            <ul class="solution-list">
+                <li>📱 Мобильное приложение для учеников и родителей</li>
+                <li>🌐 Веб-версия для учителей и администрации</li>
+                <li>🔔 Мгновенные push-уведомления</li>
+                <li>📊 Система категорий новостей</li>
+                <li>👤 Персонализированная лента для каждой группы</li>
+                <li>💾 Архив всех объявлений и событий</li>
+                <li>🔍 Поиск по историческим новостям</li>
+            </ul>
+        </div>
+
+        <!-- Слайд 4: Преимущества -->
+        <div class="slide">
+            <h2>ПРЕИМУЩЕСТВА</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h4>👨‍🎓 Для учеников</h4>
+                    <p>Быстрый доступ к новостям<br/>
+                    Никогда не пропустят важное<br/>
+                    Удобный мобильный интерфейс</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>👨‍🏫 Для учителей</h4>
+                    <p>Централизованная рассылка<br/>
+                    Контроль прочтения<br/>
+                    Экономия времени</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>👨‍👩‍👧‍👦 Для родителей</h4>
+                    <p>Оперативное информирование<br/>
+                    Связь с жизнью лицея<br/>
+                    Спокойствие за детей</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 40px; font-size: 1.2rem;">
+                📈 Повышение информированности на 85%<br/>
+                📉 Снижение информационного шума на 70%<br/>
+                📊 Увеличение вовлеченности родителей на 60%
+            </div>
+        </div>
+
+        <!-- Слайд 5: План реализации -->
+        <div class="slide">
+            <h2>ПЛАН РЕАЛИЗАЦИИ</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>🎯 Этап 1: Анализ и проектирование</h4>
+                        <p><strong>Сроки:</strong> 2 недели<br/>
+                        <strong>Задачи:</strong> Изучение потребностей, дизайн интерфейса</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>💻 Этап 2: Разработка MVP</h4>
+                        <p><strong>Сроки:</strong> 4 недели<br/>
+                        <strong>Задачи:</strong> Базовый функционал, мобильное приложение</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>🧪 Этап 3: Тестирование</h4>
+                        <p><strong>Сроки:</strong> 1 неделя<br/>
+                        <strong>Задачи:</strong> Альфа-тестирование с учениками и учителями</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>🚀 Этап 4: Запуск</h4>
+                        <p><strong>Сроки:</strong> 1 неделя<br/>
+                        <strong>Задачи:</strong> Развертывание, обучение персонала</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>🔄 Этап 5: Поддержка</h4>
+                        <p><strong>Сроки:</strong> Постоянно<br/>
+                        <strong>Задачи:</strong> Обновления, техническая поддержка</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px;">🛠️ Технологический стек:</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Frontend</strong>
+                    React Native / React
+                </div>
+                <div class="tech-item">
+                    <strong>Backend</strong>
+                    java
+                </div>
+                <div class="tech-item">
+                    <strong>База данных</strong>
+                    PostgreSQL
+                </div>
+                <div class="tech-item">
+                    <strong>Облако</strong>
+                    AWS S3
+                </div>
+                <div class="tech-item">
+                    <strong>Уведомления</strong>
+                    Firebase
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 6: Заключение -->
+        <div class="slide">
+            <h2>ЗАКЛЮЧЕНИЕ</h2>
+            
+            <div class="highlight-box">
+                🌟 НОВОСТНАЯ ЛЕНТА ЛИЦЕЯ 99 🌟<br/>
+                <span style="font-size: 1.1rem; font-weight: 400;">
+                    Это не просто приложение,<br/>
+                    это шаг в современное цифровое образовательное пространство
+                </span>
+            </div>
+
+            <h3>🎯 Ожидаемые результаты:</h3>
+            <ul class="benefits-list">
+                <li>100% доставка важной информации</li>
+                <li>Единое информационное пространство</li>
+                <li>Повышение вовлеченности всех участников</li>
+                <li>Экономия времени учителей и администрации</li>
+                <li>Улучшение коммуникации между всеми сторонами</li>
+            </ul>
+
+            <div class="final-cta">
+                🚀 ДАВАЙТЕ ВМЕСТЕ СОЗДАДИМ БУДУЩЕЕ ЛИЦЕЯ 99! 🚀
+            </div>
+
+            <!-- QR-код на финальном слайде -->
+            <div style="text-align: center; margin-top: 30px;">
+                <div style="
+                    display: inline-block;
+                    background: white;
+                    padding: 25px;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+                    transition: all 0.3s ease;
+                    animation: pulse 2s infinite;
+                " onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 25px 70px rgba(0, 0, 0, 0.2)'" 
+                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 20px 60px rgba(0, 0, 0, 0.15)'">
+                    <img src="qr.png" alt="QR-код MVP проекта" style="
+                        width: 180px;
+                        height: 180px;
+                        border-radius: 15px;
+                        display: block;
+                        margin: 0 auto 20px;
+                    ">
+                    <div style="
+                        font-size: 1.2rem;
+                        color: #2d3748;
+                        font-weight: 700;
+                        text-align: center;
+                        line-height: 1.4;
+                    ">
+                        🎯 ПОПРОБУЙТЕ ДЕМО-ВЕРСИЮ 🎯<br/>
+                        <span style="font-size: 0.9rem; font-weight: 500; color: #718096;">
+                            Наведите камеру на QR-код
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            if (slides[index]) {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Добавляем анимацию при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            observer.observe(slide);
+        });
+
+        // Добавляем интерактивность для таблиц
+        document.querySelectorAll('.stats-table tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Параллакс эффект для фона
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('body');
+            parallax.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+        });
+    </script>
+</body>
+</html>

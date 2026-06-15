@@ -16,4 +16,12 @@ public class AllergieDtoRequest {
     @NotNull(message = "Не может быть пустым")
     @NotBlank(message = "Не может быть пустым")
     private String description;
+
+    @Override
+    public String toString() {
+        return "AllergieDtoRequest{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

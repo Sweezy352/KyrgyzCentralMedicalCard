@@ -2,7 +2,6 @@ package com.example.kyrgyzstancentralmedicalcard.config;
 
 import com.example.kyrgyzstancentralmedicalcard.security.JwtCore;
 import com.example.kyrgyzstancentralmedicalcard.security.TokenFilter;
-import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -119,9 +117,9 @@ public class SecurityConfiguration {
 
                         //Allergie
                         .requestMatchers("/api/allergies/add-allergie/{id}").hasAnyRole("DOCTOR")
-                        .requestMatchers("/api/allergies/get-all-allergies/{id}").hasAnyRole("ADMIN", "DOCTOR", "NURSE", "PHARMACIST")
+                        .requestMatchers("/api/allergies/get-all-allergies/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/allergies/get-all").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
-                        .requestMatchers("/api/allergies/get-all-by-user/{id}").hasAnyRole("ADMIN", "DOCTOR", "NURSE", "PHARMACIST")
+                        .requestMatchers("/api/allergies/get-all-by-user/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/allergies/get-all-by-name").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/allergies/get-all-by-date").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/allergies/get-all-by-doctor").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")

@@ -5,6 +5,7 @@ import com.example.kyrgyzstancentralmedicalcard.dto.response.AllergieDtoResponse
 import com.example.kyrgyzstancentralmedicalcard.entity.AllergieEntity;
 import com.example.kyrgyzstancentralmedicalcard.mapper.AllergieMapper;
 import com.example.kyrgyzstancentralmedicalcard.services.AllergieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ public class AllergieController {
     private final AllergieMapper allergieMapper;
 
     @PostMapping("/add-allergie/{id}")
-    public ResponseEntity<AllergieDtoResponse> addAllergie(@PathVariable("id") Long id, AllergieDtoRequest allergieDtoRequest){
+    public ResponseEntity<AllergieDtoResponse> addAllergie(@PathVariable("id") Long id, @Valid @RequestBody AllergieDtoRequest allergieDtoRequest){
+        System.out.println(allergieDtoRequest);
         return ResponseEntity.ok(allergieMapper.toDtoResponse(allergieService.addAllergie(id, allergieMapper.toEntity(allergieDtoRequest))));
     }
 
