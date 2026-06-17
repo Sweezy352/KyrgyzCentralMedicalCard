@@ -1,104 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import diagnosisService from '../services/diagnosisService';
 import userService from '../services/userService';
-import './CreateDiagnosisPage.css'; // Создадим этот файл стилей
+import './CreatePage.css';
 
 const CreateDiagnosisPage = () => {
-  const { id } = useParams(); // ID пользователя из URL
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [patient, setPatient] = useState(null);
+  const [form, setForm] = useState({ name: '', description: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [patient, setPatient] = useState(null); // Состояние для хранения данных пациента
-  const [patientLoading, setPatientLoading] = useState(true);
-  const [patientError, setPatientError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Загрузка данных пациента
   useEffect(() => {
-    const fetchPatient = async () => {
-      try {
-        const response = await userService.getById(id);
-        setPatient(response.data);
-      } catch (err) {
-        setPatientError('Не удалось загрузить данные пациента.');
-        console.error('Fetch patient error:', err);
-      } finally {
-        setPatientLoading(false);
-      }
-    };
-
-    fetchPatient();
+    userService.getById(id).then(res => setPatient(res.data));
   }, [id]);
+
+  const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
-
-    if (!name || !description) {
-      setError('Пожалуйста, заполните все поля.');
-      return;
-    }
-
+    setLoading(true);
     try {
-      await diagnosisService.createDiagnosis(id, { name, description });
+      await diagnosisService.createDiagnosis(id, form);
       setSuccess('Диагноз успешно добавлен!');
-      // Перенаправляем обратно на профиль пользователя через 2 секунды
-      setTimeout(() => {
-        navigate(`/users/${id}`);
-      }, 2000);
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Ошибка при добавлении диагноза.';
-      setError(errorMessage);
-      console.error('Create diagnosis error:', err);
+      setTimeout(() => navigate(`/users/${id}`), 1500);
+    } catch {
+      setError('Ошибка при добавлении диагноза.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (patientLoading) {
-    return <div className="loading">Загрузка данных пациента...</div>;
-  }
-
-  if (patientError) {
-    return <div className="error">{patientError}</div>;
-  }
-
-  if (!patient) {
-    return <div className="error">Пациент не найден.</div>;
-  }
-
   return (
-    <div className="create-diagnosis-container">
-      <div className="create-diagnosis-form">
-        <h1>Добавить диагноз</h1>
-        <p>для пользователя: <strong>{patient.fio}</strong> (ИНН: {patient.inn})</p>
+    <div className="create-page">
+      <h1 className="page-title">Добавить диагноз</h1>
+      {patient && (
+        <p className="create-subtitle">
+          Пациент: <strong>{patient.fio}</strong> (ИНН: {patient.inn})
+        </p>
+      )}
+      <div className="card">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Название диагноза</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Например: ОРВИ, Гипертония"
-              required
-            />
+            <label>Название диагноза</label>
+            <input type="text" placeholder="Например: ОРВИ, Гипертония"
+              value={form.name} onChange={set('name')} required />
           </div>
           <div className="form-group">
-            <label htmlFor="description">Описание диагноза</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Подробное описание диагноза"
-              rows="5"
-              required
-            ></textarea>
+            <label>Описание</label>
+            <textarea placeholder="Подробное описание диагноза"
+              value={form.description} onChange={set('description')} required />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
-          <button type="submit" className="submit-button">Добавить диагноз</button>
+          {error && <div className="alert alert-error">{error}</div>}
+          {success && <div className="alert alert-success">{success}</div>}
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Сохранение...' : 'Добавить диагноз'}
+            </button>
+            <Link to={`/users/${id}`} className="btn btn-outline">Отмена</Link>
+          </div>
         </form>
       </div>
     </div>

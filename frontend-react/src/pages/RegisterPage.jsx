@@ -1,87 +1,119 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import authService from '../services/authService';
-import './RegisterPage.css'; // Используем тот же стиль, что и для LoginPage
+import './LoginPage.css';
+
+const BLOOD_GROUPS = ['A(I)', 'B(II)', 'AB(III)', 'O(IV)'];
+const RH_FACTORS = ['+', '-'];
+const GENDERS = ['Мужской', 'Женский'];
 
 const RegisterPage = () => {
-  const [inn, setInn] = useState('');
-  const [fio, setFio] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({
+    inn: '', fio: '', password: '',
+    gender: '', birthDate: '', emergencyPhone: '',
+    bloodGroup: '', rhFactor: ''
+  });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
-
-    if (!inn || !fio || !password) {
-      setError('Все поля обязательны для заполнения.');
-      return;
-    }
-
+    setLoading(true);
     try {
-      await authService.register(inn, fio, password);
-      setSuccess('Вы успешно зарегистрированы! Сейчас вы будете перенаправлены на страницу входа.');
-      
-      // Перенаправляем на страницу входа через 3 секунды
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
-
+      await authService.register(
+        form.inn, form.fio, form.password,
+        form.gender, form.birthDate || null,
+        form.emergencyPhone, form.bloodGroup, form.rhFactor
+      );
+      setSuccess('Регистрация успешна! Перенаправление...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Произошла ошибка при регистрации.';
-      setError(errorMessage);
-      console.error('Registration error:', err);
+      setError(err.response?.data?.message || 'Ошибка при регистрации.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="register-container">
-      <div className="register-form">
-        <h2>Регистрация</h2>
-        <form onSubmit={handleRegister}>
+    <div className="auth-page">
+      <div className="auth-card" style={{ maxWidth: 520 }}>
+        <div className="auth-logo">🏥</div>
+        <h1 className="auth-title">Регистрация</h1>
+        <p className="auth-subtitle">Создайте аккаунт в МедКарте</p>
+
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="inn">ИНН</label>
-            <input
-              type="text"
-              id="inn"
-              value={inn}
-              onChange={(e) => setInn(e.target.value)}
-              placeholder="Введите ваш ИНН (14 символов)"
-              required
-              maxLength="14"
-            />
+            <label>ИНН</label>
+            <input type="text" placeholder="14 символов" value={form.inn}
+              onChange={set('inn')} maxLength={14} required />
           </div>
+
           <div className="form-group">
-            <label htmlFor="fio">ФИО</label>
-            <input
-              type="text"
-              id="fio"
-              value={fio}
-              onChange={(e) => setFio(e.target.value)}
-              placeholder="Введите ваше полное имя"
-              required
-            />
+            <label>ФИО</label>
+            <input type="text" placeholder="Полное имя" value={form.fio}
+              onChange={set('fio')} required />
           </div>
+
           <div className="form-group">
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Создайте пароль"
-              required
-            />
+            <label>Пароль</label>
+            <input type="password" placeholder="Создайте пароль" value={form.password}
+              onChange={set('password')} required />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
-          <button type="submit" className="register-button">Зарегистрироваться</button>
+
+          <div className="reg-row">
+            <div className="form-group">
+              <label>Пол</label>
+              <select value={form.gender} onChange={set('gender')}>
+                <option value="">— Выберите —</option>
+                {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Дата рождения</label>
+              <input type="date" value={form.birthDate} onChange={set('birthDate')} />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Чрезвычайный номер</label>
+            <input type="tel" placeholder="+996 XXX XXX XXX" value={form.emergencyPhone}
+              onChange={set('emergencyPhone')} />
+          </div>
+
+          <div className="reg-row">
+            <div className="form-group">
+              <label>Группа крови</label>
+              <select value={form.bloodGroup} onChange={set('bloodGroup')}>
+                <option value="">— Выберите —</option>
+                {BLOOD_GROUPS.map(b => <option key={b} value={b}>{b}</option>)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Резус-фактор</label>
+              <select value={form.rhFactor} onChange={set('rhFactor')}>
+                <option value="">— Выберите —</option>
+                {RH_FACTORS.map(r => <option key={r} value={r}>Rh{r}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {error && <div className="alert alert-error">{error}</div>}
+          {success && <div className="alert alert-success">{success}</div>}
+
+          <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
+            {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+          </button>
         </form>
-        <p className="login-link">
-          Уже есть аккаунт? <a href="/login">Войти</a>
+
+        <p className="auth-link">
+          Уже есть аккаунт? <Link to="/login">Войти</Link>
         </p>
       </div>
     </div>

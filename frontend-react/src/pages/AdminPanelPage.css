@@ -1,108 +1,39 @@
-.admin-panel-container {
-  padding: 20px;
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-.admin-panel-container h1 {
-  margin-bottom: 20px;
+.search-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text);
 }
 
-.admin-panel-container p {
-  margin-bottom: 30px;
-  color: #666;
-}
-
-.loading, .error {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 20px;
-  color: #d93025;
-}
-
-.search-section {
-  background: #fff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-}
-
-.search-section h2 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-.search-section form {
+.found-card {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.search-section input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  min-width: 200px; /* Для адаптивности */
+.found-info { display: flex; align-items: center; gap: 1rem; }
+
+.found-avatar {
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.search-section button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.search-section button:hover {
-  background-color: #0056b3;
-}
-
-.found-user-card {
-  background: #e6f7ff; /* Светло-голубой фон для найденного пользователя */
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  margin-top: 30px;
-  border: 1px solid #007bff;
-}
-
-.found-user-card h3 {
-  margin-top: 0;
-  color: #007bff;
-  border-bottom: 1px solid #b3e0ff;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-
-.found-user-card p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.found-user-card .view-profile-button {
-  background-color: #007bff;
-}
-
-.found-user-card .view-profile-button:hover {
-  background-color: #0056b3;
-}
-
-/* Адаптивность для кнопок и инпутов */
-@media (max-width: 600px) {
-  .search-section form {
-    flex-direction: column;
-  }
-  .search-section input,
-  .search-section button {
-    width: 100%;
-    min-width: unset;
-  }
-}
+.found-name { font-weight: 600; font-size: 1rem; }
+.found-inn { color: var(--text-muted); font-size: 0.875rem; margin-top: 0.2rem; }

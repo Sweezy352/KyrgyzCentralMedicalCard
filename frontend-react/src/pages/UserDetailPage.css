@@ -1,65 +1,31 @@
-.user-detail-container {
-  padding: 20px;
-}
-
-.user-detail-container h1 {
-  margin-bottom: 30px;
-}
-
-.loading, .error {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 50px;
-}
-
 .user-detail-card {
-  background: #fff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  max-width: 600px;
-  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-.user-detail-card p {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 10px;
+.user-detail-avatar {
+  width: 72px;
+  height: 72px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.user-detail-card p strong {
-  color: #333;
-}
+.user-detail-info h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
+.user-detail-info p { color: var(--text-muted); font-size: 0.9rem; }
 
-.doctor-actions-patient-profile {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
+.actions-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
 
-.doctor-actions-patient-profile h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.action-button {
-  display: block;
-  width: 100%;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  background-color: #28a745; /* Зеленый цвет для действий врача */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  text-decoration: none; /* Для Link */
-  text-align: center;
-  transition: background-color 0.3s ease;
-}
-
-.action-button:hover {
-  background-color: #218838;
+.actions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }

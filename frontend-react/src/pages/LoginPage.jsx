@@ -1,65 +1,66 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Импортируем useAuth
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
 const LoginPage = () => {
   const [inn, setInn] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth(); // Используем login из контекста
+  const { login } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (!inn || !password) {
-      setError('Пожалуйста, введите ИНН и пароль.');
-      return;
-    }
-
+    setLoading(true);
     try {
-      await login(inn, password); // Вызываем login из контекста
-      navigate('/'); // Перенаправляем на главную страницу после успешного входа
-    } catch (err) {
-      setError('Неверный ИНН или пароль. Попробуйте снова.');
-      console.error('Login error:', err);
+      await login(inn, password);
+      navigate('/');
+    } catch {
+      setError('Неверный ИНН или пароль.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h2>Вход в систему</h2>
-        <form onSubmit={handleLogin}>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-logo"></div>
+        <h1 className="auth-title">Вход в МедКарту</h1>
+        <p className="auth-subtitle">Кыргызская Центральная Медкарта</p>
+
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="inn">ИНН</label>
+            <label>ИНН</label>
             <input
               type="text"
-              id="inn"
+              placeholder="Введите ваш ИНН"
               value={inn}
               onChange={(e) => setInn(e.target.value)}
-              placeholder="Введите ваш ИНН"
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Пароль</label>
+            <label>Пароль</label>
             <input
               type="password"
-              id="password"
+              placeholder="Введите пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Введите ваш пароль"
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="login-button">Войти</button>
+          {error && <div className="alert alert-error">{error}</div>}
+          <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
+            {loading ? 'Вход...' : 'Войти'}
+          </button>
         </form>
-        <p className="register-link">
-          Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+
+        <p className="auth-link">
+          Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
         </p>
       </div>
     </div>

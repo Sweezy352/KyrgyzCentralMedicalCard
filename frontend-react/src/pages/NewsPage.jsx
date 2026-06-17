@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import newsService from '../services/newsService';
-import './NewsPage.css'; // Создадим этот файл стилей
 
 const NewsPage = () => {
   const [news, setNews] = useState([]);
@@ -8,46 +7,32 @@ const NewsPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await newsService.getAllNews();
-        setNews(response.data);
-      } catch (err) {
-        setError('Не удалось загрузить новости.');
-        console.error('Fetch news error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNews();
+    newsService.getAllNews()
+      .then(res => setNews(res.data))
+      .catch(() => setError('Не удалось загрузить новости.'))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <div className="loading">Загрузка новостей...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (loading) return <div className="loading-state"><div className="loading-spinner" />Загрузка...</div>;
+  if (error) return <div className="alert alert-error">{error}</div>;
 
   return (
-    <div className="news-container">
-      <h1>Последние Новости</h1>
-      {news.length > 0 ? (
-        <div className="news-list">
-          {news.map((item) => (
-            <div key={item.id} className="news-card">
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
+    <div>
+      <h1 className="page-title">Новости</h1>
+      {news.length === 0 ? (
+        <div className="empty-state">Новостей пока нет.</div>
+      ) : (
+        <div className="card-list">
+          {news.map(item => (
+            <div key={item.id} className="card">
+              <div className="card-header"><h3>{item.name}</h3></div>
+              <div className="card-body"><p>{item.description}</p></div>
               <div className="card-footer">
-                <span>Дата публикации: {new Date(item.dateCreated).toLocaleDateString()}</span>
+                <span>{new Date(item.dateCreated).toLocaleDateString('ru-RU')}</span>
               </div>
             </div>
           ))}
         </div>
-      ) : (
-        <p>Пока нет новостей.</p>
       )}
     </div>
   );

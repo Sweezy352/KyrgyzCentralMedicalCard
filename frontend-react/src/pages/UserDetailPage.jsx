@@ -5,57 +5,51 @@ import { useAuth } from '../context/AuthContext';
 import './UserDetailPage.css';
 
 const UserDetailPage = () => {
-  const { id } = useParams(); // Получаем ID пользователя из URL
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { hasRole } = useAuth();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await userService.getById(id);
-        setUser(response.data);
-      } catch (err) {
-        setError('Не удалось загрузить данные пользователя.');
-        console.error('Fetch user error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    userService.getById(id)
+      .then(res => setUser(res.data))
+      .catch(() => setError('Не удалось загрузить данные пользователя.'))
+      .finally(() => setLoading(false));
+  }, [id]);
 
-    fetchUser();
-  }, [id]); // Перезагружаем данные при изменении ID в URL
-
-  if (loading) {
-    return <div className="loading">Загрузка профиля пользователя...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
-
-  if (!user) {
-    return <div className="error">Пользователь не найден.</div>;
-  }
+  if (loading) return <div className="loading-state"><div className="loading-spinner" />Загрузка...</div>;
+  if (error) return <div className="alert alert-error">{error}</div>;
+  if (!user) return <div className="empty-state">Пользователь не найден.</div>;
 
   return (
-    <div className="user-detail-container">
-      <h1>Профиль пользователя: {user.fio}</h1>
-      <div className="user-detail-card">
-        <p><strong>ИНН:</strong> {user.inn}</p>
-        {/* Здесь можно добавить другую информацию о пользователе */}
+    <div>
+      <h1 className="page-title">Профиль пациента</h1>
 
-        {hasRole(['ROLE_DOCTOR']) && (
-          <div className="doctor-actions-patient-profile">
-            <h3>Действия для пациента</h3>
-            <Link to={`/users/${user.id}/create-history`} className="action-button">Создать историю болезни</Link>
-            <Link to={`/users/${user.id}/create-diagnosis`} className="action-button">Добавить диагноз</Link>
-            <Link to={`/users/${user.id}/create-allergie`} className="action-button">Добавить аллергию</Link> {/* Добавлена кнопка */}
-            {/* Дополнительные действия врача для пациента */}
-          </div>
-        )}
+      <div className="card user-detail-card">
+        <div className="user-detail-avatar">{user.fio?.charAt(0)}</div>
+        <div className="user-detail-info">
+          <h2>{user.fio}</h2>
+          <p>ИНН: <strong>{user.inn}</strong></p>
+        </div>
       </div>
+
+      {hasRole(['ROLE_DOCTOR']) && (
+        <div className="card actions-card">
+          <h3>Действия врача</h3>
+          <div className="actions-grid">
+            <Link to={`/users/${user.id}/create-history`} className="btn btn-primary">
+              Добавить историю
+            </Link>
+            <Link to={`/users/${user.id}/create-diagnosis`} className="btn btn-primary">
+              Добавить диагноз
+            </Link>
+            <Link to={`/users/${user.id}/create-allergie`} className="btn btn-primary">
+              Добавить аллергию
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

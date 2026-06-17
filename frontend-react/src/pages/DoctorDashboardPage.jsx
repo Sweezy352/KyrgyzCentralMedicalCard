@@ -1,117 +1,90 @@
 import React, { useState } from 'react';
-import userService from '../services/userService';
 import { Link, useNavigate } from 'react-router-dom';
-import './DoctorDashboardPage.css';
+import userService from '../services/userService';
+import './AdminPanelPage.css';
 
 const DoctorDashboardPage = () => {
   const [innSearch, setInnSearch] = useState('');
   const [fioSearch, setFioSearch] = useState('');
-  const [qrCodeInput, setQrCodeInput] = useState('');
+  const [qrInput, setQrInput] = useState('');
   const [foundUser, setFoundUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleInnSearch = async (e) => {
-    e.preventDefault();
+  const search = async (fn) => {
     setLoading(true);
     setError('');
     setFoundUser(null);
     try {
-      const response = await userService.getByInn(innSearch);
-      setFoundUser(response.data);
-    } catch (err) {
-      setError('Пользователь с таким ИНН не найден.');
-      console.error('INN search error:', err);
+      const res = await fn();
+      setFoundUser(res.data);
+    } catch {
+      setError('Пациент не найден.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFioSearch = async (e) => {
+  const handleQr = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    setFoundUser(null);
-    try {
-      const response = await userService.getByFio(fioSearch);
-      setFoundUser(response.data);
-    } catch (err) {
-      setError('Пользователь с таким ФИО не найден.');
-      console.error('FIO search error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQrCodeSearch = (e) => {
-    e.preventDefault();
-    setError('');
-    setFoundUser(null);
-    // Ожидаем, что QR-код содержит URL вида http://localhost:8080/api/users/get-by-id/{id}
-    const regex = /\/api\/users\/get-by-id\/(\d+)/;
-    const match = qrCodeInput.match(regex);
-
-    if (match && match[1]) {
-      const userId = match[1];
-      navigate(`/users/${userId}`); // Перенаправляем на страницу профиля пользователя
-    } else {
-      setError('Некорректный формат QR-кода. Ожидается URL профиля пользователя.');
-    }
+    const match = qrInput.match(/\/api\/users\/get-by-id\/(\d+)/);
+    if (match) navigate(`/users/${match[1]}`);
+    else setError('Некорректный формат QR-кода.');
   };
 
   return (
-    <div className="doctor-dashboard-container">
-      <h1>Панель Врача</h1>
-      <p>Используйте поиск для нахождения пациентов.</p>
+    <div>
+      <h1 className="page-title">Панель Врача</h1>
 
-      <div className="search-section">
-        <h2>Поиск по ИНН</h2>
-        <form onSubmit={handleInnSearch}>
-          <input
-            type="text"
-            placeholder="Введите ИНН пациента"
-            value={innSearch}
-            onChange={(e) => setInnSearch(e.target.value)}
-          />
-          <button type="submit">Найти по ИНН</button>
-        </form>
+      <div className="search-grid">
+        <div className="card">
+          <h3 className="search-title">Поиск по ИНН</h3>
+          <form onSubmit={(e) => { e.preventDefault(); search(() => userService.getByInn(innSearch)); }}>
+            <div className="form-group">
+              <input type="text" placeholder="ИНН пациента" value={innSearch}
+                onChange={(e) => setInnSearch(e.target.value)} />
+            </div>
+            <button type="submit" className="btn btn-primary">Найти</button>
+          </form>
+        </div>
+
+        <div className="card">
+          <h3 className="search-title">Поиск по ФИО</h3>
+          <form onSubmit={(e) => { e.preventDefault(); search(() => userService.getByFio(fioSearch)); }}>
+            <div className="form-group">
+              <input type="text" placeholder="ФИО пациента" value={fioSearch}
+                onChange={(e) => setFioSearch(e.target.value)} />
+            </div>
+            <button type="submit" className="btn btn-primary">Найти</button>
+          </form>
+        </div>
+
+        <div className="card">
+          <h3 className="search-title">Поиск по QR-коду</h3>
+          <form onSubmit={handleQr}>
+            <div className="form-group">
+              <input type="text" placeholder="Вставьте URL из QR-кода" value={qrInput}
+                onChange={(e) => setQrInput(e.target.value)} />
+            </div>
+            <button type="submit" className="btn btn-outline">Перейти</button>
+          </form>
+        </div>
       </div>
 
-      <div className="search-section">
-        <h2>Поиск по ФИО</h2>
-        <form onSubmit={handleFioSearch}>
-          <input
-            type="text"
-            placeholder="Введите ФИО пациента"
-            value={fioSearch}
-            onChange={(e) => setFioSearch(e.target.value)}
-          />
-          <button type="submit">Найти по ФИО</button>
-        </form>
-      </div>
-
-      <div className="search-section">
-        <h2>Поиск по QR-коду</h2>
-        <form onSubmit={handleQrCodeSearch}>
-          <input
-            type="text"
-            placeholder="Вставьте URL из QR-кода"
-            value={qrCodeInput}
-            onChange={(e) => setQrCodeInput(e.target.value)}
-          />
-          <button type="submit">Перейти по QR</button>
-        </form>
-      </div>
-
-      {loading && <div className="loading">Поиск...</div>}
-      {error && <div className="error">{error}</div>}
+      {loading && <div className="loading-state"><div className="loading-spinner" />Поиск...</div>}
+      {error && <div className="alert alert-error">{error}</div>}
 
       {foundUser && (
-        <div className="found-user-card">
-          <h3>Найденный пациент:</h3>
-          <p>{foundUser.fio} ({foundUser.inn})</p>
-          <Link to={`/users/${foundUser.id}`} className="view-profile-button">Профиль пациента</Link>
+        <div className="card found-card">
+          <div className="found-info">
+            <div className="found-avatar">{foundUser.fio?.charAt(0)}</div>
+            <div>
+              <p className="found-name">{foundUser.fio}</p>
+              <p className="found-inn">ИНН: {foundUser.inn}</p>
+            </div>
+          </div>
+          <Link to={`/users/${foundUser.id}`} className="btn btn-primary">Открыть профиль</Link>
         </div>
       )}
     </div>

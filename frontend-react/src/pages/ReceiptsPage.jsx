@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import receiptService from '../services/receiptService';
 import userService from '../services/userService';
-import './ReceiptsPage.css'; // Создадим этот файл стилей
 
 const ReceiptsPage = () => {
   const [receipts, setReceipts] = useState([]);
@@ -9,57 +8,37 @@ const ReceiptsPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchReceipts = async () => {
-      try {
-        // 1. Получаем данные текущего пользователя, чтобы узнать его ID
-        const userResponse = await userService.getCurrentUser();
-        const userId = userResponse.data.id;
-
-        if (userId) {
-          // 2. Загружаем рецепты для этого пользователя
-          const receiptsResponse = await receiptService.getReceiptsByUserId(userId);
-          setReceipts(receiptsResponse.data);
-        } else {
-          setError('Не удалось определить пользователя.');
-        }
-      } catch (err) {
-        setError('Не удалось загрузить рецепты.');
-        console.error('Fetch receipts error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReceipts();
+    userService.getCurrentUser()
+      .then(res => receiptService.getReceiptsByUserId(res.data.id))
+      .then(res => setReceipts(res.data))
+      .catch(() => setError('Не удалось загрузить рецепты.'))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <div className="loading">Загрузка рецептов...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (loading) return <div className="loading-state"><div className="loading-spinner" />Загрузка...</div>;
+  if (error) return <div className="alert alert-error">{error}</div>;
 
   return (
-    <div className="receipts-container">
-      <h1>Мои Рецепты</h1>
-      {receipts.length > 0 ? (
-        <div className="receipts-list">
-          {receipts.map((receipt) => (
-            <div key={receipt.id} className="receipt-card">
-              <h3>{receipt.name}</h3>
-              <p><strong>Номер:</strong> {receipt.number}</p>
-              <p>{receipt.description}</p>
+    <div>
+      <h1 className="page-title">Мои Рецепты</h1>
+      {receipts.length === 0 ? (
+        <div className="empty-state">Рецептов нет.</div>
+      ) : (
+        <div className="card-list">
+          {receipts.map(r => (
+            <div key={r.id} className="card">
+              <div className="card-header">
+                <h3>{r.name}</h3>
+                {r.number && <span className="badge badge-blue">№{r.number}</span>}
+              </div>
+              <div className="card-body"><p>{r.description}</p></div>
               <div className="card-footer">
-                <span>Выписан: {receipt.userViewDoc ? receipt.userViewDoc.fio : 'Неизвестно'}</span>
-                <span>Дата: {new Date(receipt.dateCreated).toLocaleDateString()}</span>
+                <span>{new Date(r.dateCreated).toLocaleDateString('ru-RU')}</span>
+                {r.userViewDoc && <span> {r.userViewDoc.fio}</span>}
               </div>
             </div>
           ))}
         </div>
-      ) : (
-        <p>У вас пока нет выписанных рецептов.</p>
       )}
     </div>
   );
