@@ -1,5 +1,6 @@
 package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
+import com.example.kyrgyzstancentralmedicalcard.entity.Role;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
@@ -53,6 +54,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByINN(String inn) {
         return userRepository.findByInn(inn).orElseThrow(() -> new RuntimeException("Такого пользователя не существует"));
+    }
+
+    @Override
+    public User assignRole(Long userId, String roleName) {
+        User user = getById(userId);
+        Role role = roleRepository.findByRoleName(roleName)
+                .orElseThrow(() -> new RuntimeException("Роль не найдена: " + roleName));
+        if (user.getRoles().stream().noneMatch(r -> r.getRoleName().equals(roleName))) {
+            user.getRoles().add(role);
+        }
+        return userRepository.save(user);
     }
 
     @Override

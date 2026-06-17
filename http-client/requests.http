@@ -1,38 +1,886 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0RPQ1RPUiJdLCJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNiIsInN1YiI6IjEyMzQ1Njc4OTAxMjM2IiwiaWF0IjoxNzY1NjMwNTI0LCJleHAiOjE3NjU2MzQxMjR9.ydSLps8gX3O1yNwePRWe7bves1UuhgHGlf5HwV_ua90
+### ============================================================
+### ПЕРЕМЕННЫЕ — после логина скопируй token сюда
+### ============================================================
+
+@baseUrl = http://localhost:8080
+@adminToken = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWQiOjEsInVzZXJuYW1lIjoiMTAwMDAwMDAwMDAwMDEiLCJzdWIiOiIxMDAwMDAwMDAwMDAwMSIsImlhdCI6MTc4MTcwMjI4NSwiZXhwIjoxNzgxNzA1ODg1fQ.R3yOTK2sLj2pjLpVyr8uMTo63TUxkn2dNb1Bmg2fVJE
+@doctorToken = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWQiOjIsInVzZXJuYW1lIjoiMTAwMDAwMDAwMDAwMDIiLCJzdWIiOiIxMDAwMDAwMDAwMDAwMiIsImlhdCI6MTc4MTcwMjMwMywiZXhwIjoxNzgxNzA1OTAzfQ.dcUjq3U4G_958hzFp6JxN3591XicfCk0DW8MsaaykFg
+@clinicAdminToken = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWQiOjQsInVzZXJuYW1lIjoiMTAwMDAwMDAwMDAwMDQiLCJzdWIiOiIxMDAwMDAwMDAwMDAwNCIsImlhdCI6MTc4MTcwMjMyMCwiZXhwIjoxNzgxNzA1OTIwfQ.4w4o6kGUHZwW1Dxp2YcmlyMv6-5Yg8ADQt6Ip8anw6c
 
 
+### ============================================================
+### ============================================================
+### ПОЛНЫЙ FLOW ДЛЯ АДМИНА
+### 1. Регистрация пользователя
+### 2. Назначение роли
+### 3. Создание организации
+### 4. Привязка сотрудников
+### ============================================================
 
-
-
-POST http://localhost:8080/api/auth/register
+### Шаг 1: Зарегистрировать нового врача
+POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "inn": "12345678901236",
-  "fio": "Almanbet123",
-  "password": "v",
-  "roleName": "USER"
+  "inn": "30000000000001",
+  "fio": "Новый Врач Тестовый",
+  "password": "doctor123",
+  "gender": "Мужской",
+  "birthDate": "1990-05-15",
+  "emergencyPhone": "+996700111222",
+  "bloodGroup": "A",
+  "rhFactor": "+"
 }
 
+###
 
-### Запрос 2: Вход пользователя (POST /api/auth/login)
+### Шаг 2: Получить ID пользователя
+GET {{baseUrl}}/api/users/get-by-inn?inn=30000000000001
+Authorization: Bearer {{adminToken}}
 
-# Этот запрос использует формат x-www-form-urlencoded
-POST http://localhost:8080/api/auth/login
+###
+
+### Шаг 3: Назначить роль ДОКТОР (замени {id} на реальный ID)
+PUT {{baseUrl}}/api/users/9/assign-role?roleName=DOCTOR
+Authorization: Bearer {{adminToken}}
+
+###
+
+### Другие доступные роли:
+### ADMIN, DOCTOR, CLINIC_ADMIN, COMPANY_HR, NURSE, PHARMACIST
+
+### Назначить роль CLINIC_ADMIN
+PUT {{baseUrl}}/api/users/9/assign-role?roleName=CLINIC_ADMIN
+Authorization: Bearer {{adminToken}}
+
+###
+
+### Шаг 4: Создать организацию
+POST {{baseUrl}}/api/organizations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Новая Клиника",
+  "type": "CLINIC",
+  "bin": "20260617999001",
+  "address": "г. Бишкек",
+  "phone": "+996312999001",
+  "email": "test@clinic.kg",
+  "contractStart": "2026-01-01",
+  "contractEnd": "2027-12-31"
+}
+
+###
+
+### Шаг 5: Привязать сотрудника (замени {orgId} и userId)
+POST {{baseUrl}}/api/organizations/1/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 9,
+  "role": "DOCTOR",
+  "department": "Терапия"
+}
+
+###
+
+### Шаг 6: Добавить диагноз пациенту (doctorToken = токен врача)
+POST {{baseUrl}}/api/diagnosis/create-diagnosis/6
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Гипертония",
+  "description": "Артериальная гипертензия I степени."
+}
+
+###
+
+### Шаг 7: Добавить историю болезни пациенту
+POST {{baseUrl}}/api/history/create-history/6
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Плановый осмотр",
+  "description": "Пациент обратился на плановый осмотр. Жалоб нет."
+}
+
+###
+
+### Шаг 8: Добавить аллергию пациенту
+POST {{baseUrl}}/api/allergies/add-allergie/6
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Пенициллин",
+  "description": "Анафилактическая реакция."
+}
+
+###
+
+### Посмотреть всех пользователей и их ID
+GET {{baseUrl}}/api/users/get-all-users
+Authorization: Bearer {{adminToken}}
+
+###
+
+### Посмотреть сотрудников клиники (org id=1) — проверь есть ли там твой пользователь
+GET {{baseUrl}}/api/organizations/1/staff
+Authorization: Bearer {{adminToken}}
+
+###
+
+### Посмотреть сотрудников работодателя (org id=3)
+GET {{baseUrl}}/api/organizations/3/staff
+Authorization: Bearer {{adminToken}}
+
+###
+
+### ============================================================
+### ИСПРАВЛЕНИЕ — добавь своего пользователя в организацию
+### Замени userId на реальный ID из запроса выше
+### ============================================================
+
+### Добавить CLINIC_ADMIN в клинику (поменяй userId на свой)
+POST {{baseUrl}}/api/organizations/6/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 6,
+  "role": "CLINIC_ADMIN",
+  "department": "Администрация"
+}
+
+###
+
+### Добавить COMPANY_HR в организацию работодателя (поменяй userId на свой)
+POST {{baseUrl}}/api/organizations/6/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 6,
+  "role": "COMPANY_HR",
+  "department": "HR отдел"
+}
+
+###
+
+### ============================================================
+### ПРОВЕРКА после добавления
+### ============================================================
+
+### Дашборд клиники (должен работать без ошибок)
+GET {{baseUrl}}/api/analytics/clinic/my/dashboard
+Authorization: Bearer {{clinicAdminToken}}
+
+###
+
+### Дашборд работодателя (должен работать без ошибок)
+GET {{baseUrl}}/api/analytics/employer/my/dashboard
+Authorization: Bearer {{clinicAdminToken}}
+
+###
+
+### ============================================================
+### 1. РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЕЙ
+### ============================================================
+
+### 1.1 Регистрация ADMIN
+POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "inn": "12345678901236",
-  "password": "Almanbet@ssw0rd123"
+  "inn": "10000000000001",
+  "fio": "Суперадмин Системный",
+  "password": "admin123",
+  "gender": "Мужской",
+  "birthDate": "1980-01-15",
+  "emergencyPhone": "+996700000001",
+  "bloodGroup": "A",
+  "rhFactor": "+"
 }
 
+###
+
+### 1.2 Регистрация DOCTOR 1
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "10000000000002",
+  "fio": "Иванов Александр Кириллович",
+  "password": "doctor123",
+  "gender": "Мужской",
+  "birthDate": "1985-03-22",
+  "emergencyPhone": "+996700000002",
+  "bloodGroup": "B",
+  "rhFactor": "+"
+}
 
 ###
 
-GET http://localhost:8080/api/auth/get-current
-Authorization: Bearer {{token}}
+### 1.3 Регистрация DOCTOR 2
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "10000000000003",
+  "fio": "Петрова Мария Сергеевна",
+  "password": "doctor123",
+  "gender": "Женский",
+  "birthDate": "1990-07-11",
+  "emergencyPhone": "+996700000003",
+  "bloodGroup": "O",
+  "rhFactor": "-"
+}
 
 ###
 
-GET http://localhost:8080/api/allergies/get-all
-Authorization: Bearer {{token}}
+### 1.4 Регистрация CLINIC_ADMIN
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "10000000000004",
+  "fio": "Нурланов Бакыт Асанович",
+  "password": "clinicadmin123",
+  "gender": "Мужской",
+  "birthDate": "1978-11-05",
+  "emergencyPhone": "+996700000004",
+  "bloodGroup": "AB",
+  "rhFactor": "+"
+}
+
+###
+
+### 1.5 Регистрация COMPANY_HR
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "10000000000005",
+  "fio": "Асанова Гульнара Токтосуновна",
+  "password": "hr123",
+  "gender": "Женский",
+  "birthDate": "1988-06-30",
+  "emergencyPhone": "+996700000005",
+  "bloodGroup": "A",
+  "rhFactor": "-"
+}
+
+###
+
+### 1.6 Регистрация PATIENT 1
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "20000000000001",
+  "fio": "Алматов Тимур Бакытбекович",
+  "password": "patient123",
+  "gender": "Мужской",
+  "birthDate": "1995-04-18",
+  "emergencyPhone": "+996770000001",
+  "bloodGroup": "B",
+  "rhFactor": "+"
+}
+
+###
+
+### 1.7 Регистрация PATIENT 2
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "20000000000002",
+  "fio": "Джумабекова Айгерим Эрланбековна",
+  "password": "patient123",
+  "gender": "Женский",
+  "birthDate": "1998-09-25",
+  "emergencyPhone": "+996770000002",
+  "bloodGroup": "A",
+  "rhFactor": "+"
+}
+
+###
+
+### 1.8 Регистрация PATIENT 3
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "20000000000003",
+  "fio": "Кенжебаев Руслан Маратович",
+  "password": "patient123",
+  "gender": "Мужской",
+  "birthDate": "1972-12-03",
+  "emergencyPhone": "+996770000003",
+  "bloodGroup": "O",
+  "rhFactor": "+"
+}
+
+###
+
+### ============================================================
+### 2. ЛОГИН — скопируй token в переменные вверху
+### ============================================================
+
+### 2.1 Логин ADMIN
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "inn": "10000000000001",
+  "password": "admin123"
+}
+
+###
+
+### 2.2 Логин DOCTOR
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "inn": "10000000000002",
+  "password": "doctor123"
+}
+
+###
+
+### 2.3 Логин CLINIC_ADMIN
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "inn": "10000000000004",
+  "password": "clinicadmin123"
+}
+
+###
+
+### ============================================================
+### 3. НАЗНАЧЕНИЕ РОЛЕЙ (выполни SQL напрямую в БД или через ADMIN)
+### SQL:
+### UPDATE users SET id=id WHERE inn='10000000000001'; -- уже есть
+### INSERT INTO m2m_users_roles(user_id, role_id) SELECT u.id, r.id FROM users u, roles r WHERE u.inn='10000000000001' AND r.role_name='ADMIN';
+### INSERT INTO m2m_users_roles(user_id, role_id) SELECT u.id, r.id FROM users u, roles r WHERE u.inn='10000000000002' AND r.role_name='DOCTOR';
+### INSERT INTO m2m_users_roles(user_id, role_id) SELECT u.id, r.id FROM users u, roles r WHERE u.inn='10000000000003' AND r.role_name='DOCTOR';
+### INSERT INTO m2m_users_roles(user_id, role_id) SELECT u.id, r.id FROM users u, roles r WHERE u.inn='10000000000004' AND r.role_name='CLINIC_ADMIN';
+### INSERT INTO m2m_users_roles(user_id, role_id) SELECT u.id, r.id FROM users u, roles r WHERE u.inn='10000000000005' AND r.role_name='COMPANY_HR';
+### ============================================================
+
+
+### ============================================================
+### 4. ОРГАНИЗАЦИИ (нужен adminToken)
+### ============================================================
+
+### 4.1 Создать клинику МЦ Академик
+POST {{baseUrl}}/api/organizations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "МЦ Академик",
+  "type": "CLINIC",
+  "bin": "20230615001001",
+  "address": "г. Бишкек, ул. Манаса, 40",
+  "phone": "+996312600001",
+  "email": "info@akademik.kg",
+  "contractStart": "2025-01-01",
+  "contractEnd": "2026-12-31"
+}
+
+###
+
+### 4.2 Создать клинику МЦ Здоровье
+POST {{baseUrl}}/api/organizations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "МЦ Здоровье",
+  "type": "CLINIC",
+  "bin": "20230615001002",
+  "address": "г. Бишкек, ул. Токтогула, 215",
+  "phone": "+996312600002",
+  "email": "info@zdorove.kg",
+  "contractStart": "2025-03-01",
+  "contractEnd": "2026-12-31"
+}
+
+###
+
+### 4.3 Создать работодателя Кумтор Голд
+POST {{baseUrl}}/api/organizations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Кумтор Голд Компани",
+  "type": "EMPLOYER",
+  "bin": "20230615002001",
+  "address": "г. Бишкек, ул. Эркиндик, 21",
+  "phone": "+996312700001",
+  "email": "hr@kumtor.kg",
+  "contractStart": "2025-01-01",
+  "contractEnd": "2027-12-31"
+}
+
+###
+
+### 4.4 Создать работодателя Альфа-Телеком
+POST {{baseUrl}}/api/organizations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Альфа-Телеком",
+  "type": "EMPLOYER",
+  "bin": "20230615002002",
+  "address": "г. Бишкек, ул. Чуй, 114",
+  "phone": "+996312700002",
+  "email": "hr@alfa.kg",
+  "contractStart": "2025-06-01",
+  "contractEnd": "2026-12-31"
+}
+
+###
+
+### ============================================================
+### 5. ДОБАВЛЕНИЕ СОТРУДНИКОВ В ОРГАНИЗАЦИЮ
+### id врача (user_id) — смотри в БД после регистрации
+### ============================================================
+
+### 5.1 Добавить врача Иванова в МЦ Академик (org id=1, user id=2)
+POST {{baseUrl}}/api/organizations/1/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 2,
+  "role": "DOCTOR",
+  "department": "Кардиология"
+}
+
+###
+
+### 5.2 Добавить врача Петрову в МЦ Академик (org id=1, user id=3)
+POST {{baseUrl}}/api/organizations/1/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 3,
+  "role": "DOCTOR",
+  "department": "Терапия"
+}
+
+###
+
+### 5.3 Добавить CLINIC_ADMIN Нурланова в МЦ Академик (org id=1, user id=4)
+POST {{baseUrl}}/api/organizations/1/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 4,
+  "role": "CLINIC_ADMIN",
+  "department": "Администрация"
+}
+
+###
+
+### 5.4 Добавить HR Асанову в Кумтор (org id=3, user id=5)
+POST {{baseUrl}}/api/organizations/3/staff
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "userId": 5,
+  "role": "COMPANY_HR",
+  "department": "HR отдел"
+}
+
+###
+
+### ============================================================
+### 6. СОГЛАСИЯ ПАЦИЕНТОВ
+### patientId — смотри в БД (пациент 1 = user_id 6, пациент 2 = 7, пациент 3 = 8)
+### ============================================================
+
+### 6.1 Пациент 1 даёт согласие клинике МЦ Академик
+POST {{baseUrl}}/api/patients/6/consents
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "organizationId": 1,
+  "consentType": "FULL_ACCESS",
+  "expiresAt": null
+}
+
+###
+
+### 6.2 Пациент 2 даёт согласие клинике МЦ Академик
+POST {{baseUrl}}/api/patients/7/consents
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "organizationId": 1,
+  "consentType": "READ_ONLY",
+  "expiresAt": "2026-12-31T23:59:59"
+}
+
+###
+
+### 6.3 Пациент 3 даёт согласие обеим клиникам
+POST {{baseUrl}}/api/patients/8/consents
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "organizationId": 1,
+  "consentType": "FULL_ACCESS",
+  "expiresAt": null
+}
+
+###
+
+POST {{baseUrl}}/api/patients/8/consents
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "organizationId": 2,
+  "consentType": "EMERGENCY_ONLY",
+  "expiresAt": null
+}
+
+###
+
+### 6.4 Пациент 1 даёт согласие работодателю Кумтор
+POST {{baseUrl}}/api/patients/6/consents
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "organizationId": 3,
+  "consentType": "READ_ONLY",
+  "expiresAt": null
+}
+
+###
+
+### ============================================================
+### 7. МЕДИЦИНСКИЕ ВИЗИТЫ
+### doctor_id — organization_user_id (не user_id!), смотри в БД
+### ============================================================
+
+### 7.1 Визит пациента 1 к врачу Иванову (org_user_id=1, clinic_id=1)
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 6,
+  "clinicId": 1,
+  "doctorId": 1,
+  "visitDate": "2026-01-10T10:00:00",
+  "visitType": "CONSULTATION",
+  "chiefComplaint": "Боли в груди, одышка при физической нагрузке",
+  "diagnosisPrimary": "I10",
+  "diagnosisSecondary": "Гипертоническая болезнь I степени",
+  "treatmentPlan": "Лозартан 50 мг, контроль АД, диета",
+  "notes": "Рекомендован повторный осмотр через 1 месяц",
+  "durationMinutes": 30,
+  "cost": 1500.00
+}
+
+###
+
+### 7.2 Визит пациента 1 — повторный
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 6,
+  "clinicId": 1,
+  "doctorId": 1,
+  "visitDate": "2026-02-15T11:30:00",
+  "visitType": "CHECKUP",
+  "chiefComplaint": "Плановый осмотр",
+  "diagnosisPrimary": "I10",
+  "diagnosisSecondary": "",
+  "treatmentPlan": "Продолжить терапию Лозартаном",
+  "notes": "АД нормализовалось",
+  "durationMinutes": 20,
+  "cost": 800.00
+}
+
+###
+
+### 7.3 Визит пациента 2 к врачу Петровой (org_user_id=2, clinic_id=1)
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 7,
+  "clinicId": 1,
+  "doctorId": 2,
+  "visitDate": "2026-01-20T09:00:00",
+  "visitType": "CONSULTATION",
+  "chiefComplaint": "Насморк, кашель, температура 37.8",
+  "diagnosisPrimary": "J06.9",
+  "diagnosisSecondary": "",
+  "treatmentPlan": "Парацетамол 500 мг, обильное питьё, постельный режим",
+  "notes": "Больничный лист на 5 дней",
+  "durationMinutes": 25,
+  "cost": 1200.00
+}
+
+###
+
+### 7.4 Визит пациента 2 — второй
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 7,
+  "clinicId": 1,
+  "doctorId": 2,
+  "visitDate": "2026-03-05T14:00:00",
+  "visitType": "CONSULTATION",
+  "chiefComplaint": "Головная боль, слабость",
+  "diagnosisPrimary": "G43.9",
+  "diagnosisSecondary": "Мигрень без ауры",
+  "treatmentPlan": "Суматриптан 50 мг при приступе",
+  "notes": "МРТ головного мозга — без патологии",
+  "durationMinutes": 40,
+  "cost": 2000.00
+}
+
+###
+
+### 7.5 Визит пациента 3 к врачу Иванову
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 8,
+  "clinicId": 1,
+  "doctorId": 1,
+  "visitDate": "2026-02-01T08:30:00",
+  "visitType": "PROCEDURE",
+  "chiefComplaint": "Боль в суставах колена",
+  "diagnosisPrimary": "M17.1",
+  "diagnosisSecondary": "Гонартроз правого колена",
+  "treatmentPlan": "Физиотерапия 10 сеансов, Диклофенак гель",
+  "notes": "Назначено ЛФК",
+  "durationMinutes": 45,
+  "cost": 3500.00
+}
+
+###
+
+### 7.6 Экстренный визит пациента 3
+POST {{baseUrl}}/api/visits
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "patientId": 8,
+  "clinicId": 1,
+  "doctorId": 2,
+  "visitDate": "2026-04-12T22:15:00",
+  "visitType": "EMERGENCY",
+  "chiefComplaint": "Резкая боль в животе",
+  "diagnosisPrimary": "K35.8",
+  "diagnosisSecondary": "Острый аппендицит",
+  "treatmentPlan": "Экстренная аппендэктомия",
+  "notes": "Госпитализирован",
+  "durationMinutes": 90,
+  "cost": 25000.00
+}
+
+###
+
+### ============================================================
+### 8. АЛЛЕРГИИ (нужен doctorToken)
+### ============================================================
+
+### 8.1 Аллергия у пациента 1
+POST {{baseUrl}}/api/allergies/add-allergie/6
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Пенициллин",
+  "description": "Анафилактическая реакция на пенициллиновые антибиотики. Альтернатива: макролиды."
+}
+
+###
+
+### 8.2 Аллергия у пациента 2
+POST {{baseUrl}}/api/allergies/add-allergie/7
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Пыльца берёзы",
+  "description": "Сезонный аллергический ринит. Пик: апрель-май. Назначен Лоратадин."
+}
+
+###
+
+### 8.3 Ещё аллергия у пациента 3
+POST {{baseUrl}}/api/allergies/add-allergie/8
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Ибупрофен",
+  "description": "Крапивница и отёк Квинке при приёме НПВС. Исключить все НПВС."
+}
+
+###
+
+### ============================================================
+### 9. ДИАГНОЗЫ (нужен doctorToken)
+### ============================================================
+
+### 9.1 Диагноз пациенту 1
+POST {{baseUrl}}/api/diagnosis/create-diagnosis/6
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Гипертоническая болезнь",
+  "description": "Артериальная гипертензия I степени. АД 145/90 мм рт.ст. Находится под наблюдением."
+}
+
+###
+
+### 9.2 Диагноз пациенту 2
+POST {{baseUrl}}/api/diagnosis/create-diagnosis/7
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Мигрень",
+  "description": "Мигрень без ауры. Приступы 2-3 раза в месяц, длительностью до 8 часов."
+}
+
+###
+
+### 9.3 Диагноз пациенту 3
+POST {{baseUrl}}/api/diagnosis/create-diagnosis/8
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Гонартроз",
+  "description": "Гонартроз правого коленного сустава II степени. Рентген подтверждён."
+}
+
+###
+
+### ============================================================
+### 10. ИСТОРИИ БОЛЕЗНЕЙ (нужен doctorToken)
+### ============================================================
+
+### 10.1 История болезни пациента 1
+POST {{baseUrl}}/api/history/create-history/6
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Гипертонический криз",
+  "description": "Пациент поступил с АД 180/110. Купирован Каптоприлом. Выписан под наблюдение участкового врача."
+}
+
+###
+
+### 10.2 История болезни пациента 2
+POST {{baseUrl}}/api/history/create-history/7
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "ОРВИ",
+  "description": "Острая респираторная вирусная инфекция. Лечение симптоматическое. Выздоровление через 7 дней."
+}
+
+###
+
+### 10.3 История болезни пациента 3
+POST {{baseUrl}}/api/history/create-history/8
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "name": "Аппендэктомия",
+  "description": "Экстренная операция по поводу острого аппендицита. Послеоперационный период без осложнений. Выписан на 5-е сутки."
+}
+
+###
+
+### ============================================================
+### 11. ПРОВЕРКА АНАЛИТИКИ
+### ============================================================
+
+### 11.1 Дашборд клиники МЦ Академик
+GET {{baseUrl}}/api/analytics/clinic/1/dashboard?from=2026-01-01T00:00:00&to=2026-12-31T23:59:59
+Authorization: Bearer {{clinicAdminToken}}
+
+###
+
+### 11.2 Дашборд работодателя Кумтор
+GET {{baseUrl}}/api/analytics/employer/3/dashboard?from=2026-01-01T00:00:00&to=2026-12-31T23:59:59
+Authorization: Bearer {{clinicAdminToken}}
+
+###
+
+### ============================================================
+### 12. ПРОВЕРОЧНЫЕ GET-запросы
+### ============================================================
+
+### 12.1 Список согласий пациента 1
+GET {{baseUrl}}/api/patients/6/consents
+Authorization: Bearer {{adminToken}}
+
+###
+
+### 12.2 Визиты пациента 1
+GET {{baseUrl}}/api/patients/6/visits
+Authorization: Bearer {{adminToken}}
+
+###
+
+### 12.3 Все визиты клиники МЦ Академик
+GET {{baseUrl}}/api/organizations/1/visits
+Authorization: Bearer {{clinicAdminToken}}
+
+###
+
+### 12.4 Сотрудники клиники МЦ Академик
+GET {{baseUrl}}/api/organizations/1/staff
+Authorization: Bearer {{adminToken}}
+
+###
+
+### 12.5 Профиль организации
+GET {{baseUrl}}/api/organizations/1
+Authorization: Bearer {{adminToken}}
+
+###

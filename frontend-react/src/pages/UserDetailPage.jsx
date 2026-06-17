@@ -47,6 +47,9 @@ const UserDetailPage = () => {
             <Link to={`/users/${user.id}/create-allergie`} className="btn btn-primary">
               Добавить аллергию
             </Link>
+            <Link to={`/users/${user.id}/create-visit`} className="btn btn-primary">
+              Создать визит
+            </Link>
           </div>
         </div>
       )}

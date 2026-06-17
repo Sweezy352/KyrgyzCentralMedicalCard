@@ -35,4 +35,9 @@ public class UserController {
     public ResponseEntity<UserResponse> getByInn(@RequestParam("inn") String inn){
         return ResponseEntity.ok(userMapper.toResponse(userService.getByINN(inn)));
     }
+
+    @PutMapping("/{id}/assign-role")
+    public ResponseEntity<UserResponse> assignRole(@PathVariable Long id, @RequestParam String roleName){
+        return ResponseEntity.ok(userMapper.toResponse(userService.assignRole(id, roleName)));
+    }
 }

@@ -16,7 +16,11 @@ import UserDetailPage from './pages/UserDetailPage';
 import CreateHistoryPage from './pages/CreateHistoryPage';
 import CreateDiagnosisPage from './pages/CreateDiagnosisPage';
 import DiagnosesPage from './pages/DiagnosesPage';
-import CreateAllergiePage from './pages/CreateAllergiePage'; // Импортируем CreateAllergiePage
+import CreateAllergiePage from './pages/CreateAllergiePage';
+import ConsentsPage from './pages/ConsentsPage';
+import CreateVisitPage from './pages/CreateVisitPage';
+import ClinicDashboardPage from './pages/ClinicDashboardPage';
+import EmployerDashboardPage from './pages/EmployerDashboardPage';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -42,7 +46,11 @@ function App() {
             <Route path="/users/:id" element={<UserDetailPage />} />
             <Route path="/users/:id/create-history" element={<CreateHistoryPage />} />
             <Route path="/users/:id/create-diagnosis" element={<CreateDiagnosisPage />} />
-            <Route path="/users/:id/create-allergie" element={<CreateAllergiePage />} /> {/* Добавляем маршрут */}
+            <Route path="/users/:id/create-allergie" element={<CreateAllergiePage />} />
+            <Route path="/users/:id/create-visit" element={<CreateVisitPage />} />
+            <Route path="/consents" element={<ConsentsPage />} />
+            <Route path="/dashboard/clinic" element={<ClinicDashboardPage />} />
+            <Route path="/dashboard/employer" element={<EmployerDashboardPage />} />
           </Route>
         </Route>
 
