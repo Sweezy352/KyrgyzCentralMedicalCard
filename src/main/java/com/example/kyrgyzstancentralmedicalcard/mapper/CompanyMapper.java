@@ -4,42 +4,27 @@ import com.example.kyrgyzstancentralmedicalcard.dto.request.CompanyRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.CompanyResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.Company;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
+@Mapper(componentModel = "spring")
+public abstract class CompanyMapper {
 
-@Component
-public class CompanyMapper {
+    @Autowired
+    protected UserRepository userRepository;
 
-    private final UserRepository userRepository;
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "histories", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    public abstract Company toEntity(CompanyRequest request);
 
-    public CompanyMapper(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @AfterMapping
+    protected void setUser(CompanyRequest request, @MappingTarget Company company) {
+        company.setUser(userRepository.findById(request.userId()).orElseThrow());
     }
 
-    public Company toEntity(CompanyRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return Company.builder()
-                .companyName(request.getCompanyName())
-                .description(request.getDescription())
-                .user(userRepository.findById(request.getUserId()).get())
-                .build();
-    }
-
-    public CompanyResponse toDto(Company entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return CompanyResponse.builder()
-                .id(entity.getId())
-                .companyName(entity.getCompanyName())
-                .description(entity.getDescription())
-                .userId(entity.getUser().getId())
-                .dateCreated(entity.getDateCreated())
-                .build();
-    }
+    @Mapping(target = "userId", expression = "java(entity.getUser().getId())")
+    public abstract CompanyResponse toDto(Company entity);
 }

@@ -3,29 +3,13 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.MedicineInsuranceRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.MedicineInsuranceResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.MedicineInsurance;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
-@Component
-public class MedicineInsuranceMapper {
+@Mapper(componentModel = "spring")
+public abstract class MedicineInsuranceMapper {
 
-    public MedicineInsurance toEntity(MedicineInsuranceRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-        return MedicineInsurance.builder()
-                .insuranceName(request.getInsuranceName())
-                .price(request.getPrice())
-                .build();
-    }
+    @Mapping(target = "id", ignore = true)
+    public abstract MedicineInsurance toEntity(MedicineInsuranceRequest request);
 
-    public MedicineInsuranceResponse toResponse(MedicineInsurance entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-        return MedicineInsuranceResponse.builder()
-                .id(entity.getId())
-                .insuranceName(entity.getInsuranceName())
-                .price(entity.getPrice())
-                .build();
-    }
+    public abstract MedicineInsuranceResponse toResponse(MedicineInsurance entity);
 }

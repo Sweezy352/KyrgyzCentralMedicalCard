@@ -28,8 +28,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){ // Изменено на LoginResponse
-        return new ResponseEntity<>(authService.login(request.getInn(), request.getPassword()), HttpStatus.OK);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
+        return new ResponseEntity<>(authService.login(request.inn(), request.password()), HttpStatus.OK);
     }
 
     @PostMapping("/register")

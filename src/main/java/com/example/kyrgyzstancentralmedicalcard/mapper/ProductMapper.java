@@ -4,41 +4,26 @@ import com.example.kyrgyzstancentralmedicalcard.dto.request.ProductRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.ProductResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.Product;
 import com.example.kyrgyzstancentralmedicalcard.repository.CompanyRepository;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ProductMapper {
-    private final CompanyRepository companyRepository;
+@Mapper(componentModel = "spring")
+public abstract class ProductMapper {
 
     @Autowired
-    public ProductMapper(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    protected CompanyRepository companyRepository;
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "company", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "dateUpdated", ignore = true)
+    public abstract Product toEntity(ProductRequest request);
+
+    @AfterMapping
+    protected void setCompany(ProductRequest request, @MappingTarget Product product) {
+        product.setCompany(companyRepository.findById(request.companyId()).orElseThrow());
     }
 
-    public Product toEntity(ProductRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return Product.builder()
-                .productName(request.getProductName())
-                .amount(request.getAmount())
-                .company(companyRepository.findById(request.getCompanyId()).get())
-                .build();
-    }
-
-    public ProductResponse toDto(Product entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-        return ProductResponse.builder()
-                .id(entity.getId())
-                .productName(entity.getProductName())
-                .amount(entity.getAmount())
-                .dateCreated(entity.getDateCreated())
-                .dateUpdated(entity.getDateUpdated())
-                .companyId(entity.getCompany().getId())
-                .build();
-    }
+    @Mapping(target = "companyId", expression = "java(entity.getCompany().getId())")
+    public abstract ProductResponse toDto(Product entity);
 }

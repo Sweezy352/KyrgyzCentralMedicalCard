@@ -52,10 +52,7 @@ public class AuthServiceImpl implements AuthService {
                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                 .collect(Collectors.toList());
 
-        return LoginResponse.builder()
-                .token(jwt)
-                .roles(roles)
-                .build();
+        return new LoginResponse(jwt, roles);
     }
 
     @Override

@@ -1,40 +1,27 @@
 package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.AllergieDtoRequest;
-import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.AllergieDtoResponse;
+import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView;
 import com.example.kyrgyzstancentralmedicalcard.entity.AllergieEntity;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Component
-@RequiredArgsConstructor
-public class AllergieMapper {
-    private final UserMapper userMapper;
+@Mapper(componentModel = "spring")
+public abstract class AllergieMapper {
 
-    public AllergieEntity toEntity(AllergieDtoRequest request){
-        if(request == null){
-            throw new IllegalArgumentException("Проблема");
-        }
+    @Autowired
+    protected UserMapper userMapper;
 
-        return AllergieEntity.builder().name(request.getName()).description(request.getDescription()).build();
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "doctor", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "dateUpdated", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    public abstract AllergieEntity toEntity(AllergieDtoRequest request);
 
-    public AllergieDtoResponse toDtoResponse(AllergieEntity entity){
-        if(entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return AllergieDtoResponse
-                .builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .userViewDoc(userMapper.toView(entity.getUser()))
-                .dateCreated(entity.getDateCreated())
-                .dateUpdated(entity.getDateUpdated())
-                .status(entity.getStatus())
-                .build();
-    }
+    @Mapping(target = "userViewDoc", expression = "java(userMapper.toView(entity.getUser()))")
+    public abstract AllergieDtoResponse toDtoResponse(AllergieEntity entity);
 }

@@ -1,39 +1,24 @@
 package com.example.kyrgyzstancentralmedicalcard.mapper;
 
-import com.example.kyrgyzstancentralmedicalcard.dto.request.ProductRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.ReceiptDtoRequest;
-import com.example.kyrgyzstancentralmedicalcard.dto.response.ProductResponse;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.ReceiptDtoResponse;
-import com.example.kyrgyzstancentralmedicalcard.entity.Product;
 import com.example.kyrgyzstancentralmedicalcard.entity.Receipt;
-import com.example.kyrgyzstancentralmedicalcard.repository.ReceiptRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Component
-@RequiredArgsConstructor
-public class ReceiptMapper {
-    private final ReceiptRepository receiptRepository;
-    private final UserMapper userMapper;
+@Mapper(componentModel = "spring")
+public abstract class ReceiptMapper {
 
-    public Receipt toEntity(ReceiptDtoRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
+    @Autowired
+    protected UserMapper userMapper;
 
-        return Receipt.builder().name(request.getName()).description(request.getDescription()).build();
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "doctor", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "number", ignore = true)
+    public abstract Receipt toEntity(ReceiptDtoRequest request);
 
-    public ReceiptDtoResponse toDto(Receipt entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-        return ReceiptDtoResponse.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .userViewDoc(userMapper.toView(entity.getDoctor()))
-                .dateCreated(entity.getDateCreated())
-                .build();
-    }
+    @Mapping(target = "userViewDoc", expression = "java(userMapper.toView(entity.getDoctor()))")
+    public abstract ReceiptDtoResponse toDto(Receipt entity);
 }

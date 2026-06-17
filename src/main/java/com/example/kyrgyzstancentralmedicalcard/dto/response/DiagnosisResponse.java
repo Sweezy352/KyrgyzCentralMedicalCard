@@ -1,22 +1,16 @@
 package com.example.kyrgyzstancentralmedicalcard.dto.response;
 
-import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView; // Импортируем UserView
-import lombok.*;
+import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class DiagnosisResponse {
-    private Long id;
-    private String name;
-    private String description;
-    private Long userId;
-    private UserView userDoc; // Изменено с Long userDocId на UserView userDoc
-    private LocalDate dateCreated;
-    private LocalDate dateUpdated;
-    private String status;
-}
+public record DiagnosisResponse(
+        Long id,
+        String name,
+        String description,
+        Long userId,
+        UserView userDoc,
+        LocalDate dateCreated,
+        LocalDate dateUpdated,
+        String status
+) {}
