@@ -3,48 +3,24 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.DiagnosisRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.DiagnosisResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.Diagnosis;
-import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public abstract class DiagnosisMapper {
 
-@Component
-public class DiagnosisMapper {
+    @Autowired
+    protected UserMapper userMapper;
 
-    private final UserRepository userRepository;
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "userDoc", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "dateUpdated", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    public abstract Diagnosis toEntity(DiagnosisRequest request);
 
-    public DiagnosisMapper(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public Diagnosis toEntity(DiagnosisRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return Diagnosis.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .user(userRepository.findById(request.getUserId()).get())
-                //Сам доктор будет проверять, поэтому будем брать состояние пользователя из SecurityContext
-                //Status будет выставляться автоматически ACTUAL
-                .build();
-    }
-
-    public DiagnosisResponse toDto(Diagnosis entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        return DiagnosisResponse.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .userId(entity.getUser().getId())
-                .userDocId(entity.getUserDoc().getId())
-                .dateCreated(entity.getDateCreated())
-                .dateUpdated(entity.getDateUpdated())
-                .status(entity.getStatus())
-                .build();
-    }
+    @Mapping(target = "userId", expression = "java(entity.getUser().getId())")
+    @Mapping(target = "userDoc", expression = "java(userMapper.toView(entity.getUserDoc()))")
+    public abstract DiagnosisResponse toDto(Diagnosis entity);
 }

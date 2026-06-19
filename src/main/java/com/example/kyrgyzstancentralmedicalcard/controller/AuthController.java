@@ -2,6 +2,7 @@ package com.example.kyrgyzstancentralmedicalcard.controller;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.LoginRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
+import com.example.kyrgyzstancentralmedicalcard.dto.response.LoginResponse; // Импортируем LoginResponse
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.mapper.UserMapper;
@@ -27,8 +28,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        return new ResponseEntity<>(authService.login(request.getInn(), request.getPassword()), HttpStatus.OK);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
+        return new ResponseEntity<>(authService.login(request.inn(), request.password()), HttpStatus.OK);
     }
 
     @PostMapping("/register")

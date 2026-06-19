@@ -3,6 +3,7 @@ package com.example.kyrgyzstancentralmedicalcard.services.impl;
 import com.example.kyrgyzstancentralmedicalcard.entity.Diagnosis;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.repository.DiagnosisRepository;
+import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.DiagnosisService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiagnosisServiceImpl implements DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
+    private final UserRepository userRepository;
     private final AuthService authService;
 
     @Override
@@ -22,8 +24,10 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public Diagnosis createDiagnosis(Diagnosis diagnosis) {
+    public Diagnosis createDiagnosis(Diagnosis diagnosis, Long id) {
         User userDoc = authService.getCurrentUser();
+        User client = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        diagnosis.setUser(client);
         diagnosis.setUserDoc(userDoc);
         return diagnosisRepository.save(diagnosis);
     }
@@ -39,7 +43,16 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public Diagnosis updateDiagnosis(Diagnosis diagnosis) {
-        return diagnosisRepository.save(diagnosis);
+    public Diagnosis updateDiagnosis(Diagnosis diagnosis, Long id) {
+        Diagnosis diagnosis1 = diagnosisRepository.findById(id).orElseThrow(() -> new RuntimeException("Такой диагноз не найден"));
+        diagnosis1.setName(diagnosis.getName());
+        diagnosis1.setDescription(diagnosis.getDescription());
+        return diagnosisRepository.save(diagnosis1);
+    }
+
+    @Override
+    public List<Diagnosis> getAllDiagnosesByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return diagnosisRepository.findAllByUser(user);
     }
 }

@@ -15,3 +15,5 @@ CREATE TABLE receipts(
     doctor_id bigint references users(id),
     date_created DATE default now()
 );
+
+ALTER TABLE user_insurances ADD COLUMN active boolean default true;

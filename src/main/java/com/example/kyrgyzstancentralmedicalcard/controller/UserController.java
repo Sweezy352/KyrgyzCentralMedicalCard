@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toResponse(userService.getById(id)));
     }
 
-    @GetMapping("/get-by-fio}")
+    @GetMapping("/get-by-fio")
     public ResponseEntity<UserResponse> getByFIO(@RequestParam("fio") String fio){
         return ResponseEntity.ok(userMapper.toResponse(userService.getByFIO(fio)));
     }
@@ -34,5 +34,10 @@ public class UserController {
     @GetMapping("/get-by-inn")
     public ResponseEntity<UserResponse> getByInn(@RequestParam("inn") String inn){
         return ResponseEntity.ok(userMapper.toResponse(userService.getByINN(inn)));
+    }
+
+    @PutMapping("/{id}/assign-role")
+    public ResponseEntity<UserResponse> assignRole(@PathVariable Long id, @RequestParam String roleName){
+        return ResponseEntity.ok(userMapper.toResponse(userService.assignRole(id, roleName)));
     }
 }

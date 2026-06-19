@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,21 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String gender;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "emergency_phone")
+    private String emergencyPhone;
+
+    @Column(name = "blood_group")
+    private String bloodGroup;
+
+    @Column(name = "rh_factor")
+    private String rhFactor;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "m2m_users_roles",
@@ -32,13 +48,22 @@ public class User extends BaseEntity{
     )
     private List<Role> roles;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
-    private Company company;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<History> histories;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userDoc")
     private List<History> historiesDoc;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Receipt> receipts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    private List<Receipt> receiptsDoctor;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<AllergieEntity> allergieEntities;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    private List<AllergieEntity> allergieEntitiesDoctors;
 }

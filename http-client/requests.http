@@ -1,29 +1,156 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwMTIzNCIsInN1YiI6IjEyMzQ1Njc4OTAxMjM0IiwiaWF0IjoxNzY1NDc3MzUxLCJleHAiOjE3NjU0Nzc0MTF9.e1yU--jEf0qkzqyFa1ur1ws8zommQ_jjIz3kJTiAT2U
+@baseUrl = http://localhost:8080
+@token = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWQiOjEsInVzZXJuYW1lIjoiMTAxMDEwMTAxMDEwMDEiLCJzdWIiOiIxMDEwMTAxMDEwMTAwMSIsImlhdCI6MTc4MTg0ODk0NiwiZXhwIjoxNzgxODUyNTQ2fQ.WdKD0B6zm0Wo1uRJq9QXEW1b5QxSiDT_lwzXl2eMayc
 
+###
+
+### 1. Регистрация пациента 1
 POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "inn": "12345678901234",
-  "fio": "Test User",
-  "password": "SecureP@ssw0rd123",
-  "roleName": "ADMIN"
+  "inn": "10101010101001",
+  "fio": "Асанов Марат Бекович",
+  "password": "password123",
+  "gender": "MALE",
+  "birthDate": "1990-05-15",
+  "emergencyPhone": "+996700111001",
+  "bloodGroup": "A",
+  "rhFactor": "+"
 }
 
+###
 
-### Запрос 2: Вход пользователя (POST /api/auth/login)
+### 2. Регистрация пациента 2
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
 
-# Этот запрос использует формат x-www-form-urlencoded
+{
+  "inn": "10101010101002",
+  "fio": "Бекова Айгуль Токтосуновна",
+  "password": "password123",
+  "gender": "FEMALE",
+  "birthDate": "1985-11-22",
+  "emergencyPhone": "+996700111002",
+  "bloodGroup": "B",
+  "rhFactor": "-"
+}
+
+###
+
+### 3. Регистрация пациента 3
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "10101010101003",
+  "fio": "Джумабеков Тимур Алиевич",
+  "password": "password123",
+  "gender": "MALE",
+  "birthDate": "1978-03-07",
+  "emergencyPhone": "+996700111003",
+  "bloodGroup": "O",
+  "rhFactor": "+"
+}
+
+###
+
+### 4. Регистрация врача 1
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "20202020202001",
+  "fio": "Иванов Алексей Константинович",
+  "password": "doctor123",
+  "gender": "MALE",
+  "birthDate": "1980-06-10",
+  "emergencyPhone": "+996700222001",
+  "bloodGroup": "AB",
+  "rhFactor": "+"
+}
+
+###
+
+### 5. Регистрация врача 2
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "20202020202002",
+  "fio": "Сейткали Динара Ержановна",
+  "password": "doctor123",
+  "gender": "FEMALE",
+  "birthDate": "1987-09-30",
+  "emergencyPhone": "+996700222002",
+  "bloodGroup": "A",
+  "rhFactor": "-"
+}
+
+###
+
+### 6. Регистрация CLINIC_ADMIN
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "30303030303001",
+  "fio": "Мамытбеков Нурлан Асанович",
+  "password": "admin123",
+  "gender": "MALE",
+  "birthDate": "1975-01-20",
+  "emergencyPhone": "+996700333001",
+  "bloodGroup": "B",
+  "rhFactor": "+"
+}
+
+###
+
+### 7. Регистрация COMPANY_HR
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "inn": "40404040404001",
+  "fio": "Токтоматова Жылдыз Бакытовна",
+  "password": "hr123",
+  "gender": "FEMALE",
+  "birthDate": "1988-07-14",
+  "emergencyPhone": "+996700444001",
+  "bloodGroup": "O",
+  "rhFactor": "-"
+}
+
+###
+
+### 8. Логин (получить JWT-токен)
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "inn": "12345678901234",
-  "password": "SecureP@ssw0rd123"
+  "inn": "10101010101001",
+  "password": "password123"
 }
-
 
 ###
 
-GET http://localhost:8080/api/auth/get-current
+### 15. Назначить роль DOCTOR пользователю (id=4)
+PUT http://localhost:8080/api/users/4/assign-role?roleName=DOCTOR
+Authorization: Bearer {{token}}
+
+###
+
+### 16. Назначить роль DOCTOR пользователю (id=5)
+PUT http://localhost:8080/api/users/5/assign-role?roleName=DOCTOR
+Authorization: Bearer {{token}}
+
+###
+
+### 17. Назначить роль CLINIC_ADMIN пользователю (id=6)
+PUT http://localhost:8080/api/users/6/assign-role?roleName=CLINIC_ADMIN
+Authorization: Bearer {{token}}
+
+###
+
+### 18. Назначить роль COMPANY_HR пользователю (id=7)
+PUT http://localhost:8080/api/users/7/assign-role?roleName=COMPANY_HR
 Authorization: Bearer {{token}}

@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS news_picture_files(
     id bigserial primary key,
     original_file_name varchar not null unique,
     mime_type varchar not null,
-    path varchar not null,
     news_id bigint references news(id)
 );
 

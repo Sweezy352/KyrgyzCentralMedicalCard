@@ -1,13 +1,14 @@
 package com.example.kyrgyzstancentralmedicalcard.dto.response;
 
-import lombok.*;
+import java.time.LocalDate;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserResponse {
-    private Long id;
-    private String fio;
-}
+public record UserResponse(
+        Long id,
+        String fio,
+        String inn,
+        String gender,
+        LocalDate birthDate,
+        String emergencyPhone,
+        String bloodGroup,
+        String rhFactor
+) {}

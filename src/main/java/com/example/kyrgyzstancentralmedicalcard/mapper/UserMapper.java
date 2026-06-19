@@ -2,41 +2,25 @@ package com.example.kyrgyzstancentralmedicalcard.mapper;
 
 import com.example.kyrgyzstancentralmedicalcard.dto.request.UserRequest;
 import com.example.kyrgyzstancentralmedicalcard.dto.response.UserResponse;
+import com.example.kyrgyzstancentralmedicalcard.dto.view.UserView;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
-import com.example.kyrgyzstancentralmedicalcard.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
-@Component
-public class UserMapper {
+@Mapper(componentModel = "spring")
+public abstract class UserMapper {
 
-    private final RoleRepository roleRepository;
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "histories", ignore = true)
+    @Mapping(target = "historiesDoc", ignore = true)
+    @Mapping(target = "receipts", ignore = true)
+    @Mapping(target = "receiptsDoctor", ignore = true)
+    @Mapping(target = "allergieEntities", ignore = true)
+    @Mapping(target = "allergieEntitiesDoctors", ignore = true)
+    public abstract User toEntity(UserRequest request);
 
-    @Autowired
-    public UserMapper(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+    public abstract UserResponse toResponse(User entity);
 
-    public User toEntity(UserRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-
-        User user = User.builder()
-                .inn(request.getInn())
-                .fio(request.getFio())
-                .password(request.getPassword())
-                .build();
-        return user;
-    }
-
-    public UserResponse toResponse(User entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Проблема");
-        }
-        return UserResponse.builder()
-                .id(entity.getId())
-                .fio(entity.getFio())
-                .build();
-    }
+    @Mapping(target = "roleName", expression = "java(entity.getRoles().get(0).getRoleName())")
+    public abstract UserView toView(User entity);
 }

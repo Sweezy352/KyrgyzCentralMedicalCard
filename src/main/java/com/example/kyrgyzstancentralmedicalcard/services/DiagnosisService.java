@@ -8,11 +8,13 @@ import java.util.List;
 public interface DiagnosisService {
     List<Diagnosis> getAllDiagnosis();
 
-    Diagnosis createDiagnosis(Diagnosis diagnosis);
+    Diagnosis createDiagnosis(Diagnosis diagnosis, Long id);
 
     Diagnosis getById(Long id);
 
     List<Diagnosis> getByName(String name);
 
-    Diagnosis updateDiagnosis(Diagnosis diagnosis);
+    Diagnosis updateDiagnosis(Diagnosis diagnosis, Long id);
+
+    List<Diagnosis> getAllDiagnosesByUserId(Long userId); // Добавленный метод
 }
