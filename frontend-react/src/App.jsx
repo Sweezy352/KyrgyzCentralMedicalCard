@@ -8,8 +8,6 @@ import MainLayout from './layout/MainLayout';
 import HistoryPage from './pages/HistoryPage';
 import ReceiptsPage from './pages/ReceiptsPage';
 import AllergiesPage from './pages/AllergiesPage';
-import InsurancePage from './pages/InsurancePage';
-import NewsPage from './pages/NewsPage';
 import AdminPanelPage from './pages/AdminPanelPage';
 import DoctorDashboardPage from './pages/DoctorDashboardPage';
 import UserDetailPage from './pages/UserDetailPage';
@@ -39,8 +37,6 @@ function App() {
             <Route path="/receipts" element={<ReceiptsPage />} />
             <Route path="/allergies" element={<AllergiesPage />} />
             <Route path="/diagnoses" element={<DiagnosesPage />} />
-            <Route path="/insurance" element={<InsurancePage />} />
-            <Route path="/news" element={<NewsPage />} />
             <Route path="/admin-panel" element={<AdminPanelPage />} />
             <Route path="/doctor-dashboard" element={<DoctorDashboardPage />} />
             <Route path="/users/:id" element={<UserDetailPage />} />

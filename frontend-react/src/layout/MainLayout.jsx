@@ -5,7 +5,6 @@ import './MainLayout.css';
 
 const HEADER_NAV = [
   { to: '/', label: 'Профиль', end: true },
-  { to: '/insurance', label: 'Страховка' },
   { to: '/consents', label: 'Мои согласия' },
 ];
 

@@ -4,7 +4,6 @@ import userService from '../services/userService';
 import allergieService from '../services/allergieService';
 import historyService from '../services/historyService';
 import receiptService from '../services/receiptService';
-import insuranceService from '../services/insuranceService';
 import diagnosisService from '../services/diagnosisService';
 import './HomePage.css';
 
@@ -15,7 +14,6 @@ const HomePage = () => {
   const [history, setHistory] = useState([]);
   const [allergies, setAllergies] = useState([]);
   const [receipts, setReceipts] = useState([]);
-  const [insurance, setInsurance] = useState([]);
   const [diagnoses, setDiagnoses] = useState([]);
   const [activeTab, setActiveTab] = useState('Информация');
   const [showQr, setShowQr] = useState(false);
@@ -27,17 +25,15 @@ const HomePage = () => {
       .then(async (res) => {
         const u = res.data;
         setUser(u);
-        const [h, a, r, ins, d] = await Promise.allSettled([
+        const [h, a, r, d] = await Promise.allSettled([
           historyService.getHistoryByUserId(u.id),
           allergieService.getAllergiesByUserId(u.id),
           receiptService.getReceiptsByUserId(u.id),
-          insuranceService.getUserInsurancesByUserId(u.id),
           diagnosisService.getAllDiagnosesByUserId(u.id),
         ]);
         if (h.status === 'fulfilled') setHistory(h.value.data);
         if (a.status === 'fulfilled') setAllergies(a.value.data);
         if (r.status === 'fulfilled') setReceipts(r.value.data);
-        if (ins.status === 'fulfilled') setInsurance(ins.value.data);
         if (d.status === 'fulfilled') setDiagnoses(d.value.data);
       })
       .catch(() => setError('Не удалось загрузить данные.'))
@@ -118,14 +114,6 @@ const fmt = (d) => d ? new Date(d).toLocaleDateString('ru-RU') : '—';
               <p className="hp-info-label">Чрезвычайный номер</p>
               <p className="hp-info-value">{user.emergencyPhone || '—'}</p>
               <button className="hp-pill-btn">Изменить</button>
-            </div>
-
-            <div className="hp-info-card">
-              <p className="hp-info-label">Страховка</p>
-              <p className="hp-info-value">
-                {insurance.length > 0 ? `${insurance.length} полис(ов)` : 'Нет страховки'}
-              </p>
-              <Link to="/insurance" className="hp-pill-btn">Посмотреть</Link>
             </div>
 
             <div className="hp-info-card hp-info-card--full">

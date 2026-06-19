@@ -15,7 +15,7 @@
 
 /* Header card */
 .hp-header-card {
-  background: linear-gradient(135deg, #e07070 0%, #c45c5c 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 20px;
   padding: 1.75rem 2rem;
   display: flex;
@@ -71,7 +71,7 @@
 .hp-tabs {
   display: flex;
   gap: 0;
-  background: linear-gradient(135deg, #e07070 0%, #c45c5c 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 14px;
   padding: 0.4rem;
   margin-bottom: 1.5rem;
@@ -166,7 +166,7 @@
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #e07070, #c45c5c);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: #fff;
   border: none;
   border-radius: 14px;
@@ -231,7 +231,7 @@
 }
 
 .hp-history-card--active {
-  background: linear-gradient(135deg, #c0392b, #a93226);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
 }
 
@@ -245,7 +245,7 @@
 .hp-history-title {
   font-weight: 700;
   font-size: 1rem;
-  color: #c0392b;
+  color: #2563eb;
 }
 .hp-history-card--active .hp-history-title { color: #fff; }
 
@@ -289,7 +289,7 @@
 .hp-allergy-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #c0392b;
+  color: #2563eb;
   margin: 0;
 }
 
