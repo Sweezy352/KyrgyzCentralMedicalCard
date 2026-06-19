@@ -43,11 +43,6 @@ public class HistoryController {
         return ResponseEntity.ok(historyService.getByName(name).stream().map(historyMapper::toDto).toList());
     }
 
-    @GetMapping("/get-by-company-name")
-    public ResponseEntity<List<HistoryResponse>> getHistoriesByCompanyName(@RequestParam String companyName){
-        return ResponseEntity.ok(historyService.getByCompany(companyName).stream().map(historyMapper::toDto).toList());
-    }
-
     @GetMapping("/get-by-doc-fio")
     public ResponseEntity<List<HistoryResponse>> getHistoriesByHistory(@RequestParam String docFio){
         return ResponseEntity.ok(historyService.getByDocFIO(docFio).stream().map(historyMapper::toDto).toList());

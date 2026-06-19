@@ -17,8 +17,6 @@ const CreateVisitPage = () => {
   const navigate = useNavigate();
   const [patient, setPatient] = useState(null);
   const [form, setForm] = useState({
-    clinicId: '',
-    doctorId: '',
     visitDate: '',
     visitType: 'CONSULTATION',
     chiefComplaint: '',
@@ -44,10 +42,9 @@ const CreateVisitPage = () => {
     setError('');
     setLoading(true);
     try {
+      // clinicId/doctorId не передаём — бэкенд определит организацию врача автоматически
       await visitService.create({
         patientId: Number(id),
-        clinicId: Number(form.clinicId),
-        doctorId: Number(form.doctorId),
         visitDate: form.visitDate,
         visitType: form.visitType,
         chiefComplaint: form.chiefComplaint,
@@ -76,17 +73,10 @@ const CreateVisitPage = () => {
         </p>
       )}
       <div className="card">
+        <p className="create-subtitle">
+          Визит будет создан от имени вашей организации автоматически.
+        </p>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>ID клиники</label>
-            <input type="number" placeholder="ID клиники"
-              value={form.clinicId} onChange={set('clinicId')} required />
-          </div>
-          <div className="form-group">
-            <label>ID врача (organization_user)</label>
-            <input type="number" placeholder="ID врача в организации"
-              value={form.doctorId} onChange={set('doctorId')} required />
-          </div>
           <div className="form-group">
             <label>Дата визита</label>
             <input type="datetime-local"

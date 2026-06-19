@@ -32,10 +32,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(String inn, String password) { // Изменено на LoginResponse
-        // User user = userRepository.findByInn(inn).orElseThrow(() -> new RuntimeException("Пользователь с таким ИНН"));
-        // if(!user.getPassword().equals(password)) throw new RuntimeException("Не верный пароль"); // Эта проверка не нужна, AuthenticationManager сам это сделает
-
+    public LoginResponse login(String inn, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         inn,
@@ -46,7 +43,6 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtCore.jwtGenerator((UserDetails) authentication.getPrincipal());
 
-        // Извлекаем роли из UserDetailsImpl
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(grantedAuthority -> grantedAuthority.getAuthority())

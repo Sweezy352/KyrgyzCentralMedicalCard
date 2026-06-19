@@ -11,6 +11,5 @@ public interface HistoryService {
     History getById(Long id);
     List<History> getByDate(LocalDate date);
     List<History> getByName(String name);
-    List<History> getByCompany(String companyName);
     List<History> getByDocFIO(String docFIO);
 }

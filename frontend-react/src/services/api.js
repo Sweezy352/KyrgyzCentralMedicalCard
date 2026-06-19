@@ -8,16 +8,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Ошибки не вызывают принудительный редирект — страницы сами показывают сообщение.
+// Доступом без токена управляет ProtectedRoute.
 api.interceptors.response.use(
   (res) => res,
-  (error) => {
-    if (error.response?.status === 401 && !error.config?.url?.includes('/auth/login')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userRoles');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;

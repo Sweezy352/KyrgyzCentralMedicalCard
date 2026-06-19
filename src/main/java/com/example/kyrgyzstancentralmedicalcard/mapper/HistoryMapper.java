@@ -17,7 +17,6 @@ public abstract class HistoryMapper {
     @Mapping(target = "userDoc", ignore = true)
     @Mapping(target = "dateCreated", ignore = true)
     @Mapping(target = "dateUpdated", ignore = true)
-    @Mapping(target = "company", ignore = true)
     public abstract History toEntity(HistoryRequest request);
 
     @Mapping(target = "userId", expression = "java(entity.getUser().getId())")

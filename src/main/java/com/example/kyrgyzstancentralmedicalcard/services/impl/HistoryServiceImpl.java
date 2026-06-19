@@ -1,9 +1,7 @@
 package com.example.kyrgyzstancentralmedicalcard.services.impl;
 
-import com.example.kyrgyzstancentralmedicalcard.entity.Company;
 import com.example.kyrgyzstancentralmedicalcard.entity.History;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
-import com.example.kyrgyzstancentralmedicalcard.repository.CompanyRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.HistoryRepository;
 import com.example.kyrgyzstancentralmedicalcard.repository.UserRepository;
 import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
@@ -19,7 +17,6 @@ import java.util.List;
 public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
     private final UserRepository userRepository;
-    private final CompanyRepository companyRepository;
     private final AuthService authService;
 
     @Override
@@ -32,7 +29,6 @@ public class HistoryServiceImpl implements HistoryService {
         User userDoc = authService.getCurrentUser();
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Пользователь не найде"));
         history.setUserDoc(userDoc);
-        history.setCompany(userDoc.getCompany());
         history.setUser(user);
         return historyRepository.save(history);
     }
@@ -50,15 +46,6 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<History> getByName(String name) {
         return historyRepository.findByName(name).orElseThrow(() -> new RuntimeException("Такая история не найдена"));
-    }
-
-    @Override
-    public List<History> getByCompany(String companyName) {
-        User user = authService.getCurrentUser();
-        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("Такой компании не существует"));
-        List<History> filteredHistories = company.getHistories().stream().filter(history ->  history.getUser().getId().equals(user.getId())).toList();
-        return filteredHistories;
-
     }
 
     @Override
