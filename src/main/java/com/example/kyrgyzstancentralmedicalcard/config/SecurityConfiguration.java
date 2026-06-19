@@ -123,6 +123,16 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/analytics/clinic/**").hasAnyRole("ADMIN", "CLINIC_ADMIN")
                         .requestMatchers("/api/analytics/employer/**").hasAnyRole("ADMIN", "COMPANY_HR")
 
+                        //Health groups (группы здоровья сотрудников)
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/health-groups").hasAnyRole("ADMIN", "CLINIC_ADMIN", "COMPANY_HR", "DOCTOR", "NURSE")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/organizations/{id}/health-groups").hasAnyRole("ADMIN", "CLINIC_ADMIN", "COMPANY_HR")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/patients/{id}/health-groups").hasAnyRole("ADMIN", "CLINIC_ADMIN", "COMPANY_HR", "DOCTOR")
+
+                        //Access logs (лог событий доступа)
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/access-logs").hasAnyRole("ADMIN", "CLINIC_ADMIN", "COMPANY_HR", "DOCTOR", "NURSE", "PHARMACIST")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/organizations/{id}/access-logs").hasAnyRole("ADMIN", "CLINIC_ADMIN", "COMPANY_HR")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/patients/{id}/access-logs").hasAnyRole("ADMIN", "DOCTOR", "USER")
+
                         .anyRequest().authenticated()
 
 

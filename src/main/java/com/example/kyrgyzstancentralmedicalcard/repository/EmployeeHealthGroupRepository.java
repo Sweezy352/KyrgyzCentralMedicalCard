@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface EmployeeHealthGroupRepository extends JpaRepository<EmployeeHealthGroup, Long> {
     Optional<List<EmployeeHealthGroup>> findAllByOrganizationIdAndIsActiveTrue(Long organizationId);
+    List<EmployeeHealthGroup> findAllByPatientId(Long patientId);
     long countByOrganizationIdAndIsActiveTrue(Long organizationId);
     long countByOrganizationIdAndIsActiveTrueAndNextCheckupDateBefore(Long organizationId, LocalDate date);
 

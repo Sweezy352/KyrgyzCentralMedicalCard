@@ -7,6 +7,8 @@ import com.example.kyrgyzstancentralmedicalcard.entity.Organization;
 import com.example.kyrgyzstancentralmedicalcard.entity.OrganizationUser;
 import com.example.kyrgyzstancentralmedicalcard.entity.User;
 import com.example.kyrgyzstancentralmedicalcard.mapper.MedicalVisitMapper;
+import com.example.kyrgyzstancentralmedicalcard.repository.OrganizationUserRepository;
+import com.example.kyrgyzstancentralmedicalcard.services.AuthService;
 import com.example.kyrgyzstancentralmedicalcard.services.MedicalVisitService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,30 @@ public class MedicalVisitController {
 
     private final MedicalVisitService medicalVisitService;
     private final MedicalVisitMapper medicalVisitMapper;
+    private final AuthService authService;
+    private final OrganizationUserRepository organizationUserRepository;
 
     @PostMapping("/api/visits")
     public ResponseEntity<MedicalVisitResponse> create(@Valid @RequestBody MedicalVisitRequest request) {
+        Long clinicId = request.clinicId();
+        Long doctorId = request.doctorId();
+        // Врач не выбирает организацию вручную — берём её из его активной привязки
+        if (clinicId == null || doctorId == null) {
+            User current = authService.getCurrentUser();
+            OrganizationUser membership = organizationUserRepository
+                    .findFirstByUserIdAndIsActiveTrue(current.getId())
+                    .orElseThrow(() -> new RuntimeException("Врач не привязан к организации"));
+            if (clinicId == null) {
+                clinicId = membership.getOrganization().getId();
+            }
+            if (doctorId == null) {
+                doctorId = membership.getId();
+            }
+        }
         MedicalVisit visit = MedicalVisit.builder()
                 .patient(User.builder().id(request.patientId()).build())
-                .clinic(Organization.builder().id(request.clinicId()).build())
-                .doctor(OrganizationUser.builder().id(request.doctorId()).build())
+                .clinic(Organization.builder().id(clinicId).build())
+                .doctor(OrganizationUser.builder().id(doctorId).build())
                 .visitDate(request.visitDate())
                 .visitType(request.visitType())
                 .chiefComplaint(request.chiefComplaint())

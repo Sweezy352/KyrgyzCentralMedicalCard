@@ -8,6 +8,8 @@ import com.example.kyrgyzstancentralmedicalcard.services.AccessLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AccessLogServiceImpl implements AccessLogService {
@@ -24,5 +26,22 @@ public class AccessLogServiceImpl implements AccessLogService {
                 .ipAddress(ipAddress)
                 .build();
         accessLogRepository.save(log);
+    }
+
+    @Override
+    public AccessLog record(AccessLog accessLog) {
+        AccessLog saved = accessLogRepository.save(accessLog);
+        // перезагружаем для маппера (patient, accessedByUser, organization)
+        return accessLogRepository.findById(saved.getId()).orElse(saved);
+    }
+
+    @Override
+    public List<AccessLog> getByOrganization(Long organizationId) {
+        return accessLogRepository.findAllByOrganizationIdOrderByAccessedAtDesc(organizationId);
+    }
+
+    @Override
+    public List<AccessLog> getByPatient(Long patientId) {
+        return accessLogRepository.findAllByPatientIdOrderByAccessedAtDesc(patientId);
     }
 }
