@@ -69,17 +69,6 @@ public class SecurityConfiguration {
                         //qrcode
                         .requestMatchers("/api/qrcode/qr-code/users/{id}").permitAll()
 
-                        //news
-                        .requestMatchers("/api/news/create-news").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/news/get-by-id/{id}").permitAll()
-                        .requestMatchers("/api/news/get-by-name").permitAll()
-                        .requestMatchers("/api/news/get-all-news").permitAll()
-                        .requestMatchers("/api/news/update-news").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/news/get-file-by-id/{id}").permitAll()
-                        .requestMatchers("/api/news/get-file-by-name/{file_name}").permitAll()
-                        .requestMatchers("/api/news/get-picture-by-id/{id}").permitAll()
-                        .requestMatchers("/api/news/get-picture-by-fileName/{file_name}").permitAll()
-
                         //history
                         .requestMatchers("/api/history/create-history/{id}").hasAnyRole("ADMIN", "DOCTOR")
                         .requestMatchers("/api/history/get-by-id/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
@@ -96,12 +85,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/diagnosis/update-diagnosis/").hasAnyRole("ADMIN", "DOCTOR")
                         .requestMatchers("/api/diagnosis/get-all-by-user/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
 
-                        //MedicineInsurance
-                        .requestMatchers("/api/medicine-insurance/create-medicine-insurance").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/medicine-insurance/get-all-medicine-insurance").permitAll()
-                        .requestMatchers("/api/medicine-insurance/get-by-id/{id}").permitAll()
-                        .requestMatchers("/api/medicine-insurance/update-medicine-insurance").hasAnyRole("ADMIN")
-
                         //Receipt
                         .requestMatchers("/api/receipt/create-receipt/{id}").hasAnyRole("DOCTOR")
                         .requestMatchers("/api/receipt/get-by-id/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
@@ -109,12 +92,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/receipt/get-all-by-user/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/receipt/get-by-name").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
                         .requestMatchers("/api/receipt/get-by-date").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
-
-                        //UserInsurance
-                        .requestMatchers("/api/user-insurance/add-medicine-insurance/{id}").hasAnyRole("DOCTOR")
-                        .requestMatchers("/api/user-insurance/get-by-id/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
-                        .requestMatchers("/api/user-insurance/get-all-user-insurances").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
-                        .requestMatchers("/api/user-insurance/get-all-by-user/{id}").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE", "PHARMACIST")
 
                         //Allergie
                         .requestMatchers("/api/allergies/add-allergie/{id}").hasAnyRole("ADMIN", "DOCTOR")
