@@ -30,7 +30,6 @@ public class MedicalVisitController {
     public ResponseEntity<MedicalVisitResponse> create(@Valid @RequestBody MedicalVisitRequest request) {
         Long clinicId = request.clinicId();
         Long doctorId = request.doctorId();
-        // Врач не выбирает организацию вручную — берём её из его активной привязки
         if (clinicId == null || doctorId == null) {
             User current = authService.getCurrentUser();
             OrganizationUser membership = organizationUserRepository

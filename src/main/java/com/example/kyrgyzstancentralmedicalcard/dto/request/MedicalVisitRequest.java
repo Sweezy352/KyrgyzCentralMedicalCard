@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public record MedicalVisitRequest(
         @NotNull(message = "ID пациента не может быть пустым")
         Long patientId,
-        // Необязательны: врач создаёт визит на свою организацию автоматически
         Long clinicId,
         Long doctorId,
         @NotNull(message = "Дата визита не может быть пустой")

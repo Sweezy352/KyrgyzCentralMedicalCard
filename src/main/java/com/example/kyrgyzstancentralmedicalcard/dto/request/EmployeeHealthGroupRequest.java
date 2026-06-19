@@ -7,7 +7,6 @@ import java.time.LocalDate;
 public record EmployeeHealthGroupRequest(
         @NotNull(message = "ID пациента не может быть пустым")
         Long patientId,
-        // Необязателен: если не указан — берётся организация текущего пользователя
         Long organizationId,
         String employeeId,
         String department,

@@ -11,7 +11,6 @@ public abstract class UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "roles", ignore = true)
-    @Mapping(target = "company", ignore = true)
     @Mapping(target = "histories", ignore = true)
     @Mapping(target = "historiesDoc", ignore = true)
     @Mapping(target = "receipts", ignore = true)

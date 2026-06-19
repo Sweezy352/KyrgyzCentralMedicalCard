@@ -48,10 +48,6 @@ public class User extends BaseEntity{
     )
     private List<Role> roles;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
-    private Company company;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<History> histories;
 

@@ -18,7 +18,6 @@ public class EmployeeHealthGroupServiceImpl implements EmployeeHealthGroupServic
     @Override
     public EmployeeHealthGroup create(EmployeeHealthGroup healthGroup) {
         EmployeeHealthGroup saved = employeeHealthGroupRepository.save(healthGroup);
-        // перезагружаем, чтобы маппер увидел связанные сущности (organization, patient)
         return employeeHealthGroupRepository.findById(saved.getId()).orElse(saved);
     }
 

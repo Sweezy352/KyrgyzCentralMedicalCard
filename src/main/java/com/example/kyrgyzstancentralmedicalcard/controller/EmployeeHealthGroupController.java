@@ -55,7 +55,6 @@ public class EmployeeHealthGroupController {
                 .stream().map(employeeHealthGroupMapper::toDto).toList());
     }
 
-    // Если организация не передана явно — берём активную организацию текущего пользователя
     private Long resolveOrganizationId(Long provided) {
         if (provided != null) {
             return provided;

@@ -45,9 +45,6 @@ public class JwtCore {
         UserDetailsImpl user = (UserDetailsImpl) userDetails;
         claims.put("id", user.getId());
         claims.put("username", user.getUsername());
-
-
-        // Добавляем роли в claims
         List<String> roles = user.getAuthorities().stream()
                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                 .collect(Collectors.toList());

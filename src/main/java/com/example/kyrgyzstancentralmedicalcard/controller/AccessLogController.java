@@ -53,7 +53,6 @@ public class AccessLogController {
                 .stream().map(accessLogMapper::toDto).toList());
     }
 
-    // Если организация не передана — берём активную организацию текущего пользователя (может быть null для ADMIN)
     private Long resolveOrganizationId(Long provided, User current) {
         if (provided != null) {
             return provided;
